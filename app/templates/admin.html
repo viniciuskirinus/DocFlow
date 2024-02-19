@@ -1,0 +1,140 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Sirtec Doc Flow</title>
+    
+  <link rel="icon" href="../static/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='loopple_home.css') }}">
+
+</head>
+
+<body class="g-sidenav-show">
+  <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white loopple-fixed-start" id="sidenav-main">
+      <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+          <div class="sidenav-header  align-items-center"> <a class="navbar-brand"> <img src="https://sirtec.com.br/restrito/logo.png" class="navbar-brand-img"> Sirtec Doc Flow</a> </div>
+          <hr class="mt-0 mb-3">
+          <div class="d-flex align-items-center"> <img src="https://static.vecteezy.com/ti/vetor-gratis/p1/7407996-user-icon-person-icon-client-symbol-login-head-sign-icon-design-vetor.jpg" class="avatar ml-3">
+              <div class="ml-3">
+                  <h4 class="mb-0">{{session['username']}}</h4>
+                  <p class="text-xs mb-0">{{session['office']}}</p>
+              </div>
+          </div>
+          <hr class="mt-3 mb-0">
+          <div class="navbar-inner">
+              <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                  <ul class="navbar-nav">
+                      <li class="nav-item"> <a class="nav-link {% if active_page == 'admin.admin' %}active{% endif %}" href="{{ url_for('admin.admin') }}"> <i class="fa fa-desktop text-primary"></i> <span class="nav-link-text">Home</span> </a> </li>
+                      <li class="nav-item"> <a class="nav-link {% if active_page == 'pdf.pdf' %}active{% endif %}" href="{{ url_for('pdf.pdf') }}"> <i class="fa fa-file-pdf text-info"></i> <span class="nav-link-text">PDF</span> </a> </li>
+                      <li class="nav-item"> <a class="nav-link {% if active_page == 'usuarios.usuarios' %}active{% endif %}" href="{{ url_for('usuarios.usuarios') }}"> <i class="fa fa-address-book "></i> <span class="nav-link-text">Usuários</span> </a> </li>
+                      <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-bookmark text-success"></i> <span class="nav-link-text">Documentos Antigos</span> </a> </li>
+                      <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-cog text-dark"></i> <span class="nav-link-text">Configurações</span> </a> </li>
+                  </ul>
+              </div>
+              <div class="bg-gradient-primary card position-fixed bottom-0">
+              </div>
+          </div>
+      </nav>
+  </nav>
+  <div class="main-content" id="panel">
+      <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom" id="navbarTop">
+          <div class="container-fluid">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav align-items-center  ml-md-auto ">
+                      <li class="nav-item d-xl-none">
+                          <div class="pr-3 sidenav-toggler sidenav-toggler-dark active" data-action="sidenav-pin" data-target="#sidenav-main">
+                              <div class="sidenav-toggler-inner"> <i class="sidenav-toggler-line"></i> <i class="sidenav-toggler-line"></i> <i class="sidenav-toggler-line"></i> </div>
+                          </div>
+                      </li>
+                      <li class="nav-item dropdown"> <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-layer-group"></i> </a>
+                          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default  dropdown-menu-right ">
+                              <div class="row shortcuts px-4"> 
+                                <a href="https://sirtec.desk.ms/?Portal#Home" class="col-4 shortcut-item text-center"> 
+                                    <span class="shortcut-media avatar rounded-circle bg-gradient-info "> 
+                                        <i class="fa fa-book" aria-hidden="true"></i> 
+                                    </span> 
+                                    <small class="text-white">DeskManager</small> 
+                                </a> 
+                                <a href="https://autenticacao.allstrategy.com.br" class="col-4 shortcut-item text-center"> 
+                                    <span class="shortcut-media avatar rounded-circle bg-gradient-red"> 
+                                        <i class="fa fa-university"></i> 
+                                    </span> 
+                                    <small class="text-white">Plano</small> 
+                                </a> 
+                                <a href="https://sirtec.com.br/ti/index.php" class="col-4 shortcut-item text-center"> 
+                                    <span class="shortcut-media avatar rounded-circle bg-gradient-orange"> 
+                                        <i class="fa fa-users"></i> 
+                                    </span> 
+                                    <small class="text-white">Meu RH</small> 
+                                </a> 
+                          </div>
+                      </li>
+                          <div class="dropdown-menu dropdown-menu-right dropdown-menu-xl py-0 overflow-hidden">
+                              <div class="list-group list-group-flush"> 
+                                  <a href="#!" class="list-group-item list-group-item-action">
+                                      <div class="row align-items-center">
+                                          <div class="col-auto">
+                                              <!-- Avatar --> <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle"> </div>
+                                      </div>
+                                  </a> 
+                              </div>
+                          </div>
+                      </li>
+                  </ul>
+                  <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+                      <li class="nav-item dropdown"> <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <div class="media align-items-center"> <span class="avatar avatar-sm"> <img alt="Image placeholder" src="https://static.vecteezy.com/ti/vetor-gratis/p1/7407996-user-icon-person-icon-client-symbol-login-head-sign-icon-design-vetor.jpg"> </span> </div>
+                          </a>
+                          <div class="dropdown-menu  dropdown-menu-right ">
+                              <div class="dropdown-header noti-title">
+                                  <h6 class="text-overflow m-0">Bem vindo!</h6>
+                              </div> 
+                              <a href="#!" class="dropdown-item"> <i class="fa fa-user"></i> <span>Meu perfil</span> </a> 
+                              <a href="#!" class="dropdown-item" onclick="logout()"> <i class="fa fa-sign-out-alt"></i> <span>Sair</span> </a>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+      <div class="container-fluid pt-3">
+        <div class="container">
+            <header>
+                <h1 class="title">Bem Vindo ao <span class="highlight">Sirtec DocFlow</span></h1>
+            </header>
+            <nav class="menu">
+                <p>Confira no menu lateral as funcionalidades</p>
+                <div class="buttons">
+                    <button class="btn">Cadastre seus documentos</button>
+                    <button class="btn">Crie novos usuários</button>
+                    <button class="btn">Verifique arquivos para auditorias</button>
+                </div>
+            </nav>
+        </div>
+      </div> <!-- Footer -->
+
+  </div>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/jquery.min.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/bootstrap.bundle.min.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/js.cookie.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/chart.extension.js"></script>
+  <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.btn');
+
+        buttons.forEach((button, index) => {
+            // Delay the animation of each button
+            button.style.animationDelay = `${1 + index * 0.5}s`;
+        });
+        });
+      function logout() {
+          window.location.href = "{{ url_for('logout.logout') }}";
+      }
+  </script>
+  <script src="{{ url_for('static', filename='loopple.js') }}"></script>
+</body>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sirtec DocFlow</title>
+    <link rel="icon" href="../static/logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+    <div class="top"></div>
+        <div class="centered">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <img src="https://sirtec.com.br/restrito/logo.png" width=150 class="centered-image">
+            <h1 class="h1">Sirtec DocFlow</h1>
+            <h2 class="h3">Acesse a plataforma</h3>
+            <br>
+
+            <form method="post" action="/DocFlow">
+                <label class="label_form">Nome de Usuário</label>
+                <input class="form" type="text" name="username" value="{{ request.form['username'] if request.method == 'POST' else '' }}">
+                <br>
+                <br>
+                <label class="label_form">Senha</label>
+                <div class="password-container">
+                    <input class="form" type="password" name="password" id="passwordInput">
+                    <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                </div>
+                <br>
+            
+                {% for message in get_flashed_messages(category_filter=["error", "info"]) %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+
+                <br>
+                <a href="https://sirtec.desk.ms/?LoginPortal">Solicitar nova senha</a>
+                <br>
+                <br>
+                <button class="botao" type="submit">Login</button>
+            </form>           
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.onload = function() {
+            var messages = document.querySelectorAll('.flash');
+            messages.forEach(function(message) {
+                var text = message.textContent;
+                if (text.toLowerCase().includes("falha")) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: text,
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        const passwordInput = document.getElementById("passwordInput");
+        const usernameInput = document.getElementById("usernameInput");
+        const togglePasswordButton = document.getElementById("togglePassword");
+        const loginButton = document.querySelector("button.botao");
+
+        togglePasswordButton.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePasswordButton.classList.remove("fa-eye");
+                togglePasswordButton.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                togglePasswordButton.classList.remove("fa-eye-slash");
+                togglePasswordButton.classList.add("fa-eye");
+            }
+        });
+        
+    </script>
+</body>
+</html>

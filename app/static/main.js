@@ -1,0 +1,276 @@
+
+let currentPdfId = null;
+
+function showChat(linkIndex, pdfId, pdfName, pdfCategory, pdfDate) {
+    
+    // Obtém o elemento com o ID 'chatContainer'
+    var chatContainer = document.getElementById('chatContainer');
+
+    currentPdfId = pdfId;
+    // Verifica se 'chatContainer' foi encontrado
+    if (!chatContainer) {
+        console.error('Elemento chatContainer não encontrado.');
+        return;
+    }
+
+    // Oculta todos os chats
+    chatContainer.style.display = 'none';
+
+    // Debug: Imprimir o valor de linkIndex no console
+    console.log('pdfid:', pdfId);
+
+    // Obtém todos os elementos com a classe 'card-body a'
+    var links = document.querySelectorAll('.card-body a');
+
+    // Se não houver links, retorna
+    if (!links || links.length === 0) {
+        console.error('Nenhum link encontrado.');
+        return;
+    }
+
+    // Remove a cor diferenciada de todos os links
+    links.forEach(link => {
+        link.classList.remove('bg-gradient-primary', 'selected');
+    });
+
+    // Exibe o chat correspondente ao link clicado
+    chatContainer.style.display = 'block';
+    document.getElementById('selectChatMessage').style.display = 'none';
+
+    // Verifica se o índice está dentro dos limites do array de links
+    if (linkIndex > 0 && linkIndex <= links.length) {
+        // Adiciona a classe 'selected' ao link clicado
+        links[linkIndex - 1].classList.add('bg-gradient-primary', 'selected');
+    } else {
+        console.error('Índice fora dos limites.');
+    }
+
+    // Exibe o chat correspondente ao link clicado
+    chatContainer.style.display = 'block';
+    updateChatInfo(pdfId, pdfName, pdfCategory, pdfDate);
+
+    // Ajusta o estilo do texto
+    updateTextStyle();
+
+    clearChat();
+    addWelcomeMessage();
+    openChat(pdfId);
+    window.pdfId = pdfId;
+}
+
+function updateTextStyle() {
+    // Remove a classe 'selected' do texto de todos os links
+    document.querySelectorAll('.card-body a .justify-content-between.align-items-center h4, .card-body a .justify-content-between.align-items-center h6').forEach(text => {
+        text.style.color = 'black'; // Define a cor padrão para preto
+    });
+
+    // Adiciona a classe 'selected' ao texto do link selecionado e muda a cor para branco
+    var selectedLink = document.querySelector('.card-body a.selected');
+    if (selectedLink) {
+        selectedLink.querySelector('.justify-content-between.align-items-center h4').style.color = 'white';
+        selectedLink.querySelector('.justify-content-between.align-items-center h6').style.color = 'white';
+    }
+}
+
+function updateChatInfo(pdfId, pdfName, pdfCategory, pdfDate) {
+    // Obtém os elementos com os IDs correspondentes
+    var chatTitle = document.querySelector('#chatContainer .card-header h2');
+    var chatCategory = document.querySelector('#chatContainer .card-header span.font-weight-bold');
+    var chatDate = document.querySelector('#chatContainer .card-header span.text-muted');
+    var chatId = document.querySelector('#chatContainer .card-header span.chat-id');
+
+    // Verifica se os elementos foram encontrados
+    if (!chatTitle || !chatCategory || !chatDate || !chatId) {
+        console.error('Elementos do chat não encontrados.');
+        return;
+    }
+
+    // Atualiza os elementos com os valores do banco de dados
+    chatTitle.textContent = pdfName;
+    chatCategory.textContent = pdfCategory;
+    chatDate.textContent = pdfDate;
+    chatId.textContent = pdfId;
+}
+setInterval(function () {
+    // Obtém a hora atual
+    var currentTime = new Date();
+
+    // Formata a hora no formato desejado (hh:mm am/pm)
+    var formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Obtém todos os elementos com a classe 'chat-time'
+    var chatTimeElements = document.getElementsByClassName('chat-time');
+
+    // Atualiza cada elemento com a hora formatada
+    for(var i = 0; i < chatTimeElements.length; i++) {
+        chatTimeElements[i].textContent = formattedTime;
+    }
+}, 1000); // Atualiza a cada segundo
+
+function addWelcomeMessage() {
+    var welcomeMessageDiv = document.createElement("div");
+    welcomeMessageDiv.className = "row justify-content-start mb-4";
+    welcomeMessageDiv.innerHTML = '<div class="col-auto">' +
+                                  '<div class="card ">' +
+                                  '<div class="card-body p-2">' +
+                                  '<p class="mb-1">Olá, em que posso ajudar hoje?</p>' +
+                                  '<div class="d-flex align-items-center text-sm opacity-6">'+
+                                  '<i class="far fa-clock mr-1" aria-hidden="true"></i>'+
+                                  '<small class="chat-time"></small>'+                             
+                                  '</div></div></div></div>';
+    document.getElementById("bodychat").appendChild(welcomeMessageDiv);
+}
+
+function handleSubmit() {
+    sendMessage();
+    return false; // Isso impede a atualização da página
+}
+
+let chats = {};
+
+function openChat(pdfId) {
+    if (!chats[pdfId]) {
+        chats[pdfId] = []; // Inicializa um novo chat se ainda não existir
+    }
+    chats[pdfId].forEach(message => {
+        addNewUserMessage(message);
+    });
+}
+
+
+var botTypingMessageDiv = null; // Variável para manter a referência à div de "Digitando..."
+var typingDotsInterval; // Variável para manter a referência ao intervalo de pontos
+
+function sendMessage() {
+    var userMessage = document.getElementById('chatInput').value;
+
+    if (userMessage.trim() !== '') {
+        addNewUserMessage(userMessage);
+
+        // Iniciar a animação de "Digitando..."
+        startBotTypingAnimation();
+
+        // Enviar a mensagem para o servidor para processamento
+        fetch('/process_chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage, pdfid: currentPdfId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Parar a animação de "Digitando..." quando a resposta do bot chegar
+            stopBotTypingAnimation();
+            addNewBotMessage(data.response);
+        });
+
+        document.getElementById('chatInput').value = "";
+    }
+}
+
+function startBotTypingAnimation() {
+    if (!botTypingMessageDiv) {
+        botTypingMessageDiv = document.createElement("div");
+        botTypingMessageDiv.className = "row justify-content-start text-left mb-4";
+        document.getElementById("bodychat").appendChild(botTypingMessageDiv);
+    }
+
+    // Iniciar a animação de pontos
+    var typingDots = 1;
+    botTypingMessageDiv.innerHTML = '<div class="col-auto">' +
+        '<div class="card bg-gradient-light text-dark">' +
+        '<div class="card-body p-2">' +
+        '<p class="mb-1">Pensando' + '.'.repeat(typingDots) + '<br></p>' +
+        '</div></div></div>';
+
+    // Atualizar os pontos a cada segundo (limitado a 3)
+    typingDotsInterval = setInterval(function () {
+        typingDots = (typingDots % 3) + 1;
+        botTypingMessageDiv.innerHTML = '<div class="col-auto">' +
+            '<div class="card bg-gradient-light text-dark">' +
+            '<div class="card-body p-2">' +
+            '<p class="mb-1">Pensando' + '.'.repeat(typingDots) + '<br></p>' +
+            '</div></div></div>';
+    }, 1000);
+}
+
+function stopBotTypingAnimation() {
+    // Parar a animação de pontos e remover a mensagem de "Digitando..."
+    if (botTypingMessageDiv) {
+        clearInterval(typingDotsInterval);
+        botTypingMessageDiv.remove();
+        botTypingMessageDiv = null;
+    }
+}
+
+
+function clearChat() {
+    var chatBody = document.getElementById("bodychat");
+    while (chatBody.firstChild) {
+        chatBody.removeChild(chatBody.firstChild);
+    }
+}
+
+function addNewUserMessage(message) {
+    var newUserMessageDiv = document.createElement("div");
+    newUserMessageDiv.className = "row justify-content-end text-right mb-4";
+    newUserMessageDiv.innerHTML = '<div class="col-auto">' +
+                                '<div class="card bg-gradient-primary text-white">' +
+                                '<div class="card-body p-2">' +
+                                '<p class="mb-1">' + message + '<br></p>' +
+                                '<div class="d-flex align-items-center justify-content-end text-sm opacity-6">' +
+                                '<i class="fa fa-check-double mr-1 text-xs" aria-hidden="true"></i>' +
+                                '<small class="chat-time">.</small>' +
+                                '</div></div></div></div>';
+    document.getElementById("bodychat").appendChild(newUserMessageDiv);
+}
+
+function addNewBotMessage(message) {
+    var newBotMessageDiv = document.createElement("div");
+    newBotMessageDiv.className = "row justify-content-start";
+    newBotMessageDiv.innerHTML = '<div class="col-auto">' +
+                                '<div class="card">' +
+                                '<div class="card-body p-2">' +
+                                '<p class="mb-0 text-sm">' + message + '<br></p>' +
+                                '<div class="d-flex align-items-center justify-content-end text-sm opacity-6">' +
+                                '<i class="fa fa-check-double mr-1 text-xs" aria-hidden="true"></i>' +
+                                '<small class="chat-time">.</small>' +
+                                '</div></div></div></div>';
+    document.getElementById("bodychat").appendChild(newBotMessageDiv);
+}
+
+// Função para abrir o modal e carregar o PDF
+function openPDFModal(pdfLocation) {
+    // Inicializar o modal
+    $('#pdfModal').modal('show');
+
+    // Carregar o PDF e exibir no modal
+    var pdfEmbed = '<embed src="' + pdfLocation + '" type="application/pdf" width="100%" height="600px" />';
+    $('#pdfModal .modal-body').html(pdfEmbed);
+}
+
+// Função para fazer a requisição AJAX e obter o caminho do PDF
+function showPDF(pdfId) {
+    // Fazer uma requisição AJAX para obter o caminho do PDF
+    console.log("showPDF() foi chamada com pdfId:", pdfId);
+    $.ajax({
+        url: '/showpdf', // Alterar para a nova rota POST
+        type: 'POST', // Mudar o tipo de solicitação para POST
+        contentType: 'application/json', // Definir o tipo de conteúdo como JSON
+        data: JSON.stringify({ 'pdf_id': pdfId }), // Enviar o ID do PDF como um objeto JSON no corpo da solicitação
+        success: function(data) {
+            // Quando a requisição for bem-sucedida, data conterá o caminho do PDF
+            if (data && data.pdf_location) {
+                // Chamar a função para exibir o PDF no modal, passando o caminho do PDF como parâmetro
+                openPDFModal(data.pdf_location);
+            } else {
+                alert("Não foi possível encontrar o caminho do PDF.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Erro ao obter o caminho do PDF:", error);
+            alert("Erro ao obter o caminho do PDF. Por favor, tente novamente mais tarde.");
+        }
+    });
+}
