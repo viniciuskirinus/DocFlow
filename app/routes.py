@@ -51,7 +51,7 @@ file_routes = Blueprint('file', __name__, template_folder='templates')
 def serve_pdf(filename):
     return send_from_directory(pdf_folder_path, filename)
 
-@login_routes.route('/DocFlow', methods=['GET', 'POST'])
+@login_routes.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
