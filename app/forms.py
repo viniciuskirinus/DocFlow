@@ -1,7 +1,6 @@
 import pymysql
 import hashlib
 from .models import conectar_db
-from datetime import datetime, timedelta
 from flask import session
 
 

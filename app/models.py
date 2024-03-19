@@ -2,9 +2,9 @@ import pymysql
 
 # Configurações de conexão
 host = "localhost"
-user = "u369946143_sirtec_docflow"
-password = "af!Inf30"
-database = "u369946143_doc_flow"
+user = "root"
+password = ""
+database = "doc_flow_db"
 
 # Criar uma conexão
 def conectar_db():
