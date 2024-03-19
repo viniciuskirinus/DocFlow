@@ -1,7 +1,7 @@
 import pymysql
 
 # Configurações de conexão
-host = "localhost"
+host = "srv539.hstgr.io"
 user = "u369946143_sirflow"
 password = "Sirtec#411"
 database = "u369946143_doc_flow_db"
