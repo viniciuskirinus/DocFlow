@@ -20,7 +20,7 @@
             <h2 class="h3">Acesse a plataforma</h3>
             <br>
 
-            <form method="post" action="/">
+            <form method="post" action="/DocFlow">
                 <label class="label_form">Nome de Usuário</label>
                 <input class="form" type="text" name="username" value="{{ request.form['username'] if request.method == 'POST' else '' }}">
                 <br>
