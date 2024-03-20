@@ -8,6 +8,7 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain_openai import OpenAI
 from langchain_community.callbacks import get_openai_callback
+from io import BytesIO
 
 
 def process_message(user_message, pdf_id):
@@ -22,24 +23,13 @@ def process_message(user_message, pdf_id):
         print("PDF não encontrado no banco de dados.")
         return "Não foi encontrado um caminho para este pdf_id."
 
-    pdf_filename = result[0]
-    pdf_directory = ".\\app\data"  # Substitua com o caminho real para o seu diretório
-    pdf_path = os.path.join(pdf_directory, pdf_filename)
-    print(f"PDF encontrado: {pdf_path}")
+    pdf_content = BytesIO(result[0])  # result[0] deve ser o conteúdo binário do PDF
 
-    if os.path.exists(pdf_path):
-        print(f"PDF encontrado: {pdf_path}")
-    else:
-        print("PDF não encontrado no diretório especificado.")
-        return "PDF não encontrado."
-
-
-    # Processar o PDF
-    with open(pdf_path, "rb") as pdf_file:
-        pdf_reader = PdfReader(pdf_file)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text() if page.extract_text() else ""
+    # Processar o PDF a partir do conteúdo binário
+    pdf_reader = PdfReader(pdf_content)
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text() if page.extract_text() else ""
 
     # Dividir o texto em chunks
     text_splitter = CharacterTextSplitter(

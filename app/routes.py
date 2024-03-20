@@ -13,6 +13,8 @@ from .load_users_admin import obter_dados_lista_user
 from .generateuser import processar_formulario_user
 from .process_chat import process_message
 from .show_pdf import show_pdf
+from .models import conectar_db
+
 
 #localização da pasta onde esta os pdfs
 pdf_folder_path = os.path.join(os.getcwd(), 'app', 'data')
@@ -44,12 +46,6 @@ process_chat_routes = Blueprint('process_chat', __name__, template_folder='templ
 #rota de logout
 logout_routes = Blueprint('logout', __name__, template_folder='templates')
 
-#rota dos arquivos
-file_routes = Blueprint('file', __name__, template_folder='templates')
-
-@file_routes.route('/docs/<filename>')
-def serve_pdf(filename):
-    return send_from_directory(pdf_folder_path, filename)
 
 @login_routes.route('/', methods=['GET', 'POST'])
 def login():
@@ -99,11 +95,18 @@ def showpdf_route():
     pdf_id = data.get('pdf_id')
 
     if pdf_id is not None:
-        pdf_location = show_pdf(pdf_id)
-        if pdf_location:
-            return jsonify({'pdf_location': pdf_location}), 200
-        else:
+        conexao = conectar_db()
+        cursor = conexao.cursor()
+        cursor.execute(f"SELECT location FROM pdf WHERE id_pdf = '{pdf_id}'")
+        result = cursor.fetchone()
+
+        if result is None:
             return jsonify({'error': 'PDF não encontrado no banco de dados.'}), 404
+
+        pdf_blob = result[0]  # Acessando o primeiro elemento da tupla, que deve conter o valor 'location'
+        pdf_content = show_pdf(pdf_blob)
+
+        return jsonify({'pdf_content': pdf_content}), 200
     else:
         return jsonify({'error': 'ID do PDF não fornecido.'}), 400
 

@@ -240,37 +240,38 @@ function addNewBotMessage(message) {
     document.getElementById("bodychat").appendChild(newBotMessageDiv);
 }
 
-// Função para abrir o modal e carregar o PDF
-function openPDFModal(pdfLocation) {
+function openPDFModal(pdfContent) {
     // Inicializar o modal
     $('#pdfModal').modal('show');
 
-    // Carregar o PDF e exibir no modal
-    var pdfEmbed = '<embed src="' + pdfLocation + '" type="application/pdf" width="100%" height="600px" />';
-    $('#pdfModal .modal-body').html(pdfEmbed);
+    // Renderizar o PDF
+    var pdfViewer = document.getElementById('pdfViewer');
+    pdfViewer.textContent = '';
+
+    pdfContent.forEach(function(pageContent, index) {
+        var pageDiv = document.createElement('div');
+        pageDiv.classList.add('pdf-page');
+        pageDiv.textContent = pageContent;
+        pdfViewer.appendChild(pageDiv);
+    });
 }
 
-// Função para fazer a requisição AJAX e obter o caminho do PDF
 function showPDF(pdfId) {
-    // Fazer uma requisição AJAX para obter o caminho do PDF
-    console.log("showPDF() foi chamada com pdfId:", pdfId);
     $.ajax({
-        url: '/showpdf', // Alterar para a nova rota POST
-        type: 'POST', // Mudar o tipo de solicitação para POST
-        contentType: 'application/json', // Definir o tipo de conteúdo como JSON
-        data: JSON.stringify({ 'pdf_id': pdfId }), // Enviar o ID do PDF como um objeto JSON no corpo da solicitação
+        url: '/showpdf',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ 'pdf_id': pdfId }),
         success: function(data) {
-            // Quando a requisição for bem-sucedida, data conterá o caminho do PDF
-            if (data && data.pdf_location) {
-                // Chamar a função para exibir o PDF no modal, passando o caminho do PDF como parâmetro
-                openPDFModal(data.pdf_location);
+            if (data && data.pdf_content) {
+                openPDFModal(data.pdf_content);
             } else {
-                alert("Não foi possível encontrar o caminho do PDF.");
+                alert("Não foi possível encontrar o conteúdo do PDF.");
             }
         },
         error: function(xhr, status, error) {
-            console.error("Erro ao obter o caminho do PDF:", error);
-            alert("Erro ao obter o caminho do PDF. Por favor, tente novamente mais tarde.");
+            console.error("Erro ao obter o conteúdo do PDF:", error);
+            alert("Erro ao obter o conteúdo do PDF. Por favor, tente novamente mais tarde.");
         }
     });
 }
