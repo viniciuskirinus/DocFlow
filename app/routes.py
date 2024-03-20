@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request, send_from_directory, jsonify, request
 import os
 from flask import Flask
+import pickle
 from .forms import processar_login
 from .generate import processar_formulario
 from .pdf_edit import pdf_edit
@@ -12,7 +13,7 @@ from .load_docs_admin import obter_dados_lista_pdf
 from .load_users_admin import obter_dados_lista_user
 from .generateuser import processar_formulario_user
 from .process_chat import process_message
-from .show_pdf import show_pdf
+from base64 import b64encode
 from .models import conectar_db
 
 
@@ -97,16 +98,17 @@ def showpdf_route():
     if pdf_id is not None:
         conexao = conectar_db()
         cursor = conexao.cursor()
-        cursor.execute(f"SELECT location FROM pdf WHERE id_pdf = '{pdf_id}'")
+        cursor.execute("SELECT page_images FROM pdf WHERE id_pdf = %s", (pdf_id,))
         result = cursor.fetchone()
 
         if result is None:
             return jsonify({'error': 'PDF não encontrado no banco de dados.'}), 404
 
-        pdf_blob = result[0]  # Acessando o primeiro elemento da tupla, que deve conter o valor 'location'
-        pdf_content = show_pdf(pdf_blob)
+        # Deserializa o blob (assegure-se de que os dados sejam seguros antes de fazer isso)
+        pdf_blobs = pickle.loads(result[0])
+        pdf_images_base64 = [b64encode(blob).decode('utf-8') for blob in pdf_blobs]
 
-        return jsonify({'pdf_content': pdf_content}), 200
+        return jsonify({'pdf_images_base64': pdf_images_base64}), 200
     else:
         return jsonify({'error': 'ID do PDF não fornecido.'}), 400
 

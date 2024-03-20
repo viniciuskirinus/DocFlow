@@ -240,19 +240,18 @@ function addNewBotMessage(message) {
     document.getElementById("bodychat").appendChild(newBotMessageDiv);
 }
 
-function openPDFModal(pdfContent) {
+function openPDFModal(pdfImagesBase64List) {
     // Inicializar o modal
     $('#pdfModal').modal('show');
 
-    // Renderizar o PDF
+    // Renderizar o PDF como imagem
     var pdfViewer = document.getElementById('pdfViewer');
-    pdfViewer.textContent = '';
+    pdfViewer.innerHTML = ''; // Limpa o conteúdo anterior
 
-    pdfContent.forEach(function(pageContent, index) {
-        var pageDiv = document.createElement('div');
-        pageDiv.classList.add('pdf-page');
-        pageDiv.textContent = pageContent;
-        pdfViewer.appendChild(pageDiv);
+    pdfImagesBase64List.forEach(function(imageBase64) {
+        var imgElement = document.createElement('img');
+        imgElement.src = 'data:image/png;base64,' + imageBase64;
+        pdfViewer.appendChild(imgElement);
     });
 }
 
@@ -263,8 +262,8 @@ function showPDF(pdfId) {
         contentType: 'application/json',
         data: JSON.stringify({ 'pdf_id': pdfId }),
         success: function(data) {
-            if (data && data.pdf_content) {
-                openPDFModal(data.pdf_content);
+            if (data && data.pdf_images_base64) {
+                openPDFModal(data.pdf_images_base64);
             } else {
                 alert("Não foi possível encontrar o conteúdo do PDF.");
             }
