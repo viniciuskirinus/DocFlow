@@ -41,7 +41,12 @@ user_show_pdf_routes = Blueprint('showpdf', __name__, template_folder='templates
 
 #rota de inicio usuario
 home_routes = Blueprint('home', __name__, template_folder='templates')
+
+#rota de categorias
 user_procedimentos_routes = Blueprint('user_procedimentos', __name__, template_folder='templates')
+user_manuais_routes = Blueprint('user_manuais', __name__, template_folder='templates')
+
+#rota processa chat
 process_chat_routes = Blueprint('process_chat', __name__, template_folder='templates')
 
 #rota de logout
@@ -89,6 +94,16 @@ def userprocedimentos():
         return render_template('user_procedimentos.html', active_page='user_procedimentos.userprocedimentos', dados=dados_do_banco) 
     else:
         return redirect(url_for('login.login'))
+    
+@user_manuais_routes.route('/user_manuais')
+def usermanuais():
+    if 'username' in session and 'role' in session and session['role'] == "user":
+        categoria = 'Manuais'  # Defina a categoria desejada
+        dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
+        return render_template('user_manuais.html', active_page='user_manuais.usermanuais', dados=dados_do_banco) 
+    else:
+        return redirect(url_for('login.login'))
+
     
 @user_show_pdf_routes.route('/showpdf', methods=['POST'])
 def showpdf_route():
