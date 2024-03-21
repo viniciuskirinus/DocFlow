@@ -57,7 +57,7 @@
                         <li class="nav-item"> <a class="nav-link {% if active_page == 'home.home' %}active{% endif %}" href="{{ url_for('home.home') }}"> <i class="fa fa-desktop text-primary"></i> <span class="nav-link-text">Início</span> </a> </li>
                         <li class="nav-item"> <a class="nav-link {% if active_page == 'user_procedimentos.userprocedimentos' %}active{% endif %}" href="{{ url_for('user_procedimentos.userprocedimentos') }}"> <i class="fa fa-tasks text-info"></i> <span class="nav-link-text">Procedimentos</span> </a> </li>
                         <li class="nav-item"> <a class="nav-link {% if active_page == 'user_manuais.usermanuais' %}active{% endif %}" href="{{ url_for('user_manuais.usermanuais') }}"><i class="fa fa-archive text-warning"></i> <span class="nav-link-text">Manuais</span> </a> </li>
-                        <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-briefcase text-dark"></i> <span class="nav-link-text">Instruções de Trabalho</span> </a> </li>
+                        <li class="nav-item"> <a class="nav-link {% if active_page == 'user_instrucoes.userinstrucoes' %}active{% endif %}" href="{{ url_for('user_instrucoes.userinstrucoes') }}"> <i class="fa fa-briefcase text-dark"></i> <span class="nav-link-text">Instruções de Trabalho</span> </a> </li>
                         <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-globe text-info"></i> <span class="nav-link-text">ISO</span> </a> </li>
                         <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-gavel text-success"></i> <span class="nav-link-text">Documentos Gerais</span> </a> </li>
                     </ul>

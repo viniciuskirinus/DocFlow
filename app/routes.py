@@ -45,6 +45,7 @@ home_routes = Blueprint('home', __name__, template_folder='templates')
 #rota de categorias
 user_procedimentos_routes = Blueprint('user_procedimentos', __name__, template_folder='templates')
 user_manuais_routes = Blueprint('user_manuais', __name__, template_folder='templates')
+user_instrucoes_routes = Blueprint('user_instrucoes', __name__, template_folder='templates')
 
 #rota processa chat
 process_chat_routes = Blueprint('process_chat', __name__, template_folder='templates')
@@ -103,6 +104,16 @@ def usermanuais():
         return render_template('user_manuais.html', active_page='user_manuais.usermanuais', dados=dados_do_banco) 
     else:
         return redirect(url_for('login.login'))
+
+@user_instrucoes_routes.route('/user_instrucoes')
+def userinstrucoes():
+    if 'username' in session and 'role' in session and session['role'] == "user":
+        categoria = 'Instrucoes'  # Defina a categoria desejada
+        dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
+        return render_template('user_instrucoes.html', active_page='user_instrucoes.userinstrucoes', dados=dados_do_banco) 
+    else:
+        return redirect(url_for('login.login'))
+
 
     
 @user_show_pdf_routes.route('/showpdf', methods=['POST'])
