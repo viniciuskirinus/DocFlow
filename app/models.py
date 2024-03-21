@@ -1,10 +1,11 @@
+import os
 import pymysql
 
 # Configurações de conexão
-host = "srv539.hstgr.io"
-user = "u369946143_sirflow"
-password = "Sirtec#411"
-database = "u369946143_doc_flow_db"
+host = os.getenv("DB_HOST")
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASSWORD")
+database = os.getenv("DB_NAME")
 
 # Criar uma conexão
 def conectar_db():
@@ -13,7 +14,8 @@ def conectar_db():
             host=host,
             user=user,
             password=password,
-            database=database
+            database=database,
+            autocommit=True
         )
         return connection
 
