@@ -158,7 +158,7 @@
                                                                     <td>{{ dado.category }}</td>
                                                                     <td>{{ dado.date }}</td>
                                                                     <td>
-                                                                        <button class="btn btn-link" onclick="showPDF(pdfId)">
+                                                                        <button class="btn btn-link" onclick="showPDF('{{ dado.id_pdf }}')">
                                                                             <i class="fas fa-file-pdf fa-lg"></i>
                                                                         </button>
                                                                         <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_pdf="{{ dado.id_pdf }}" data-name="{{ dado.name }}" data-category="{{ dado.category }}" data-date="{{ dado.date }}">
