@@ -158,6 +158,9 @@
                                                                     <td>{{ dado.category }}</td>
                                                                     <td>{{ dado.date }}</td>
                                                                     <td>
+                                                                        <button class="btn btn-link" onclick="showPDF(pdfId)">
+                                                                            <i class="fas fa-file-pdf fa-lg"></i>
+                                                                        </button>
                                                                         <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_pdf="{{ dado.id_pdf }}" data-name="{{ dado.name }}" data-category="{{ dado.category }}" data-date="{{ dado.date }}">
                                                                             Editar
                                                                         </button>
@@ -184,7 +187,26 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- Footer -->
+        </div> 
+        <!-- modal para exibir o pdf -->
+        <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pdfModalLabel">PDF Viewer</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="pdfViewer"></div>
+                        <!-- Conteúdo do PDF será carregado aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
         <footer class="footer pt-0 px-4">
             <div class="row align-items-center justify-content-lg-between">
                 <div class="col-lg-6">
@@ -310,6 +332,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/chart.extension.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
     
     <script>
         
