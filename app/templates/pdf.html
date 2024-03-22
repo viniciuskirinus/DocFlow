@@ -12,6 +12,14 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple_pdf.css') }}">
+
+    <style>
+        #pdfViewer img {
+            max-width: 100%; /* Limita a largura da imagem a 100% do seu contêiner */
+            height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
+            overflow-y: auto;
+        }
+    </style>
     
   </head>
   
