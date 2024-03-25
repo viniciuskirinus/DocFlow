@@ -42,7 +42,7 @@ def salvar_no_banco_de_dados(nome, categoria, data, versao, conteudo_arquivo, im
 
         # Ajuste conforme sua estrutura de banco de dados
         with conexao.cursor() as cursor:
-            sql = "INSERT INTO pdf (name, category, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s)"
+            sql = "INSERT INTO pdf (name, category, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s)"
             cursor.execute(sql, (nome, categoria, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
 
         conexao.commit()
