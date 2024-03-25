@@ -207,9 +207,10 @@ def generate():
         # Obter dados do formulário
         nome = request.form.get('nome')
         categoria = request.form.get('categoria')
+        versao = request.form.get('versao')
         data = request.form.get('data')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
-        processar_formulario(nome, categoria, data, arquivo)
+        processar_formulario(nome, categoria, versao, data, arquivo)
         
         return redirect(url_for('pdf.pdf'))
     else:

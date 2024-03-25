@@ -6,7 +6,7 @@ from .models import conectar_db
 
 conexao = conectar_db()
 
-def processar_formulario(nome, categoria, data, arquivo):
+def processar_formulario(nome, categoria, versao, data, arquivo):
     try:
         # Gera um nome para o arquivo baseado na categoria e na data/hora atual
         conteudo_arquivo = arquivo.read()  # Lê o conteúdo do arquivo como binário
@@ -17,7 +17,7 @@ def processar_formulario(nome, categoria, data, arquivo):
         imagens_agrupadas = pickle.dumps(imagens_binarias)
 
         # Salva no banco de dados
-        salvar_no_banco_de_dados(nome, categoria, data, conteudo_arquivo, imagens_agrupadas)
+        salvar_no_banco_de_dados(nome, categoria, data, versao, conteudo_arquivo, imagens_agrupadas)
 
     except Exception as e:
         print(f"Erro ao processar o formulário: {e}")
@@ -35,15 +35,15 @@ def converter_imagem_para_binario(imagem):
     buf.close()
     return conteudo_binario
 
-def salvar_no_banco_de_dados(nome, categoria, data, conteudo_arquivo, imagens_agrupadas):
+def salvar_no_banco_de_dados(nome, categoria, data, versao, conteudo_arquivo, imagens_agrupadas):
     try:
         # Converte a data para o formato do banco de dados
         data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
 
         # Ajuste conforme sua estrutura de banco de dados
         with conexao.cursor() as cursor:
-            sql = "INSERT INTO pdf (name, category, location, date, page_images) VALUES (%s, %s, %s, %s, %s)"
-            cursor.execute(sql, (nome, categoria, conteudo_arquivo, data_formatada, imagens_agrupadas))
+            sql = "INSERT INTO pdf (name, category, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql, (nome, categoria, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
 
         conexao.commit()
         print("Inserção no banco de dados bem-sucedida!")
