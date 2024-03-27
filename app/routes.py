@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request, send_from_directory, jsonify, request
 import os
-from datetime import datetime, timedelta
 from flask import Flask
 import pickle
 from .forms import processar_login
@@ -16,17 +15,13 @@ from .generateuser import processar_formulario_user
 from .process_chat import process_message
 from base64 import b64encode
 from .models import conectar_db
-from .gerar_token import tokens, renovar_token
 
 #carrega as chaves da api do gpt e huggingface para processar o chat
 openai_api_key = os.getenv("OPENAI_API_KEY")
 huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
-
 #rota de inicio
 login_routes = Blueprint('login', __name__, template_folder='templates')
-
-
 
 #rota de inicio administrador
 admin_routes = Blueprint('admin', __name__, template_folder='templates')
@@ -85,8 +80,6 @@ def login():
 
 @admin_routes.route('/admin')
 def admin():
-    # Renovar o token de acesso
-    renovar_token()
     # Verifique se o usuário está autenticado e possui a função de administrador
     if 'username' in session and 'role' in session and session['role'] == "admin":
         return render_template('admin.html', active_page='admin.admin') 
