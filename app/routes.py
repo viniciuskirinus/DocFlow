@@ -16,9 +16,10 @@ from .process_chat import process_message
 from base64 import b64encode
 from .models import conectar_db
 
+#carrega as chaves da api do gpt e huggingface para processar o chat
+openai_api_key = os.getenv("OPENAI_API_KEY")
+huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
-#localização da pasta onde esta os pdfs
-pdf_folder_path = os.path.join(os.getcwd(), 'app', 'data')
 
 #rota de inicio
 login_routes = Blueprint('login', __name__, template_folder='templates')
