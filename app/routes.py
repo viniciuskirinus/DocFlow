@@ -26,8 +26,7 @@ huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 #rota de inicio
 login_routes = Blueprint('login', __name__, template_folder='templates')
 
-#rota do token
-auth_routes = Blueprint('auth', __name__)
+
 
 #rota de inicio administrador
 admin_routes = Blueprint('admin', __name__, template_folder='templates')
@@ -82,17 +81,7 @@ def login():
 
     return render_template('login.html')
 
-# Middleware para monitorar e renovar automaticamente o token de acesso
-@admin_routes.before_request
-def monitorar_token():
-    if 'username' in session and 'role' in session and session['role'] == "admin":
-        # Verificar se o token de acesso está prestes a expirar ou já expirou
-        if 'access_token' in tokens and 'expires_at' in tokens:
-            expires_at = datetime.strptime(tokens['expires_at'], '%Y-%m-%d %H:%M:%S')
-            tempo_renovacao = timedelta(minutes=5)  # Renovar o token 5 minutos antes da expiração
-            if expires_at - datetime.now() <= tempo_renovacao:
-                # Renovar o token de acesso
-                renovar_token()
+
 
 @admin_routes.route('/admin')
 def admin():
