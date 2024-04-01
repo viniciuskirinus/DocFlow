@@ -8,6 +8,11 @@ import os
 
 conexao = conectar_db()
 
+#carrega os acessos a aws
+ACCESS_KEY_ID = os.getenv("ACCESS_KEY_ID")
+SECRET_ACCESS_KEY = os.getenv("SECRET_ACCESS_KEY")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
+
 def processar_formulario(nome, categoria, versao, data, arquivo):
     try:
         # Gera um nome para o arquivo baseado na categoria e na data/hora atual
