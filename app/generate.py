@@ -8,11 +8,6 @@ import os
 
 conexao = conectar_db()
 
-#carrega os acessos a aws
-ACCESS_KEY_ID = os.getenv("ACCESS_KEY_ID")
-SECRET_ACCESS_KEY = os.getenv("SECRET_ACCESS_KEY")
-BUCKET_NAME = os.getenv("BUCKET_NAME")
-
 def processar_formulario(nome, categoria, versao, data, arquivo):
     try:
         # Gera um nome para o arquivo baseado na categoria e na data/hora atual
@@ -67,13 +62,17 @@ def criar_pasta_s3(nome):
     # Recuperar o nome do bucket das variáveis de ambiente
     bucket_name = os.getenv("BUCKET_NAME")
     
-    s3_client = boto3.client('s3')
-    s3_client.put_object(Bucket=bucket_name, Key=f'{nome}/')
+    s3_client = boto3.client('s3',
+                             aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
+                             aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
+    s3_client.put_object(Bucket=bucket_name, Key=f'Documents/{nome}/')
 
 def fazer_upload_para_s3(nome, versao, conteudo_arquivo):
     # Recuperar o nome do bucket das variáveis de ambiente
     bucket_name = os.getenv("BUCKET_NAME")
     
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3',
+                             aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
+                             aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
     key = f'Documents/{nome}/{nome}_{versao}.pdf'
     s3_client.put_object(Bucket=bucket_name, Key=key, Body=conteudo_arquivo)
