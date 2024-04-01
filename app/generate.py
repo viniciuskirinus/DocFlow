@@ -1,8 +1,10 @@
 import io
 import pickle
+import boto3
 from datetime import datetime
 from pdf2image import convert_from_bytes
 from .models import conectar_db
+import os
 
 conexao = conectar_db()
 
@@ -18,6 +20,12 @@ def processar_formulario(nome, categoria, versao, data, arquivo):
 
         # Salva no banco de dados
         salvar_no_banco_de_dados(nome, categoria, data, versao, conteudo_arquivo, imagens_agrupadas)
+
+        # Cria a pasta no S3
+        criar_pasta_s3(nome)
+
+        # Faz o upload do arquivo para o S3
+        fazer_upload_para_s3(nome, versao, conteudo_arquivo)
 
     except Exception as e:
         print(f"Erro ao processar o formulário: {e}")
@@ -49,3 +57,18 @@ def salvar_no_banco_de_dados(nome, categoria, data, versao, conteudo_arquivo, im
         print("Inserção no banco de dados bem-sucedida!")
     except Exception as e:
         print(f"Erro ao inserir no banco de dados: {e}")
+
+def criar_pasta_s3(nome):
+    # Recuperar o nome do bucket das variáveis de ambiente
+    bucket_name = os.getenv("BUCKET_NAME")
+    
+    s3_client = boto3.client('s3')
+    s3_client.put_object(Bucket=bucket_name, Key=f'{nome}/')
+
+def fazer_upload_para_s3(nome, versao, conteudo_arquivo):
+    # Recuperar o nome do bucket das variáveis de ambiente
+    bucket_name = os.getenv("BUCKET_NAME")
+    
+    s3_client = boto3.client('s3')
+    key = f'Documents/{nome}/{nome}_{versao}.pdf'
+    s3_client.put_object(Bucket=bucket_name, Key=key, Body=conteudo_arquivo)

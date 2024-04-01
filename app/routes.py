@@ -20,6 +20,13 @@ from .models import conectar_db
 openai_api_key = os.getenv("OPENAI_API_KEY")
 huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
+#carrega os acessos a aws
+ACCESS_KEY_ID = os.getenv("ACCESS_KEY_ID")
+SECRET_ACCESS_KEY = os.getenv("SECRET_ACCESS_KEY")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
+
+
+
 #rota de inicio
 login_routes = Blueprint('login', __name__, template_folder='templates')
 
