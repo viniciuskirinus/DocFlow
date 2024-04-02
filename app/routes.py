@@ -185,10 +185,11 @@ def edit():
     if 'username' in session and 'role' in session and session['role'] == "admin":
         id_pdf = request.form.get('edit_id_pdf')  
         nome = request.form.get('edit_nome')       
-        categoria = request.form.get('edit_categoria') 
+        categoria = request.form.get('edit_categoria')
+        version = request.form.get('edit_version') 
         data = request.form.get('edit_data')   
         arquivo = request.files['arquivo']
-        pdf_edit(id_pdf, nome, categoria, data, arquivo)
+        pdf_edit(id_pdf, nome, categoria, version, data, arquivo)
         
         return redirect(url_for('pdf.pdf'))
     else:

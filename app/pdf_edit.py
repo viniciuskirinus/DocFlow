@@ -40,7 +40,7 @@ def renomear_pasta_s3(nome_antigo, nome_novo):
             s3_client.copy_object(Bucket=bucket_name, CopySource=f"{bucket_name}/{obj['Key']}", Key=novo_key)
             s3_client.delete_object(Bucket=bucket_name, Key=obj['Key'])
 
-def fazer_upload_para_s3(nome, versao, conteudo_arquivo):
+def fazer_upload_para_s3(nome, version, conteudo_arquivo):
     if conteudo_arquivo:
         # Recuperar o nome do bucket das variáveis de ambiente
         bucket_name = os.getenv("BUCKET_NAME")
@@ -48,7 +48,7 @@ def fazer_upload_para_s3(nome, versao, conteudo_arquivo):
         s3_client = boto3.client('s3',
                                  aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
                                  aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
-        key = f'Documents/{nome}/{nome}_{versao}.pdf'
+        key = f'Documents/{nome}/{nome}_{version}.pdf'
         s3_client.put_object(Bucket=bucket_name, Key=key, Body=conteudo_arquivo)
 
 def converter_pdf_para_imagens(conteudo_arquivo):
@@ -62,7 +62,7 @@ def converter_imagem_para_binario(imagem):
     buf.close()
     return conteudo_binario
 
-def pdf_edit(id_pdf, nome, categoria, data, arquivo):
+def pdf_edit(id_pdf, nome, categoria, version, data, arquivo):
     try:
         valor_atual_nome, valor_atual_location, valor_atual_page_images = obter_valores_atuais(id_pdf)
 
@@ -89,16 +89,16 @@ def pdf_edit(id_pdf, nome, categoria, data, arquivo):
             data_formatada = None
 
         # Atualiza o registro no banco de dados
-        salvar_no_banco_de_dados(id_pdf, nome, categoria, data_formatada, conteudo_arquivo, imagens_agrupadas)
+        salvar_no_banco_de_dados(id_pdf, nome, categoria, version, data_formatada, conteudo_arquivo, imagens_agrupadas)
 
     except Exception as e:
         print(f"Erro ao processar o formulário: {e}")
 
-def salvar_no_banco_de_dados(id_pdf, nome, categoria, data, conteudo_arquivo, imagens_agrupadas):
+def salvar_no_banco_de_dados(id_pdf, nome, categoria, version, data, conteudo_arquivo, imagens_agrupadas):
     try:
         with conexao.cursor() as cursor:
-            sql = "UPDATE pdf SET name = %s, category = %s, location = %s, date = %s, page_images = %s WHERE id_pdf = %s"
-            cursor.execute(sql, (nome, categoria, conteudo_arquivo, data, imagens_agrupadas, id_pdf))
+            sql = "UPDATE pdf SET name = %s, category = %s, version = %s, location = %s, date = %s, page_images = %s WHERE id_pdf = %s"
+            cursor.execute(sql, (nome, categoria, version, conteudo_arquivo, data, imagens_agrupadas, id_pdf))
 
         conexao.commit()
         print("Atualização no banco de dados bem-sucedida!")
