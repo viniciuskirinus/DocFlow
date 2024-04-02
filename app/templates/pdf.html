@@ -369,11 +369,13 @@
             var id_pdf = $(this).data('id_pdf');
             var name = $(this).data('name');
             var category = $(this).data('category');
+            var version = $(this).data('version');
             var date = $(this).data('date');
 
             // Preencher os campos do modal de edição com os dados
             $('#edit_nome').val(name);
             $('#edit_categoria').val(category);
+            $('#edit_version').val(version);
             $('#edit_data').val(date);
             $('#edit_id_pdf').val(id_pdf);
 
