@@ -77,7 +77,7 @@ def pdf_edit(id_pdf, nome, categoria, version, data, arquivo):
             imagens_agrupadas = pickle.dumps(imagens_binarias)
             
             # Faz o upload do novo arquivo para o S3
-            fazer_upload_para_s3(nome, valor_atual_nome, conteudo_arquivo)
+            fazer_upload_para_s3(nome, version, conteudo_arquivo)
         else:
             # Mantém os valores atuais se um novo arquivo não for enviado
             conteudo_arquivo = valor_atual_location
