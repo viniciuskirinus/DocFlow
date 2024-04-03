@@ -10,13 +10,33 @@ def create_app():
 
 
     # Registra as blueprints (rotas) do aplicativo
-    from app.routes import admin_routes, home_routes, login_routes, logout_routes, admin_pdf_routes, admin_user_routes, admin_pdf_generate_routes, admin_pdf_edit_routes, admin_pdf_delete_routes, user_procedimentos_routes, user_manuais_routes, user_instrucoes_routes, user_iso_routes, user_documentos_gerais_routes, process_chat_routes, admin_user_generate_routes, admin_user_delete_routes, admin_user_edit_routes, user_show_pdf_routes
+    from app.routes import (admin_routes, 
+                            home_routes, 
+                            login_routes, 
+                            logout_routes, 
+                            admin_pdf_routes, 
+                            admin_user_routes, 
+                            admin_pdf_generate_routes, 
+                            admin_pdf_edit_routes, 
+                            admin_pdf_delete_routes, 
+                            user_procedimentos_routes, 
+                            user_manuais_routes, 
+                            user_instrucoes_routes, 
+                            user_iso_routes, 
+                            user_documentos_gerais_routes, 
+                            process_chat_routes, 
+                            admin_user_generate_routes, 
+                            admin_user_delete_routes, 
+                            admin_user_edit_routes, 
+                            user_show_pdf_routes,
+                            admin_old_files_routes)
     
     
     
     
     app.register_blueprint(login_routes)
     app.register_blueprint(admin_routes)
+    app.register_blueprint(admin_old_files_routes)
     app.register_blueprint(home_routes)
     app.register_blueprint(user_procedimentos_routes)
     app.register_blueprint(user_manuais_routes)

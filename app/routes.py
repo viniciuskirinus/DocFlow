@@ -36,6 +36,9 @@ admin_user_generate_routes = Blueprint('generateuser', __name__, template_folder
 admin_user_delete_routes = Blueprint('deleteuser', __name__, template_folder='templates')
 admin_user_edit_routes = Blueprint('edituser', __name__, template_folder='templates')
 
+#rota de arquivos antigos
+admin_old_files_routes = Blueprint('old_files', __name__, template_folder='templates')
+
 #rota para exibicao do pdf
 user_show_pdf_routes = Blueprint('showpdf', __name__, template_folder='templates')
 
@@ -177,6 +180,14 @@ def pdf():
     if 'username' in session and 'role' in session and session['role'] == "admin":
         dados_do_banco = obter_dados_lista_pdf()
         return render_template('pdf.html', active_page='pdf.pdf', dados=dados_do_banco) 
+    else:
+        return redirect(url_for('login.login'))
+    
+@admin_old_files_routes.route('/old_files')
+def old_files():
+    if 'username' in session and 'role' in session and session['role'] == "admin":
+        dados_do_banco = obter_dados_lista_pdf()
+        return render_template('old_files.html', active_page='old_files.old_files', dados=dados_do_banco) 
     else:
         return redirect(url_for('login.login'))
 
