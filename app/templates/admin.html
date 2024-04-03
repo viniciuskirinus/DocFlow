@@ -30,7 +30,7 @@
                       <li class="nav-item"> <a class="nav-link {% if active_page == 'admin.admin' %}active{% endif %}" href="{{ url_for('admin.admin') }}"> <i class="fa fa-desktop text-primary"></i> <span class="nav-link-text">Home</span> </a> </li>
                       <li class="nav-item"> <a class="nav-link {% if active_page == 'pdf.pdf' %}active{% endif %}" href="{{ url_for('pdf.pdf') }}"> <i class="fa fa-file-pdf text-info"></i> <span class="nav-link-text">PDF</span> </a> </li>
                       <li class="nav-item"> <a class="nav-link {% if active_page == 'usuarios.usuarios' %}active{% endif %}" href="{{ url_for('usuarios.usuarios') }}"> <i class="fa fa-address-book "></i> <span class="nav-link-text">Usuários</span> </a> </li>
-                      <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-bookmark text-success"></i> <span class="nav-link-text">Documentos Antigos</span> </a> </li>
+                      <li class="nav-item"> <a class="nav-link {% if active_page == 'old_files.old_files' %}active{% endif %}" href="{{ url_for('old_files.old_files') }}"><i class="fa fa-bookmark text-success"></i> <span class="nav-link-text">Documentos Antigos</span> </a> </li>
                       <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-cog text-dark"></i> <span class="nav-link-text">Configurações</span> </a> </li>
                   </ul>
               </div>

@@ -12,14 +12,6 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple_pdf.css') }}">
-
-    <style>
-        #pdfViewer img {
-            max-width: 100%; /* Limita a largura da imagem a 100% do seu contêiner */
-            height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
-            overflow-y: auto;
-        }
-    </style>
     
   </head>
   
@@ -41,7 +33,7 @@
                         <li class="nav-item"> <a class="nav-link {% if active_page == 'admin.admin' %}active{% endif %}" href="{{ url_for('admin.admin') }}"> <i class="fa fa-desktop text-primary"></i> <span class="nav-link-text">Home</span> </a> </li>
                         <li class="nav-item"> <a class="nav-link {% if active_page == 'pdf.pdf' %}active{% endif %}" href="{{ url_for('pdf.pdf') }}"> <i class="fa fa-file-pdf text-info"></i> <span class="nav-link-text">PDF</span> </a> </li>
                         <li class="nav-item"> <a class="nav-link {% if active_page == 'usuarios.usuarios' %}active{% endif %}" href="{{ url_for('usuarios.usuarios') }}"> <i class="fa fa-address-book "></i> <span class="nav-link-text">Usuários</span> </a> </li>
-                        <li class="nav-item"> <a class="nav-link {% if active_page == 'old_files.old_files' %}active{% endif %}" href="{{ url_for('old_files.old_files') }}"></a> <i class="fa fa-bookmark text-success"></i> <span class="nav-link-text">Documentos Antigos</span> </a> </li>
+                        <li class="nav-item"> <a class="nav-link {% if active_page == 'old_files.old_files' %}active{% endif %}" href="{{ url_for('old_files.old_files') }}"><i class="fa fa-bookmark text-success"></i> <span class="nav-link-text">Documentos Antigos</span> </a> </li>
                         <li class="nav-item"> <a class="nav-link" href="javascript:"> <i class="fa fa-cog text-dark"></i> <span class="nav-link-text">Configurações</span> </a> </li>
                     </ul>
                 </div>
@@ -89,7 +81,9 @@
                                     <a href="#!" class="list-group-item list-group-item-action">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <!-- Avatar --> <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle"> </div>
+                                                <!-- Avatar --> 
+                                                <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle"> 
+                                            </div>
                                         </div>
                                     </a> 
                                 </div>
@@ -151,36 +145,21 @@
                                                     <table id="myTable" class="table align-items-center">
                                                         <thead>
                                                             <tr>
-                                                                <th>#</th>
-                                                                <th>Nome</th>
-                                                                <th>Versão</th>
-                                                                <th>Categoria</th>
-                                                                <th>Data</th>
-                                                                <th>Ações</th>
+                                                                <th>Pastas</th>
+                                                                <th>Arquivos</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {% for dado in dados %}
+                                                            {% for folder in folders %}
                                                                 <tr>
-                                                                    <td>{{ dado.id_pdf }}</td>
-                                                                    <td>{{ dado.name }}</td>
-                                                                    <td>{{ dado.version }}</td>
-                                                                    <td>{{ dado.category }}</td>
-                                                                    <td>{{ dado.date }}</td>
-                                                                    <td>
-                                                                        <button class="btn btn-link" onclick="showPDF('{{ dado.id_pdf }}')">
-                                                                            <i class="fas fa-file-pdf fa-lg"></i>
-                                                                        </button>
-                                                                        <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_pdf="{{ dado.id_pdf }}" data-name="{{ dado.name }}" data-category="{{ dado.category }}" data-version="{{ dado.version }}" data-date="{{ dado.date }}">
-                                                                            Editar
-                                                                        </button>
-                                                                        <form method="POST" action="{{ url_for('delete.delete') }}" style="display: inline;">
-                                                                            <input type="hidden" name="id_pdf" value="{{ dado.id_pdf }}">
-                                                                            <button type="submit" class="botao-delete" onclick="return confirm('Tem certeza que deseja excluir este item?');">
-                                                                                Excluir
-                                                                            </button>
-                                                                        </form>
-                                                                    </td>
+                                                                    <td>{{ folder }}</td>
+                                                                    <td></td> <!-- Coluna de arquivos vazia -->
+                                                                </tr>
+                                                            {% endfor %}
+                                                            {% for file in files %}
+                                                                <tr>
+                                                                    <td></td> <!-- Coluna de pastas vazia -->
+                                                                    <td>{{ file }}</td>
                                                                 </tr>
                                                             {% endfor %}
                                                         </tbody>
@@ -198,23 +177,7 @@
                 </div>
             </div>
         </div> 
-        <!-- modal para exibir o pdf -->
-        <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="pdfModalLabel">PDF Viewer</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="pdfViewer"></div>
-                        <!-- Conteúdo do PDF será carregado aqui -->
-                    </div>
-                </div>
-            </div>
-        </div>
+
         
         <!-- Footer -->
         <footer class="footer pt-0 px-4">
@@ -231,117 +194,8 @@
                 </div>
             </div>
         </footer>
-        <!-- Modal para adicionar informações -->
-        <div class="modal" id="insert" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content modais">
         
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title text">Adicionar Item</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-        
-                    <!-- Modal Body -->
-                    <div class="modal-body">
-                        <!-- Formulário para adicionar informações -->
-                        <form id="addForm" method="post" action="{{ url_for('generate.generate') }}" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="nome" class="text">Nome:</label>
-                                <input type="text" class="form-control" id="nome" name="nome" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="categoria" class="text">Categoria:</label>
-                                <select class="form-control" id="categoria" name="categoria" required>
-                                    <option value="Procedimentos">Procedimentos</option>
-                                    <option value="Politicas">Politicas</option>
-                                    <option value="Manuais">Manuais</option>
-                                    <option value="Instruções">Instruções</option>
-                                    <option value="Documentos Gerais">Documentos Gerais</option>
-                                    <option value="ISO">ISO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="versao" class="text">Número de Versão (00-05):</label>
-                                <input type="number" class="form-control" id="versao" name="versao" title="Por favor, insira um número de versão válido (00-99)" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="data">Data:</label>
-                                <input type="date" class="form-control" id="data" name="data" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="arquivo">Selecionar Arquivo:</label>
-                                <input type="file" id="arquivo" name="arquivo" required>
-                            </div>
-
-                        <!-- Modal Footer -->
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Enviar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        </div>
-                        </form>
-                    </div>
-        
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal para edição de informações -->
-        <div class="modal" id="editModal" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content modais">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title text">Editar Item</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal Body -->
-                    <div class="modal-body">
-                        <!-- Formulário para edição de informações -->
-                        <form id="editForm" method="post" action="{{ url_for('edit.edit') }}" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="edit_nome" class="text">Nome:</label>
-                                <input type="text" class="form-control" id="edit_nome" name="edit_nome" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_categoria" class="text">Categoria:</label>
-                                <select class="form-control" id="edit_categoria" name="edit_categoria" required>
-                                    <option value="Procedimentos">Procedimentos</option>
-                                    <option value="Manuais">Manuais</option>
-                                    <option value="Instrucoes">Instruções</option>
-                                    <option value="Documentos Gerais">Documentos Gerais</option>
-                                    <option value="ISO">ISO</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_version" class="text">Número de Versão (00-05):</label>
-                                <input type="number" class="form-control" id="edit_version" name="edit_version" required>
-                            </div>                           
-                            <div class="form-group">
-                                <label for="edit_data">Data:</label>
-                                <input type="date" class="form-control" id="edit_data" name="edit_data" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="arquivo">Selecionar Arquivo:</label>
-                                <input type="file" id="arquivo" name="arquivo">
-                            </div>
-
-                            <!-- Adicione um campo oculto para armazenar o id_pdf -->
-                            <input type="hidden" id="edit_id_pdf" name="edit_id_pdf" value="edit_id_pdf"">
-
-                            <!-- Modal Footer -->
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">Atualizar</button>
-                                <form method="post" action="{{ url_for('delete.delete') }}">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                <form>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+ 
 
     </div>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/jquery.min.js"></script>
@@ -362,25 +216,6 @@
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
-        });
-
-        $(document).on('click', '.botao-edit', function()  {
-            console.log("Botão clicado");
-            var id_pdf = $(this).data('id_pdf');
-            var name = $(this).data('name');
-            var category = $(this).data('category');
-            var version = $(this).data('version');
-            var date = $(this).data('date');
-
-            // Preencher os campos do modal de edição com os dados
-            $('#edit_nome').val(name);
-            $('#edit_categoria').val(category);
-            $('#edit_version').val(version);
-            $('#edit_data').val(date);
-            $('#edit_id_pdf').val(id_pdf);
-
-            // Abrir o modal de edição
-            $('#editModal').modal('show');
         });
 
         function logout() {

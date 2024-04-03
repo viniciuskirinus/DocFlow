@@ -15,6 +15,7 @@ from .generateuser import processar_formulario_user
 from .process_chat import process_message
 from base64 import b64encode
 from .models import conectar_db
+from .s3_database import list_folders_and_files
 
 #carrega as chaves da api do gpt e huggingface para processar o chat
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -186,8 +187,9 @@ def pdf():
 @admin_old_files_routes.route('/old_files')
 def old_files():
     if 'username' in session and 'role' in session and session['role'] == "admin":
-        dados_do_banco = obter_dados_lista_pdf()
-        return render_template('old_files.html', active_page='old_files.old_files', dados=dados_do_banco) 
+        bucket_name = os.getenv("BUCKET_NAME")
+        folders, files = list_folders_and_files(bucket_name)
+        return render_template('old_files.html', active_page='old_files.old_files', folders=folders, files=files) 
     else:
         return redirect(url_for('login.login'))
 
