@@ -20,6 +20,8 @@ def list_folders_and_files(bucket_name, folder_name=''):
 
     # Percorrer subpastas recursivamente
     for folder in folders:
-        files += list_folders_and_files(bucket_name, folder)
+        subfolders, subfiles = list_folders_and_files(bucket_name, folder)
+        folders.extend(subfolders)
+        files.extend(subfiles)
 
-    return files
+    return folders, files

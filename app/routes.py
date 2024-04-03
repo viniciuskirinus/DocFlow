@@ -187,10 +187,13 @@ def pdf():
 @admin_old_files_routes.route('/old_files')
 def old_files():
     if 'username' in session and 'role' in session and session['role'] == "admin":
+        # Obter lista de pastas e arquivos dentro da pasta 'Documents/'
         bucket_name = os.getenv("BUCKET_NAME")
-        folders, files = list_folders_and_files(bucket_name)
         folder_name = 'Documents/'
-        return render_template('old_files.html', active_page='old_files.old_files', folders=folders, files=files, folder_name=folder_name) 
+        folders, files = list_folders_and_files(bucket_name, folder_name)
+
+        # Renderizar o template HTML existente e passar as listas como contexto
+        return render_template('old_files.html', active_page='old_files.old_files', folders=folders, files=files)
     else:
         return redirect(url_for('login.login'))
 
