@@ -189,6 +189,7 @@ def old_files():
     if 'username' in session and 'role' in session and session['role'] == "admin":
         bucket_name = os.getenv("BUCKET_NAME")
         folders, files = list_folders_and_files(bucket_name)
+        folder_name = 'Documents/'
         return render_template('old_files.html', active_page='old_files.old_files', folders=folders, files=files) 
     else:
         return redirect(url_for('login.login'))
