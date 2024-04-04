@@ -75,4 +75,9 @@ def fazer_upload_para_s3(nome, versao, conteudo_arquivo):
                              aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
                              aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
     key = f'Documents/{nome}/{nome}_{versao}.pdf'
-    s3_client.put_object(Bucket=bucket_name, Key=key, Body=conteudo_arquivo)
+    s3_client.put_object(
+        Bucket=bucket_name,
+        Key=key,
+        Body=conteudo_arquivo,
+        ContentType='application/pdf'  # Adicionando o ContentType
+    )

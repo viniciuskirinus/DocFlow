@@ -203,7 +203,6 @@
     </script>
     <script type="text/javascript">
         var files = JSON.parse(document.getElementById('filesData').textContent);
-        console.log(files);
     </script>
     
     <script>
@@ -212,31 +211,25 @@
             // Ativar a função de pesquisa
             $("#searchInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#myTable tbody tr").filter(function() {
+                $("#s3ContentTable tbody tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM fully loaded and parsed");
 
             const folderRows = document.querySelectorAll('.folder-row');
-            console.log("Total folders found:", folderRows.length);
 
             folderRows.forEach(function(row, index) {
-                console.log("Folder #" + index + ":", row.dataset.folderName);
                 row.addEventListener('click', function() {
                     const folderName = this.dataset.folderName;
-                    console.log("Clicked on folder:", folderName);
 
                     // Verifica se já existe uma lista abaixo desta pasta e a remove se existir
                     let nextElement = this.nextElementSibling;
                     if (nextElement && nextElement.classList.contains('file-list-row')) {
-                        console.log("Removing existing file list for:", folderName);
                         nextElement.parentNode.removeChild(nextElement);
                     } else {
-                        console.log("Creating file list for:", folderName);
                         // Cria uma nova linha e coluna para listar os arquivos
                         const fileListRow = document.createElement('tr');
                         fileListRow.classList.add('file-list-row');
@@ -245,9 +238,7 @@
                         const fileListUl = document.createElement('ul');
 
                         // Tentando acessar os arquivos para a pasta clicada
-                        console.log("Accessing files for:", folderName);
                         const filesInFolder = files[folderName] || [];
-                        console.log("Files found for " + folderName + ":", filesInFolder);
 
                         filesInFolder.forEach(function(file) {
                             const fileLink = `<li><a href="${file.url}" target="_blank">${file.name}</a></li>`;
@@ -255,8 +246,7 @@
                         });
 
                         if (filesInFolder.length === 0) {
-                            console.log("No files found for:", folderName);
-                            fileListUl.innerHTML = '<li>No files found</li>';
+                            fileListUl.innerHTML = '<li>Não existem arquivos a serem exibidos</li>';
                         }
 
                         fileListTd.appendChild(fileListUl);
