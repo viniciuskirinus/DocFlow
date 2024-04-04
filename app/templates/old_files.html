@@ -142,24 +142,19 @@
                                                 
                                                 <div class="row justify-content-start mb-8">
                                                     
-                                                    <table id="myTable" class="table align-items-center">
+                                                    <table id="s3ContentTable" class="table align-items-center">
                                                         <thead>
                                                             <tr>
-                                                                <th>Pastas</th>
+                                                                <th>Nome</th>
                                                                 <th>Arquivos</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            <!-- Use server-side templating to populate folders -->
                                                             {% for folder in folders %}
-                                                                <tr>
+                                                                <tr class="folder-row" data-folder-name="{{ folder }}">
                                                                     <td>{{ folder }}</td>
-                                                                    <td></td> <!-- Coluna de arquivos vazia -->
-                                                                </tr>
-                                                            {% endfor %}
-                                                            {% for file in files %}
-                                                                <tr>
-                                                                    <td></td> <!-- Coluna de pastas vazia -->
-                                                                    <td>{{ file }}</td>
+                                                                    <td class="file-list"></td>
                                                                 </tr>
                                                             {% endfor %}
                                                         </tbody>
@@ -221,6 +216,22 @@
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const folderRows = document.querySelectorAll('.folder-row');
+        
+        folderRows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                const folderName = this.dataset.folderName;
+                const fileListTd = this.querySelector('.file-list');
+                fileListTd.innerHTML = '';
+                const filesInFolder = files[folderName] || [];
+                filesInFolder.forEach(function(file) {
+                    fileListTd.innerHTML += `<div>${file}</div>`;
+                });
+            });
+        });
+    });
     </script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
   </body>
