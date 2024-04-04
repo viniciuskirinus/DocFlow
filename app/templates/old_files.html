@@ -149,7 +149,7 @@
                                                             {% for folder in folders %}
                                                                 <tr class="folder-row" data-folder-name="{{ folder }}">
                                                                     <td style="display: flex; justify-content: space-between;"> <!-- Adicionando estilo flexbox -->
-                                                                        <h3 class="text-center" style="margin: 0; cursor: pointer;">{{ folder.replace('Documents/', '') }}</h3> <!-- Alinhamento do texto à esquerda -->
+                                                                        <h3 class="text-center" style="margin: 0; cursor: pointer;">{{ folder.replace('Documents/', '').rstrip('/') }}</h3> <!-- Alinhamento do texto à esquerda -->
                                                                         <button type="button" class="botao" data-target="#insert">
                                                                             Adicionar Arquivos
                                                                         </button> <!-- Alinhamento do botão à direita -->
