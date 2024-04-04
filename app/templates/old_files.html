@@ -139,22 +139,30 @@
                                                 Adicionar Item
                                             </button>
                                             <div class="card-body overflow-auto overflow-x-hidden">
-                                                
                                                 <div class="row justify-content-start mb-8">
-                                                    
                                                     <table id="s3ContentTable" class="table align-items-center">
                                                         <thead>
                                                             <tr>
-                                                                <th>Nome</th>
-                                                                <th>Arquivos</th>
+                                                                <th>Pastas</th>
+                                                                <th style="display:none;">Arquivos</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <!-- Use server-side templating to populate folders -->
                                                             {% for folder in folders %}
-                                                                <tr class="folder-row" data-folder-name="{{ folder }}">
-                                                                    <td>{{ folder }}</td>
-                                                                    <td class="file-list"></td>
+                                                                <!-- Retire o prefixo 'Documents/' do nome da pasta -->
+                                                                <tr class="folder-row" data-folder-name="{{ folder }}" style="width:100%;">
+                                                                    <td>{{ folder.replace('Documents/', '') }}</td>
+                                                                    <!-- Esconda a célula dos arquivos -->
+                                                                    <td class="file-list" style="display:none;"></td>
+                                                                </tr>
+                                                                <!-- Prepare a lista de arquivos que será preenchida via JavaScript -->
+                                                                <tr class="file-list-row" style="display:none;">
+                                                                    <td colspan="2">
+                                                                        <ul class="file-list" data-folder-name="{{ folder }}">
+                                                                            <!-- Os arquivos serão inseridos aqui pelo JavaScript -->
+                                                                        </ul>
+                                                                    </td>
                                                                 </tr>
                                                             {% endfor %}
                                                         </tbody>
@@ -218,20 +226,25 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-        const folderRows = document.querySelectorAll('.folder-row');
-        
-        folderRows.forEach(function(row) {
-            row.addEventListener('click', function() {
-                const folderName = this.dataset.folderName;
-                const fileListTd = this.querySelector('.file-list');
-                fileListTd.innerHTML = '';
-                const filesInFolder = files[folderName] || [];
-                filesInFolder.forEach(function(file) {
-                    fileListTd.innerHTML += `<div>${file}</div>`;
+            const folderRows = document.querySelectorAll('.folder-row');
+            
+            folderRows.forEach(function(row) {
+                row.addEventListener('click', function() {
+                    const folderName = this.dataset.folderName;
+                    const fileListRow = this.nextElementSibling;
+                    const fileListUl = fileListRow.querySelector('.file-list');
+                    // Toggle the visibility of the file list
+                    fileListRow.style.display = fileListRow.style.display === 'none' ? '' : 'none';
+                    if (fileListUl.innerHTML.trim() === '') {
+                        const filesInFolder = files[folderName] || [];
+                        filesInFolder.forEach(function(file) {
+                            const fileLink = `<li><a href="${file.url}" target="_blank">${file.name}</a></li>`;
+                            fileListUl.innerHTML += fileLink;
+                        });
+                    }
                 });
             });
         });
-    });
     </script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
   </body>
