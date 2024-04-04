@@ -144,26 +144,15 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Pastas</th>
-                                                                <th style="display:none;">Arquivos</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <!-- Use server-side templating to populate folders -->
                                                             {% for folder in folders %}
-                                                                <!-- Retire o prefixo 'Documents/' do nome da pasta -->
-                                                                <tr class="folder-row" data-folder-name="{{ folder }}" style="width:100%;">
+                                                                <tr class="folder-row" data-folder-name="{{ folder }}">
                                                                     <td>{{ folder.replace('Documents/', '') }}</td>
-                                                                    <!-- Esconda a célula dos arquivos -->
-                                                                    <td class="file-list" style="display:none;"></td>
                                                                 </tr>
-                                                                <!-- Prepare a lista de arquivos que será preenchida via JavaScript -->
-                                                                <tr class="file-list-row" style="display:none;">
-                                                                    <td colspan="2">
-                                                                        <ul class="file-list" data-folder-name="{{ folder }}">
-                                                                            <!-- Os arquivos serão inseridos aqui pelo JavaScript -->
-                                                                        </ul>
-                                                                    </td>
-                                                                </tr>
+                                                                <!-- A linha para arquivos é removida, já que os arquivos serão exibidos de outra maneira -->
                                                             {% endfor %}
                                                         </tbody>
                                                     </table>
@@ -209,6 +198,15 @@
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
     
+
+    <!-- Passando variável 'files' do Python para JavaScript -->
+    <script type="application/json" id="filesData">
+        {{ files|tojson|safe }}
+    </script>
+    <script type="text/javascript">
+        var files = JSON.parse(document.getElementById('filesData').textContent);
+    </script>
+    
     <script>
         
         $(document).ready(function(){
@@ -231,16 +229,31 @@
             folderRows.forEach(function(row) {
                 row.addEventListener('click', function() {
                     const folderName = this.dataset.folderName;
-                    const fileListRow = this.nextElementSibling;
-                    const fileListUl = fileListRow.querySelector('.file-list');
-                    // Toggle the visibility of the file list
-                    fileListRow.style.display = fileListRow.style.display === 'none' ? '' : 'none';
-                    if (fileListUl.innerHTML.trim() === '') {
+                    // Verifica se já existe uma lista abaixo desta pasta e a remove se existir
+                    let nextElement = this.nextElementSibling;
+                    if (nextElement && nextElement.classList.contains('file-list-row')) {
+                        nextElement.parentNode.removeChild(nextElement);
+                    } else {
+                        // Cria uma nova linha e coluna para listar os arquivos
+                        const fileListRow = document.createElement('tr');
+                        fileListRow.classList.add('file-list-row');
+                        const fileListTd = document.createElement('td');
+                        fileListTd.colSpan = "2";
+                        const fileListUl = document.createElement('ul');
+
                         const filesInFolder = files[folderName] || [];
                         filesInFolder.forEach(function(file) {
                             const fileLink = `<li><a href="${file.url}" target="_blank">${file.name}</a></li>`;
                             fileListUl.innerHTML += fileLink;
                         });
+
+                        if (filesInFolder.length === 0) {
+                            fileListUl.innerHTML = '<li>No files found</li>';
+                        }
+
+                        fileListTd.appendChild(fileListUl);
+                        fileListRow.appendChild(fileListTd);
+                        this.parentNode.insertBefore(fileListRow, this.nextSibling);
                     }
                 });
             });
