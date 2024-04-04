@@ -148,11 +148,13 @@
                                                         <tbody>
                                                             {% for folder in folders %}
                                                                 <tr class="folder-row" data-folder-name="{{ folder }}">
-                                                                    <td><h3>{{ folder.replace('Documents/', '') }}</h3></td>
+                                                                    <td>
+                                                                        <h3>{{ folder.replace('Documents/', '') }}</h3>
+                                                                        <button type="button" class="botao" data-target="#insert">
+                                                                            Adicionar Arquivos
+                                                                        </button>
+                                                                    </td>
                                                                 </tr>
-                                                                <button type="button" class="botao" data-target="#insert">
-                                                                    Adicionar Arquivos
-                                                                </button>
                                                             {% endfor %}
                                                         </tbody>
                                                     </table>
