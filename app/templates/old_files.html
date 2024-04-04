@@ -147,12 +147,10 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <!-- Use server-side templating to populate folders -->
                                                             {% for folder in folders %}
                                                                 <tr class="folder-row" data-folder-name="{{ folder }}">
                                                                     <td>{{ folder.replace('Documents/', '') }}</td>
                                                                 </tr>
-                                                                <!-- A linha para arquivos é removida, já que os arquivos serão exibidos de outra maneira -->
                                                             {% endfor %}
                                                         </tbody>
                                                     </table>
@@ -219,21 +217,25 @@
             });
         });
 
-        function logout() {
-            window.location.href = "{{ url_for('logout.logout') }}";
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded and parsed");
+
             const folderRows = document.querySelectorAll('.folder-row');
-            
-            folderRows.forEach(function(row) {
+            console.log("Total folders found:", folderRows.length);
+
+            folderRows.forEach(function(row, index) {
+                console.log("Folder #" + index + ":", row.dataset.folderName);
                 row.addEventListener('click', function() {
                     const folderName = this.dataset.folderName;
+                    console.log("Clicked on folder:", folderName);
+
                     // Verifica se já existe uma lista abaixo desta pasta e a remove se existir
                     let nextElement = this.nextElementSibling;
                     if (nextElement && nextElement.classList.contains('file-list-row')) {
+                        console.log("Removing existing file list for:", folderName);
                         nextElement.parentNode.removeChild(nextElement);
                     } else {
+                        console.log("Creating file list for:", folderName);
                         // Cria uma nova linha e coluna para listar os arquivos
                         const fileListRow = document.createElement('tr');
                         fileListRow.classList.add('file-list-row');
@@ -241,13 +243,18 @@
                         fileListTd.colSpan = "2";
                         const fileListUl = document.createElement('ul');
 
+                        // Tentando acessar os arquivos para a pasta clicada
+                        console.log("Accessing files for:", folderName);
                         const filesInFolder = files[folderName] || [];
+                        console.log("Files found for " + folderName + ":", filesInFolder);
+
                         filesInFolder.forEach(function(file) {
                             const fileLink = `<li><a href="${file.url}" target="_blank">${file.name}</a></li>`;
                             fileListUl.innerHTML += fileLink;
                         });
 
                         if (filesInFolder.length === 0) {
+                            console.log("No files found for:", folderName);
                             fileListUl.innerHTML = '<li>No files found</li>';
                         }
 
