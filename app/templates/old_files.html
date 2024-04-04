@@ -135,22 +135,24 @@
                                                 </div>
                                             </form>
                                             <br>
-                                            <button type="button" class="botao" data-toggle="modal" data-target="#insert">
-                                                Adicionar Item
-                                            </button>
+                                            
                                             <div class="card-body overflow-auto overflow-x-hidden">
                                                 <div class="row justify-content-start mb-8">
                                                     <table id="s3ContentTable" class="table align-items-center">
                                                         <thead>
                                                             <tr>
-                                                                <th>Pastas</th>
+                                                                <th><h2>Pastas</h2></th>
+                                                                
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {% for folder in folders %}
                                                                 <tr class="folder-row" data-folder-name="{{ folder }}">
-                                                                    <td>{{ folder.replace('Documents/', '') }}</td>
+                                                                    <td><h3>{{ folder.replace('Documents/', '') }}</h3></td>
                                                                 </tr>
+                                                                <button type="button" class="botao" data-target="#insert">
+                                                                    Adicionar Arquivos
+                                                                </button>
                                                             {% endfor %}
                                                         </tbody>
                                                     </table>
@@ -173,7 +175,7 @@
         <footer class="footer pt-0 px-4">
             <div class="row align-items-center justify-content-lg-between">
                 <div class="col-lg-6">
-                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="#" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="#" target="_blank">VK</a> </div>
+                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="" target="_blank">VK</a> </div>
                 </div>
                 <div class="col-lg-6">
                     <ul class="nav nav-footer justify-content-center justify-content-lg-end">
