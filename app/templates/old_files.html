@@ -149,10 +149,11 @@
                                                             {% for folder in folders %}
                                                                 <tr class="folder-row" data-folder-name="{{ folder }}">
                                                                     <td style="display: flex; justify-content: space-between;"> <!-- Adicionando estilo flexbox -->
-                                                                        <h3 class="text-center" style="margin: 0; cursor: pointer;">{{ folder.replace('Documents/', '').rstrip('/') }}</h3> <!-- Alinhamento do texto à esquerda -->
-                                                                        <button type="button" class="botao" data-target="#insert">
+                                                                        <h3 class="text-center" style="margin: 0; cursor: pointer;">{{ folder.replace('Documents/', '').rstrip('/') }}</h3> 
+                                                                        <input type="file" id="arquivos{{ loop.index }}" style="display: none;" onchange="enviarArquivo(this.files[0], '{{ folder }}')">
+                                                                        <button type="button" class="botao" onclick="document.getElementById('arquivos{{ loop.index }}').click();">
                                                                             Adicionar Arquivos
-                                                                        </button> <!-- Alinhamento do botão à direita -->
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                             {% endfor %}
@@ -260,6 +261,29 @@
                 });
             });
         });
+
+        function enviarArquivo(file, folderName) {
+            var formData = new FormData();
+            formData.append('folder', folderName);
+            formData.append('file', file);
+
+            $.ajax({
+                url: '/send_files',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Manipular a resposta do servidor, se necessário
+                    console.log('Arquivo enviado com sucesso!');
+                    window.location.href = response.redirect; // Redirecionar para a página desejada após o envio
+                },
+                error: function(xhr, status, error) {
+                    // Lidar com erros de envio de arquivos
+                    console.error('Erro ao enviar arquivo:', error);
+                }
+            });
+        }
     </script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
   </body>

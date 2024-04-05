@@ -16,6 +16,7 @@ from .process_chat import process_message
 from base64 import b64encode
 from .models import conectar_db
 from .s3_database import list_folders_and_files
+from .send_s3 import send_s3
 
 #carrega as chaves da api do gpt e huggingface para processar o chat
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -39,6 +40,9 @@ admin_user_edit_routes = Blueprint('edituser', __name__, template_folder='templa
 
 #rota de arquivos antigos
 admin_old_files_routes = Blueprint('old_files', __name__, template_folder='templates')
+
+#rota de envio arquivos s3
+admin_old_files_send_routes = Blueprint('old_files', __name__, template_folder='templates')
 
 #rota para exibicao do pdf
 user_show_pdf_routes = Blueprint('showpdf', __name__, template_folder='templates')
@@ -195,6 +199,18 @@ def old_files():
 
         # Renderizar o template HTML existente e passar as listas como contexto
         return render_template('old_files.html', active_page='old_files.old_files', folders=folders, files=files)
+    else:
+        return redirect(url_for('login.login'))
+    
+@admin_old_files_send_routes.route('/send_files', methods=['POST'])
+def send_files():
+    if 'username' in session and 'role' in session and session['role'] == "admin":
+        # Obter dados do formulário
+        folder = request.form.get('folder')
+        file = request.files.get('file')  # Use request.files para obter o arquivo
+        send_s3(folder, file)
+        
+        return jsonify({'redirect': url_for('old_files.old_files')})
     else:
         return redirect(url_for('login.login'))
 

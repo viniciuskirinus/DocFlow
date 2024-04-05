@@ -29,7 +29,8 @@ def create_app():
                             admin_user_delete_routes, 
                             admin_user_edit_routes, 
                             user_show_pdf_routes,
-                            admin_old_files_routes)
+                            admin_old_files_routes,
+                            admin_old_files_send_routes)
     
     
     
@@ -37,6 +38,7 @@ def create_app():
     app.register_blueprint(login_routes)
     app.register_blueprint(admin_routes)
     app.register_blueprint(admin_old_files_routes)
+    app.register_blueprint(admin_old_files_send_routes)
     app.register_blueprint(home_routes)
     app.register_blueprint(user_procedimentos_routes)
     app.register_blueprint(user_manuais_routes)
