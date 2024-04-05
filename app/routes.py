@@ -208,6 +208,8 @@ def send_files():
         # Obter dados do formulário
         folder = request.form.get('folder')
         file = request.files.get('file')  # Use request.files para obter o arquivo
+
+        # Salvar o arquivo no S3 na pasta especificada
         send_s3(folder, file)
         
         return jsonify({'redirect': url_for('old_files.old_files')})

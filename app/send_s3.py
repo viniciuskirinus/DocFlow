@@ -19,7 +19,8 @@ def send_s3(folder, file):
     # Upload do arquivo para o S3
     try:
         key = f'{folder}/{file_name}'
-        with open(file_name, 'rb') as data:
+        # Abra o arquivo enviado em modo binário ('rb')
+        with file as data:
             s3_client.put_object(
                 Bucket=bucket_name,
                 Key=key,
