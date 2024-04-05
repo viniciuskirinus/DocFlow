@@ -212,7 +212,7 @@ def send_files():
         # Salvar o arquivo no S3 na pasta especificada
         send_s3(folder, file)
         
-        return redirect(url_for('old_files.old_files'))
+        return jsonify({'redirect': url_for('old_files.old_files')})
     else:
         return redirect(url_for('login.login'))
 
