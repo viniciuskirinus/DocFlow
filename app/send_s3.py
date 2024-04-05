@@ -19,14 +19,14 @@ def send_s3(folder, file):
     # Upload do arquivo para o S3
     try:
         key = f'{folder}/{file_name}'
-        # Abra o arquivo enviado em modo binário ('rb')
-        with file as data:
-            s3_client.put_object(
-                Bucket=bucket_name,
-                Key=key,
-                Body=data,
-                ContentType=content_type
-            )
+        # Obtenha os dados do arquivo
+        file_data = file.read()
+        s3_client.put_object(
+            Bucket=bucket_name,
+            Key=key,
+            Body=file_data,
+            ContentType=content_type
+        )
         print(f'Arquivo {file_name} enviado para o bucket {bucket_name} na pasta {folder} com sucesso.')
     except Exception as e:
         print(f'Erro ao enviar arquivo para o S3: {e}')
