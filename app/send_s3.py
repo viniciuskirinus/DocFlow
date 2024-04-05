@@ -3,7 +3,9 @@ import boto3
 
 def send_s3(folder, file):
     # Configuração do cliente S3
-    s3 = boto3.client('s3', aws_access_key_id=os.getenv("ACCESS_KEY_ID"), aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
+    s3_client = boto3.client('s3',
+                             aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
+                             aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
 
     # Nome do bucket
     bucket_name = os.getenv("BUCKET_NAME")
@@ -16,7 +18,14 @@ def send_s3(folder, file):
 
     # Upload do arquivo para o S3
     try:
-        s3.upload_fileobj(file, bucket_name, f'{folder}/{file_name}', ExtraArgs={'ContentType': content_type})
+        key = f'{folder}/{file_name}'
+        with open(file_name, 'rb') as data:
+            s3_client.put_object(
+                Bucket=bucket_name,
+                Key=key,
+                Body=data,
+                ContentType=content_type
+            )
         print(f'Arquivo {file_name} enviado para o bucket {bucket_name} na pasta {folder} com sucesso.')
     except Exception as e:
         print(f'Erro ao enviar arquivo para o S3: {e}')
