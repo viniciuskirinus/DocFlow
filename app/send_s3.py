@@ -20,11 +20,10 @@ def send_s3(folder, file):
     try:
         key = f'{folder}/{file_name}'
         # Obtenha os dados do arquivo
-        file_data = file.read()
         s3_client.put_object(
             Bucket=bucket_name,
             Key=key,
-            Body=file_data,
+            Body=file.stream,
             ContentType=content_type
         )
         print(f'Arquivo {file_name} enviado para o bucket {bucket_name} na pasta {folder} com sucesso.')
