@@ -42,7 +42,7 @@ admin_user_edit_routes = Blueprint('edituser', __name__, template_folder='templa
 admin_old_files_routes = Blueprint('old_files', __name__, template_folder='templates')
 
 #rota de envio arquivos s3
-admin_old_files_send_routes = Blueprint('old_files', __name__, template_folder='templates')
+admin_old_files_send_routes = Blueprint('send_files', __name__, template_folder='templates')
 
 #rota para exibicao do pdf
 user_show_pdf_routes = Blueprint('showpdf', __name__, template_folder='templates')
