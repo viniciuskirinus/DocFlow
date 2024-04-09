@@ -295,34 +295,6 @@
             document.getElementById('selectChatMessage').classList.add('active');
         };
 
-        // Função genérica de ordenação
-        function ordenarElementos(containerSelector, elementSelector) {
-            var container = document.querySelector(containerSelector);
-            var elements = Array.from(container.querySelectorAll(elementSelector));
-
-            elements.sort(function(a, b) {
-                var numeroA = extrairNumero(a.querySelector('h4').textContent.trim());
-                var numeroB = extrairNumero(b.querySelector('h4').textContent.trim());
-
-                return numeroA - numeroB;
-            });
-
-            elements.forEach(function(element) {
-                container.appendChild(element);
-            });
-        }
-
-        // Função auxiliar para extrair o número do texto
-        function extrairNumero(texto) {
-            var matches = texto.match(/\d+/);
-            return matches ? parseInt(matches[0]) : 0;
-        }
-
-        // Chamar a função de ordenação quando a página for carregada
-        document.addEventListener("DOMContentLoaded", function() {
-            ordenarElementos(".card-body", ".d-flex");
-        });
-
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
         }

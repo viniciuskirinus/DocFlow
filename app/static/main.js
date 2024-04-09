@@ -274,3 +274,29 @@ function showPDF(pdfId) {
         }
     });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Outras inicializações que já existem
+    ordenarElementosPorNome();
+});
+
+function ordenarElementosPorNome() {
+    var container = document.querySelector(".card-body");
+    if (!container) return;
+
+    var elementos = Array.from(container.querySelectorAll('a'));
+    elementos.sort(function(a, b) {
+        var nomeA = extrairNumero(a.querySelector('h4').textContent.trim());
+        var nomeB = extrairNumero(b.querySelector('h4').textContent.trim());
+        return nomeA - nomeB;
+    });
+
+    elementos.forEach(function(elemento) {
+        container.appendChild(elemento);
+    });
+}
+
+function extrairNumero(texto) {
+    var matches = texto.match(/\d+/);
+    return matches ? parseInt(matches[0], 10) : 0;
+}
