@@ -294,6 +294,35 @@
         window.onload = function() {
             document.getElementById('selectChatMessage').classList.add('active');
         };
+        
+        function ordenarElementos(containerSelector, elementSelector) {
+            var container = document.querySelector(containerSelector);
+            var elements = Array.from(container.querySelectorAll(elementSelector));
+
+            elements.sort(function(a, b) {
+                var valueA = a.querySelector('.selected').textContent.trim().toUpperCase();
+                var valueB = b.querySelector('.selected').textContent.trim().toUpperCase();
+
+                if (valueA < valueB) {
+                    return -1;
+                }
+                if (valueA > valueB) {
+                    return 1;
+                }
+
+                // Se os valores forem iguais, não mudar a ordem
+                return 0;
+            });
+
+            elements.forEach(function(element) {
+                container.appendChild(element);
+            });
+        }
+
+        // Chamar a função de ordenação quando a página for carregada
+        document.addEventListener("DOMContentLoaded", function() {
+            ordenarElementos(".card-body", ".d-block");
+        });
 
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
