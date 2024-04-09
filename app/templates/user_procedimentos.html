@@ -301,8 +301,8 @@
             var elements = Array.from(container.querySelectorAll(elementSelector));
 
             elements.sort(function(a, b) {
-                var numeroA = extrairNumero(a.querySelector('.selected h4').textContent.trim());
-                var numeroB = extrairNumero(b.querySelector('.selected h4').textContent.trim());
+                var numeroA = extrairNumero(a.querySelector('h4').textContent.trim());
+                var numeroB = extrairNumero(b.querySelector('h4').textContent.trim());
 
                 return numeroA - numeroB;
             });
