@@ -1,8 +1,8 @@
-import pymysql
 import hashlib
 from .models import conectar_db
 from flask import session
-
+import pymysql
+from datetime import datetime
 
 def processar_login(username, password):
 
@@ -22,6 +22,11 @@ def processar_login(username, password):
                     senha_hash_fornecida = hashlib.md5(password.encode()).hexdigest()
 
                     if senha_hash_db == senha_hash_fornecida:
+                        # Atualiza a coluna de acesso com a data e hora atuais
+                        sql_update_access = "UPDATE user SET access = %s WHERE account = %s;"
+                        current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        cursor.execute(sql_update_access, (current_datetime, username))
+
                         # Adicione o username, a função e o office à sessão para serem acessíveis nas rotas
                         session['role'] = user_role
                         session['username'] = username
