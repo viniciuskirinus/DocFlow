@@ -240,7 +240,20 @@ function addNewBotMessage(message) {
     document.getElementById("bodychat").appendChild(newBotMessageDiv);
 }
 
+function showAnimationBeforeModal() {
+    // Remover classe oculta da animação
+    document.getElementById('loadingAnimation').classList.remove('hidden');
+
+    // Quando o modal estiver prestes a ser exibido, ocultar a animação
+    $('#pdfModal').on('show.bs.modal', function () {
+        document.getElementById('loadingAnimation').classList.add('hidden');
+    });
+}
+
 function openPDFModal(pdfImagesBase64List) {
+    // Exibir a animação antes de abrir o modal
+    showAnimationBeforeModal();
+
     // Inicializar o modal
     $('#pdfModal').modal('show');
 
