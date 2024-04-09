@@ -67,7 +67,7 @@ def converter_imagem_para_binario(imagem):
     buf.close()
     return conteudo_binario
 
-def pdf_edit(id_pdf, nome, categoria, version, data, arquivo):
+def pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo):
     try:
         valor_atual_nome, valor_atual_location, valor_atual_page_images = obter_valores_atuais(id_pdf)
 
@@ -94,16 +94,16 @@ def pdf_edit(id_pdf, nome, categoria, version, data, arquivo):
             data_formatada = None
 
         # Atualiza o registro no banco de dados
-        salvar_no_banco_de_dados(id_pdf, nome, categoria, version, data_formatada, conteudo_arquivo, imagens_agrupadas)
+        salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data_formatada, conteudo_arquivo, imagens_agrupadas)
 
     except Exception as e:
         print(f"Erro ao processar o formulário: {e}")
 
-def salvar_no_banco_de_dados(id_pdf, nome, categoria, version, data, conteudo_arquivo, imagens_agrupadas):
+def salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data, conteudo_arquivo, imagens_agrupadas):
     try:
         with conexao.cursor() as cursor:
-            sql = "UPDATE pdf SET name = %s, category = %s, version = %s, location = %s, date = %s, page_images = %s WHERE id_pdf = %s"
-            cursor.execute(sql, (nome, categoria, version, conteudo_arquivo, data, imagens_agrupadas, id_pdf))
+            sql = "UPDATE pdf SET name = %s, category = %s, sector = %s, version = %s, location = %s, date = %s, page_images = %s WHERE id_pdf = %s"
+            cursor.execute(sql, (nome, categoria, setor, version, conteudo_arquivo, data, imagens_agrupadas, id_pdf))
 
         conexao.commit()
         print("Atualização no banco de dados bem-sucedida!")

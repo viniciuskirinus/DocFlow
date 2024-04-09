@@ -223,9 +223,10 @@ def edit():
         nome = request.form.get('edit_nome')       
         categoria = request.form.get('edit_categoria')
         version = request.form.get('edit_version') 
+        setor = request.form.get('edit_setor') 
         data = request.form.get('edit_data')   
         arquivo = request.files['arquivo']
-        pdf_edit(id_pdf, nome, categoria, version, data, arquivo)
+        pdf_edit(id_pdf, nome, categoria, version, setor, data, arquivo)
         
         return redirect(url_for('pdf.pdf'))
     else:

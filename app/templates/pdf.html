@@ -155,8 +155,8 @@
                                                                 <th id="nome-header">Nome</th>
                                                                 <th>Versão</th>
                                                                 <th>Categoria</th>
-                                                                <th>Data</th>
                                                                 <th>Setor</th>
+                                                                <th>Data</th>
                                                                 <th>Ações</th>
                                                             </tr>
                                                         </thead>
@@ -344,7 +344,38 @@
                                     <option value="Manuais">Manuais</option>
                                     <option value="Instrucoes">Instruções</option>
                                     <option value="Documentos Gerais">Documentos Gerais</option>
+                                    <option value="Politicas Gerais">Políticas Gerais</option>
+                                    <option value="Projetos">Projetos</option>
+                                    <option value="Documentos de Clientes">Documentos de Clientes</option>
                                     <option value="ISO">ISO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_setor" class="text">Setor:</label>
+                                <select class="form-control" id="edit_setor" name="edit_setor" required>
+                                    <option value="SESMT Corporativo">SESMT Corporativo</option>
+                                    <option value="Almoxarifado">Almoxarifado</option>
+                                    <option value="PCP">PCP</option>
+                                    <option value="Frota">Frota</option>
+                                    <option value="SGI">SGI</option>
+                                    <option value="Produção">Produção</option>
+                                    <option value="STC">STC</option>
+                                    <option value="Comunicação">Comunicação</option>
+                                    <option value="Gestão de Pessoas">Gestão de Pessoas</option>
+                                    <option value="Controladoria">Controladoria</option>
+                                    <option value="Crescimento e Desenvolvimento">Crescimento e Desenvolvimento</option>
+                                    <option value="Financeiro">Financeiro</option>
+                                    <option value="Jurídico">Jurídico</option>
+                                    <option value="Qualidade">Qualidade</option>
+                                    <option value="TI">TI</option>
+                                    <option value="CIPA">CIPA</option>
+                                    <option value="Meio ambiente">Meio ambiente</option>
+                                    <option value="Brigada de emergência">Brigada de emergência</option>
+                                    <option value="RH Administrativo">RH Administrativo</option>
+                                    <option value="Compras">Compras</option>
+                                    <option value="Gestão de Clientes e Forn.">Gestão de Clientes e Forn</option>
+                                    <option value="Gestão de Ativos">Gestão de Ativos</option>
+                                    <option value="Planejamento Financeiro">Planejamento Financeiro</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -402,6 +433,7 @@
             var id_pdf = $(this).data('id_pdf');
             var name = $(this).data('name');
             var category = $(this).data('category');
+            var sector = $(this).data('sector');
             var version = $(this).data('version');
             var date = $(this).data('date');
 
@@ -409,13 +441,14 @@
             $('#edit_nome').val(name);
             $('#edit_categoria').val(category);
             $('#edit_version').val(version);
+            $('#edit_setor').val(sector);
             $('#edit_data').val(date);
             $('#edit_id_pdf').val(id_pdf);
 
             // Abrir o modal de edição
             $('#editModal').modal('show');
         });
-        
+
         function ordenarTabela() {
             var tbody = document.querySelector("#myTable tbody");
             var linhas = Array.from(tbody.querySelectorAll("tr"));
