@@ -173,7 +173,7 @@
                                                                         <button class="btn btn-link" onclick="showPDF('{{ dado.id_pdf }}')">
                                                                             <i class="fas fa-file-pdf fa-lg"></i>
                                                                         </button>
-                                                                        <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_pdf="{{ dado.id_pdf }}" data-name="{{ dado.name }}" data-category="{{ dado.category }}" data-version="{{ dado.version }}" data-date="{{ dado.date }}">
+                                                                        <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_pdf="{{ dado.id_pdf }}" data-name="{{ dado.name }}" data-category="{{ dado.category }}" data-sector="{{ dado.sector }}" data-version="{{ dado.version }}" data-date="{{ dado.date }}">
                                                                             Editar
                                                                         </button>
                                                                         <form method="POST" action="{{ url_for('delete.delete') }}" style="display: inline;">
@@ -429,7 +429,6 @@
         });
 
         $(document).on('click', '.botao-edit', function()  {
-            console.log("Botão clicado");
             var id_pdf = $(this).data('id_pdf');
             var name = $(this).data('name');
             var category = $(this).data('category');
