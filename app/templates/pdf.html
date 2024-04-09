@@ -151,21 +151,23 @@
                                                     <table id="myTable" class="table align-items-center">
                                                         <thead>
                                                             <tr>
-                                                                <th>#</th>
-                                                                <th>Nome</th>
+                                                                <th style="display: none;">#</th>
+                                                                <th id="nome-header">Nome</th>
                                                                 <th>Versão</th>
                                                                 <th>Categoria</th>
                                                                 <th>Data</th>
+                                                                <th>Setor</th>
                                                                 <th>Ações</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {% for dado in dados %}
-                                                                <tr>
-                                                                    <td>{{ dado.id_pdf }}</td>
+                                                                <tr data-nome="{{ dado.name }}">
+                                                                    <td style="display: none;">{{ dado.id_pdf }}</td>
                                                                     <td>{{ dado.name }}</td>
                                                                     <td>{{ dado.version }}</td>
                                                                     <td>{{ dado.category }}</td>
+                                                                    <td>{{ dado.sector }}</td>
                                                                     <td>{{ dado.date }}</td>
                                                                     <td>
                                                                         <button class="btn btn-link" onclick="showPDF('{{ dado.id_pdf }}')">
@@ -258,7 +260,38 @@
                                     <option value="Manuais">Manuais</option>
                                     <option value="Instruções">Instruções</option>
                                     <option value="Documentos Gerais">Documentos Gerais</option>
+                                    <option value="Politicas Gerais">Políticas Gerais</option>
+                                    <option value="Projetos">Projetos</option>
+                                    <option value="Documentos de Clientes">Documentos de Clientes</option>
                                     <option value="ISO">ISO</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="setor" class="text">Setor:</label>
+                                <select class="form-control" id="setor" name="setor" required>
+                                    <option value="SESMT Corporativo">SESMT Corporativo</option>
+                                    <option value="Almoxarifado">Almoxarifado</option>
+                                    <option value="PCP">PCP</option>
+                                    <option value="Frota">Frota</option>
+                                    <option value="SGI">SGI</option>
+                                    <option value="Produção">Produção</option>
+                                    <option value="STC">STC</option>
+                                    <option value="Comunicação">Comunicação</option>
+                                    <option value="Gestão de Pessoas">Gestão de Pessoas</option>
+                                    <option value="Controladoria">Controladoria</option>
+                                    <option value="Crescimento e Desenvolvimento">Crescimento e Desenvolvimento</option>
+                                    <option value="Financeiro">Financeiro</option>
+                                    <option value="Jurídico">Jurídico</option>
+                                    <option value="Qualidade">Qualidade</option>
+                                    <option value="TI">TI</option>
+                                    <option value="CIPA">CIPA</option>
+                                    <option value="Meio ambiente">Meio ambiente</option>
+                                    <option value="Brigada de emergência">Brigada de emergência</option>
+                                    <option value="RH Administrativo">RH Administrativo</option>
+                                    <option value="Compras">Compras</option>
+                                    <option value="Gestão de Clientes e Forn.">Gestão de Clientes e Forn</option>
+                                    <option value="Gestão de Ativos">Gestão de Ativos</option>
+                                    <option value="Planejamento Financeiro">Planejamento Financeiro</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -381,6 +414,44 @@
 
             // Abrir o modal de edição
             $('#editModal').modal('show');
+        });
+        
+        function ordenarTabela() {
+            var tbody = document.querySelector("#myTable tbody");
+            var linhas = Array.from(tbody.querySelectorAll("tr"));
+            
+            linhas.sort(function(a, b) {
+                var nomeA = a.dataset.nome.toUpperCase();
+                var nomeB = b.dataset.nome.toUpperCase();
+                
+                // Ordenar pelo nome
+                if (nomeA < nomeB) {
+                    return -1;
+                }
+                if (nomeA > nomeB) {
+                    return 1;
+                }
+                
+                // Se os nomes são iguais, ordenar pelo número
+                var numeroA = extrairNumero(nomeA);
+                var numeroB = extrairNumero(nomeB);
+                return numeroA - numeroB;
+            });
+            
+            linhas.forEach(function(linha) {
+                tbody.appendChild(linha);
+            });
+        }
+        
+        // Função auxiliar para extrair o número do nome
+        function extrairNumero(nome) {
+            var matches = nome.match(/\d+/);
+            return matches ? parseInt(matches[0]) : 0;
+        }
+        
+        // Chamar a função de ordenação quando a página for carregada
+        document.addEventListener("DOMContentLoaded", function() {
+            ordenarTabela();
         });
 
         function logout() {

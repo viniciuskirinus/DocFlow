@@ -8,7 +8,7 @@ import os
 
 conexao = conectar_db()
 
-def processar_formulario(nome, categoria, versao, data, arquivo):
+def processar_formulario(nome, categoria, versao, data, setor, arquivo):
     try:
         # Gera um nome para o arquivo baseado na categoria e na data/hora atual
         conteudo_arquivo = arquivo.read()  # Lê o conteúdo do arquivo como binário
@@ -19,7 +19,7 @@ def processar_formulario(nome, categoria, versao, data, arquivo):
         imagens_agrupadas = pickle.dumps(imagens_binarias)
 
         # Salva no banco de dados
-        salvar_no_banco_de_dados(nome, categoria, data, versao, conteudo_arquivo, imagens_agrupadas)
+        salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arquivo, imagens_agrupadas)
 
         # Cria a pasta no S3
         criar_pasta_s3(nome)
@@ -43,15 +43,15 @@ def converter_imagem_para_binario(imagem):
     buf.close()
     return conteudo_binario
 
-def salvar_no_banco_de_dados(nome, categoria, data, versao, conteudo_arquivo, imagens_agrupadas):
+def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arquivo, imagens_agrupadas):
     try:
         # Converte a data para o formato do banco de dados
         data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
 
         # Ajuste conforme sua estrutura de banco de dados
         with conexao.cursor() as cursor:
-            sql = "INSERT INTO pdf (name, category, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (nome, categoria, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
+            sql = "INSERT INTO pdf (name, category, sector, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, (nome, categoria, setor, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
 
         conexao.commit()
         print("Inserção no banco de dados bem-sucedida!")

@@ -250,8 +250,9 @@ def generate():
         categoria = request.form.get('categoria')
         versao = request.form.get('versao')
         data = request.form.get('data')
+        setor = request.form.get('setor')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
-        processar_formulario(nome, categoria, versao, data, arquivo)
+        processar_formulario(nome, categoria, versao, data, setor, arquivo)
         
         return redirect(url_for('pdf.pdf'))
     else:
