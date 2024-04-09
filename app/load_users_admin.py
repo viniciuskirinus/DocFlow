@@ -3,7 +3,7 @@ from .models import conectar_db
 # Função para obter dados do banco de dados com base na categoria
 def obter_dados_lista_user():
     # Substitua "sua_query_sql" pela sua consulta SQL para obter os dados desejados
-    query = f"SELECT id_user, account, office, password, role FROM user"
+    query = f"SELECT id_user, account, office, password, role, access FROM user"
     
     # Obtém a conexão com o banco de dados
     conexao = conectar_db()

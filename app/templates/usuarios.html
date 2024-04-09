@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple_pdf.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
     
   </head>
   
@@ -139,7 +140,7 @@
                                             <div class="card-body overflow-auto overflow-x-hidden">
                                                 
                                                 <div class="row justify-content-start mb-8">
-                                                    
+                                                    <button type="button" class="botao-export" onclick="exportToExcel()">Exportar para Excel</button>
                                                     <table id="myTable" class="table align-items-center">
                                                         <thead>
                                                             <tr>
@@ -147,6 +148,7 @@
                                                                 <th>Nome</th>
                                                                 <th>Cargo</th>
                                                                 <th>Role</th>
+                                                                <th>Último acesso</th>
                                                                 <th>Ações</th>
                                                             </tr>
                                                         </thead>
@@ -157,6 +159,7 @@
                                                                     <td>{{ dado.account }}</td>
                                                                     <td>{{ dado.office }}</td>
                                                                     <td>{{ dado.role }}</td>
+                                                                    <td>{{ dado.access }}</td>
                                                                     <td>
                                                                         <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_user="{{ dado.id_user }}" data-name="{{ dado.account }}" data-office="{{ dado.office }}" data-role="{{ dado.role}}" data-password="{{ dado.password }}">
                                                                             Editar
@@ -332,6 +335,29 @@
             // Abrir o modal de edição
             $('#editModal').modal('show');
         });
+
+        function exportToExcel() {
+            const rows = document.querySelectorAll("#myTable tbody tr");
+            const data = [];
+            rows.forEach(row => {
+                const rowData = [];
+                row.querySelectorAll("td").forEach(cell => {
+                    rowData.push(cell.innerText);
+                });
+                data.push(rowData);
+            });
+
+            const wb = XLSX.utils.book_new();
+            wb.Props = {
+                Title: "Lista de Usuários",
+                Subject: "Dados",
+                Author: "Seu Nome",
+                CreatedDate: new Date()
+            };
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, "Usuários");
+            XLSX.writeFile(wb, "usuarios.xlsx");
+        }
 
 
         function logout() {
