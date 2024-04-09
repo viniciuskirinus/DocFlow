@@ -277,6 +277,7 @@ function showPDF(pdfId) {
 
 document.addEventListener("DOMContentLoaded", function() {
     // Outras inicializações que já existem
+    updateChatInfo();
     ordenarElementosPorNome();
 });
 
