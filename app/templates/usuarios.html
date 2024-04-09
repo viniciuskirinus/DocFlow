@@ -140,22 +140,23 @@
                                             <div class="card-body overflow-auto overflow-x-hidden">
                                                 
                                                 <div class="row justify-content-start mb-8">
-                                                    <button type="button" class="botao-export" onclick="exportToExcel()">Exportar para Excel</button>
+                                                    
                                                     <table id="myTable" class="table align-items-center">
                                                         <thead>
                                                             <tr>
-                                                                <th>#</th>
+                                                                <th style="display: none;">#</th>
                                                                 <th>Nome</th>
                                                                 <th>Cargo</th>
                                                                 <th>Role</th>
                                                                 <th>Último acesso</th>
                                                                 <th>Ações</th>
+                                                                <th><button type="button" class="botao-export file-excel-o" onclick="exportToExcel()"></button></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {% for dado in dados %}
                                                                 <tr>
-                                                                    <td>{{ dado.id_user }}</td>
+                                                                    <td style="display: none;">{{ dado.id_user }}</td>
                                                                     <td>{{ dado.account }}</td>
                                                                     <td>{{ dado.office }}</td>
                                                                     <td>{{ dado.role }}</td>
