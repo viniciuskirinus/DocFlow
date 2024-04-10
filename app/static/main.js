@@ -230,6 +230,9 @@ function openPDFModal(pdfImagesBase64List) {
 }
 
 function showPDF(pdfId) {
+    // Mostrar o loader
+    document.querySelector('.loader').style.display = 'block';
+
     $.ajax({
         url: '/showpdf',
         type: 'POST',
@@ -238,13 +241,19 @@ function showPDF(pdfId) {
         success: function(data) {
             if (data && data.pdf_images_base64) {
                 openPDFModal(data.pdf_images_base64);
+                // Ocultar o loader quando o modal está pronto para ser exibido
+                document.querySelector('.loader').style.display = 'none';
             } else {
                 alert("Não foi possível encontrar o conteúdo do PDF.");
+                // Ocultar o loader se não conseguir encontrar o conteúdo do PDF
+                document.querySelector('.loader').style.display = 'none';
             }
         },
         error: function(xhr, status, error) {
             console.error("Erro ao obter o conteúdo do PDF:", error);
             alert("Erro ao obter o conteúdo do PDF. Por favor, tente novamente mais tarde.");
+            // Ocultar o loader em caso de erro
+            document.querySelector('.loader').style.display = 'none';
         }
     });
 }
