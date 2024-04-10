@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function ordenarElementosPorNome() {
-    var container = document.querySelector(".card-body p-2");
+    var container = document.querySelector(".card-body.p-2");
     if (!container) return;
 
     var elementos = Array.from(container.querySelectorAll('a'));
