@@ -1,7 +1,7 @@
 
 let currentPdfId = null;
 
-function showChat(linkIndex, pdfId, pdfName, pdfCategory, pdfDate) {
+function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfDate) {
     
     // Obtém o elemento com o ID 'chatContainer'
     var chatContainer = document.getElementById('chatContainer');
@@ -16,9 +16,6 @@ function showChat(linkIndex, pdfId, pdfName, pdfCategory, pdfDate) {
     // Oculta todos os chats
     chatContainer.style.display = 'none';
 
-    // Debug: Imprimir o valor de linkIndex no console
-    console.log('pdfid:', pdfId);
-
     // Obtém todos os elementos com a classe 'card-body a'
     var links = document.querySelectorAll('.card-body a');
 
@@ -28,14 +25,14 @@ function showChat(linkIndex, pdfId, pdfName, pdfCategory, pdfDate) {
         return;
     }
 
-    // Remove a cor diferenciada de todos os links
+    // Atualiza a lógica de seleção para remover e adicionar a classe 'selected' baseada no elemento clicado
+    var links = document.querySelectorAll('.card-body a');
     links.forEach(link => {
-        link.classList.remove('bg-gradient-primary', 'selected');
+        link.classList.remove('bg-gradient-primary', 'selected'); // Remove de todos
     });
 
-    // Exibe o chat correspondente ao link clicado
-    chatContainer.style.display = 'block';
-    document.getElementById('selectChatMessage').style.display = 'none';
+    // Adiciona a classe 'selected' apenas ao elemento clicado
+    clickedElement.classList.add('bg-gradient-primary', 'selected');
 
     // Verifica se o índice está dentro dos limites do array de links
     if (linkIndex > 0 && linkIndex <= links.length) {
