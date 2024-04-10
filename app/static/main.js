@@ -1,7 +1,7 @@
 
 let currentPdfId = null;
 
-function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfDate) {
+function showChat(linkIndex, pdfId, pdfName, pdfCategory, pdfDate) {
     
     // Obtém o elemento com o ID 'chatContainer'
     var chatContainer = document.getElementById('chatContainer');
@@ -25,14 +25,14 @@ function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfDate) {
         return;
     }
 
-    // Atualiza a lógica de seleção para remover e adicionar a classe 'selected' baseada no elemento clicado
-    var links = document.querySelectorAll('.card-body a');
+    // Remove a cor diferenciada de todos os links
     links.forEach(link => {
-        link.classList.remove('bg-gradient-primary', 'selected'); // Remove de todos
+        link.classList.remove('bg-gradient-primary', 'selected');
     });
 
-    // Adiciona a classe 'selected' apenas ao elemento clicado
-    clickedElement.classList.add('bg-gradient-primary', 'selected');
+    // Exibe o chat correspondente ao link clicado
+    chatContainer.style.display = 'block';
+    document.getElementById('selectChatMessage').style.display = 'none';
 
     // Verifica se o índice está dentro dos limites do array de links
     if (linkIndex > 0 && linkIndex <= links.length) {
