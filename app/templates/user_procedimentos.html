@@ -164,7 +164,7 @@
                                             </div>
                                             <div class="card-body p-2">
                                                 {% for dado in dados %}
-                                                    <a href="javascript:;" class="d-block p-2 rounded-lg" onclick="showChat('{{ loop.index }}', '{{ dado.id_pdf }}', '{{ dado.name }}', '{{ dado.categoria }}', '{{ dado.date }}')">
+                                                    <a href="javascript:;" class="d-block p-2 rounded-lg" onclick="showChat(this, '{{ dado.id_pdf }}', '{{ dado.name }}', '{{ dado.categoria }}', '{{ dado.date }}')">
                                                         <div class="d-flex p-2">
                                                             <img alt="Image" src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="avatar shadow">
                                                             <div class="ml-2">

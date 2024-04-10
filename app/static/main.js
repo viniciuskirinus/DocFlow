@@ -1,54 +1,31 @@
 
 let currentPdfId = null;
 
-function showChat(linkIndex, pdfId, pdfName, pdfCategory, pdfDate) {
+function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfDate) {
     
-    // Obtém o elemento com o ID 'chatContainer'
     var chatContainer = document.getElementById('chatContainer');
-
     currentPdfId = pdfId;
-    // Verifica se 'chatContainer' foi encontrado
+
     if (!chatContainer) {
         console.error('Elemento chatContainer não encontrado.');
         return;
     }
 
-    // Oculta todos os chats
     chatContainer.style.display = 'none';
 
-    // Obtém todos os elementos com a classe 'card-body a'
-    var links = document.querySelectorAll('.card-body a');
-
-    // Se não houver links, retorna
-    if (!links || links.length === 0) {
-        console.error('Nenhum link encontrado.');
-        return;
-    }
-
-    // Remove a cor diferenciada de todos os links
-    links.forEach(link => {
+    // Atualize todos os elementos para remover a seleção
+    document.querySelectorAll('.card-body a').forEach(link => {
         link.classList.remove('bg-gradient-primary', 'selected');
     });
 
-    // Exibe o chat correspondente ao link clicado
+    // Adiciona a classe 'selected' ao elemento clicado
+    clickedElement.classList.add('bg-gradient-primary', 'selected');
+
     chatContainer.style.display = 'block';
     document.getElementById('selectChatMessage').style.display = 'none';
 
-    // Verifica se o índice está dentro dos limites do array de links
-    if (linkIndex > 0 && linkIndex <= links.length) {
-        // Adiciona a classe 'selected' ao link clicado
-        links[linkIndex - 1].classList.add('bg-gradient-primary', 'selected');
-    } else {
-        console.error('Índice fora dos limites.');
-    }
-
-    // Exibe o chat correspondente ao link clicado
-    chatContainer.style.display = 'block';
     updateChatInfo(pdfId, pdfName, pdfCategory, pdfDate);
-
-    // Ajusta o estilo do texto
     updateTextStyle();
-
     clearChat();
     addWelcomeMessage();
     openChat(pdfId);
