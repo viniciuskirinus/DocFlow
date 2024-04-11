@@ -175,3 +175,40 @@ footer.footer {
   white-space: nowrap;
   border-radius: 6px;
 }
+
+.loader {
+  position: fixed; /* Faz o loader ficar fixo na tela, sobrepondo outros conteúdos */
+  top: 50%; /* Centraliza verticalmente */
+  left: 50%; /* Centraliza horizontalmente */
+  transform: translate(-50%, -50%); /* Ajusta a centralização para o meio exato */
+  width: 130px; /* Largura do loader */
+  height: 4px; /* Altura do loader */
+  --c: no-repeat linear-gradient(#5e72e4 0 0);
+  background: var(--c), var(--c), #d7b8fc;
+  background-size: 60% 100%;
+  animation: l16 3s infinite;
+  z-index: 1000; /* Garante que o loader apareça acima de outros elementos */
+  }
+
+  @keyframes l16 {
+  0% {
+      background-position: -150% 0, -150% 0;
+  }
+  66% {
+      background-position: 250% 0, -150% 0;
+  }
+  100% {
+      background-position: 250% 0, 250% 0;
+  }
+}
+
+.loader::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto semi-transparente */
+  z-index: -1; /* Coloca o fundo diretamente atrás do loader */
+}
