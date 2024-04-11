@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple.css') }}">
+    <link rel="stylesheet" href="../static/theme.css">
+    <link rel="stylesheet" href="../static/loopple.css">
 
     <style>
         .card-body a .justify-content-between.align-items-center h4,
@@ -34,6 +36,12 @@
             max-width: 100%; /* Limita a largura da imagem a 100% do seu contêiner */
             height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
             overflow-y: auto;
+        }
+        .input-group-prepend {
+            cursor: pointer;
+        }
+        .opcoes {
+            display: none;
         }
     </style>
 </head>
@@ -156,6 +164,19 @@
                                                 <div class="input-group mb-0">
                                                     <input type="text" placeholder="Buscar" class="form-control" id="searchInput">
                                                     <div class="input-group-append">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"  style="border-radius: 0;">
+                                                                <i class="fa fa-filter">
+                                                                    
+                                                                </i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="opcoes" id="opcoes">
+                                                        <label><input type="radio" name="opcao" value="nome"> Nome</label>
+                                                        <label><input type="radio" name="opcao" value="setor"> Setor</label>
+                                                    </div>
+                                                    <div class="input-group-append" style="border-left: 1px solid rgb(231, 228, 228);">
                                                         <span class="input-group-text">
                                                             <i class="fa fa-search"></i>
                                                         </span>
@@ -296,6 +317,14 @@
         window.onload = function() {
             document.getElementById('selectChatMessage').classList.add('active');
         };
+        function toggleOpcoes() {
+            var opcoes = document.getElementById('opcoes');
+            if (opcoes.style.display === 'none') {
+                opcoes.style.display = 'block';
+            } else {
+                opcoes.style.display = 'none';
+            }
+        }
 
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
