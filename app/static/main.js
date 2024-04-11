@@ -1,7 +1,7 @@
 
 let currentPdfId = null;
 
-function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfDate) {
+function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfSector) {
     
     var chatContainer = document.getElementById('chatContainer');
     currentPdfId = pdfId;
@@ -24,7 +24,7 @@ function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfDate) {
     chatContainer.style.display = 'block';
     document.getElementById('selectChatMessage').style.display = 'none';
 
-    updateChatInfo(pdfId, pdfName, pdfCategory, pdfDate);
+    updateChatInfo(pdfId, pdfName, pdfCategory, pdfSector);
     updateTextStyle();
     clearChat();
     addWelcomeMessage();
@@ -46,23 +46,21 @@ function updateTextStyle() {
     }
 }
 
-function updateChatInfo(pdfId, pdfName, pdfCategory, pdfDate) {
+function updateChatInfo(pdfId, pdfName, pdfCategory, pdfSector) {
     // Obtém os elementos com os IDs correspondentes
     var chatTitle = document.querySelector('#chatContainer .card-header h2');
-    var chatCategory = document.querySelector('#chatContainer .card-header span.font-weight-bold');
-    var chatDate = document.querySelector('#chatContainer .card-header span.text-muted');
+    var chatSector = document.querySelector('#chatContainer .card-header span.text-muted');
     var chatId = document.querySelector('#chatContainer .card-header span.chat-id');
 
     // Verifica se os elementos foram encontrados
-    if (!chatTitle || !chatCategory || !chatDate || !chatId) {
+    if (!chatTitle || !chatSector || !chatId) {
         console.error('Elementos do chat não encontrados.');
         return;
     }
 
     // Atualiza os elementos com os valores do banco de dados
     chatTitle.textContent = pdfName;
-    chatCategory.textContent = pdfCategory;
-    chatDate.textContent = pdfDate;
+    chatSector.textContent = pdfSector;
     chatId.textContent = pdfId;
 }
 setInterval(function () {
