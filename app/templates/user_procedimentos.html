@@ -36,6 +36,10 @@
             height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
             overflow-y: auto;
         }
+        .hidden {
+            display: none !important;
+        }
+
     </style>
 </head>
 <div class="top"></div>
@@ -321,7 +325,8 @@
                         item.style.display = ''; // Mostra o item se corresponder
                         console.log("Mostrando item:", itemText); // Log de item sendo mostrado
                     } else {
-                        item.style.display = 'none'; // Esconde o item se não corresponder
+                        // Usa setProperty para adicionar !important ao estilo de display
+                        item.style.setProperty('display', 'none', 'important'); // Esconde o item se não corresponder
                         console.log("Escondendo item:", itemText); // Log de item sendo escondido
                     }
                 });
