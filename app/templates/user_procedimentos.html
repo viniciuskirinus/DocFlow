@@ -307,15 +307,15 @@
 
             // Função para realizar a pesquisa
             function search() {
-                var searchValue = searchInput.value.toLowerCase();
+                var searchValue = searchInput.value.trim().toLowerCase();
                 var items = document.querySelectorAll('.card-body a'); // Seletor ajustado conforme sua estrutura
 
                 items.forEach(item => {
                     var itemText = "";
                     if (searchOption === "nome") {
-                        itemText = item.querySelector('h4').textContent.toLowerCase();
+                        itemText = item.querySelector('h4').textContent.trim().toLowerCase();
                     } else if (searchOption === "setor") {
-                        itemText = item.querySelector('h6').textContent.toLowerCase();
+                        itemText = item.querySelector('h6').textContent.trim().toLowerCase();
                     }
                     if (itemText.includes(searchValue)) {
                         item.classList.remove('hidden'); // Remove a classe para mostrar o item
