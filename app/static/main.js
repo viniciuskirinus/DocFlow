@@ -260,6 +260,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Outras inicializações que já existem
     updateChatInfo();
     ordenarElementosPorNome();
+    
 });
 
 function ordenarElementosPorNome() {
@@ -276,6 +277,7 @@ function ordenarElementosPorNome() {
     elementos.forEach(function(elemento) {
         container.appendChild(elemento);
     });
+    search();
 }
 
 function extrairNumero(texto) {

@@ -162,7 +162,7 @@
                                                             <li class="input-group-text" style="border-radius: 0;"> <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 <span ><i class="fa fa-filter"></i> </span>          
                                                             </a>
-                                                            <div class="dropdown-menu  dropdown-menu-right ">
+                                                            <div class="dropdown-menu dropdown-menu-right ">
                                                                 <label class="dropdown-item"><input type="radio" name="opcao" value="nome" checked> Nome</label>
                                                                 <label class="dropdown-item"><input type="radio" name="opcao" value="setor"> Setor</label>
                                                             </div>
@@ -289,22 +289,41 @@
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+       document.addEventListener("DOMContentLoaded", function() {
             var searchInput = document.getElementById('searchInput');
+            var searchOption = "nome"; // Por padrão, a pesquisa é por nome
+
+            // Função para atualizar a opção de pesquisa
+            document.querySelectorAll('input[name="opcao"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    searchOption = this.value;
+                    search();
+                });
+            });
 
             searchInput.addEventListener('keyup', function() {
-                var searchValue = searchInput.value.toLowerCase();
+                search();
+            });
+
+            // Função para realizar a pesquisa
+            function search() {
+                var searchValue = searchInput.value.trim().toLowerCase();
                 var items = document.querySelectorAll('.card-body a'); // Seletor ajustado conforme sua estrutura
 
                 items.forEach(item => {
-                    const itemText = item.querySelector('h4').textContent.toLowerCase();
+                    var itemText = "";
+                    if (searchOption === "nome") {
+                        itemText = item.querySelector('h4').textContent.trim().toLowerCase();
+                    } else if (searchOption === "setor") {
+                        itemText = item.querySelector('h6').textContent.trim().toLowerCase();
+                    }
                     if (itemText.includes(searchValue)) {
                         item.classList.remove('hidden'); // Remove a classe para mostrar o item
                     } else {
                         item.classList.add('hidden'); // Adiciona a classe para esconder o item
                     }
                 });
-            });
+            }
         });
 
 
