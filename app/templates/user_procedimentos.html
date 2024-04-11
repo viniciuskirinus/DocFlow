@@ -297,10 +297,16 @@
             document.querySelectorAll('input[name="opcao"]').forEach(function(radio) {
                 radio.addEventListener('change', function() {
                     searchOption = this.value;
+                    search();
                 });
             });
 
             searchInput.addEventListener('keyup', function() {
+                search();
+            });
+
+            // Função para realizar a pesquisa
+            function search() {
                 var searchValue = searchInput.value.toLowerCase();
                 var items = document.querySelectorAll('.card-body a'); // Seletor ajustado conforme sua estrutura
 
@@ -317,10 +323,10 @@
                         item.classList.add('hidden'); // Adiciona a classe para esconder o item
                     }
                 });
-            });
+            }
 
             // Realiza a pesquisa inicial no campo H4
-            searchInput.dispatchEvent(new Event('keyup'));
+            search();
         });
 
         window.onload = function() {
