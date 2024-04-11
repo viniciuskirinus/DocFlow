@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple.css') }}">
-    <link rel="stylesheet" href="../static/theme.css">
-    <link rel="stylesheet" href="../static/loopple.css">
+
 
     <style>
         .card-body a .justify-content-between.align-items-center h4,
@@ -289,43 +288,45 @@
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
     <script>
-       document.addEventListener("DOMContentLoaded", function() {
+
+        document.addEventListener("DOMContentLoaded", function() {
             var searchInput = document.getElementById('searchInput');
             var searchOption = "nome"; // Por padrão, a pesquisa é por nome
 
-            // Função para atualizar a opção de pesquisa
+            // Adicionando evento de mudança aos botões de rádio para atualizar a opção de pesquisa
             document.querySelectorAll('input[name="opcao"]').forEach(function(radio) {
                 radio.addEventListener('change', function() {
                     searchOption = this.value;
-                    search();
+                    console.log("Opção de pesquisa alterada para:", searchOption); // Log da opção selecionada
+                    search(); // Chama a função de pesquisa cada vez que a opção de pesquisa muda
                 });
             });
 
-            searchInput.addEventListener('keyup', function() {
-                search();
-            });
+            // Adicionando evento de digitação ao campo de busca para realizar a pesquisa em tempo real
+            searchInput.addEventListener('keyup', search);
 
-            // Função para realizar a pesquisa
             function search() {
                 var searchValue = searchInput.value.trim().toLowerCase();
-                var items = document.querySelectorAll('.card-body a'); // Seletor ajustado conforme sua estrutura
+                console.log("Valor de busca:", searchValue); // Log do valor de busca
+
+                var items = document.querySelectorAll('.card-body.p-2 a');
 
                 items.forEach(item => {
-                    var itemText = "";
-                    if (searchOption === "nome") {
-                        itemText = item.querySelector('h4').textContent.trim().toLowerCase();
-                    } else if (searchOption === "setor") {
-                        itemText = item.querySelector('h6').textContent.trim().toLowerCase();
-                    }
+                    // Determina se está buscando por nome ou setor e obtém o texto relevante
+                    var itemText = searchOption === "nome" ?
+                        item.querySelector('h4').textContent.trim().toLowerCase() :
+                        item.querySelector('h6').textContent.trim().toLowerCase();
+
                     if (itemText.includes(searchValue)) {
-                        item.classList.remove('hidden'); // Remove a classe para mostrar o item
+                        item.style.display = ''; // Mostra o item se corresponder
+                        console.log("Mostrando item:", itemText); // Log de item sendo mostrado
                     } else {
-                        item.classList.add('hidden'); // Adiciona a classe para esconder o item
+                        item.style.display = 'none'; // Esconde o item se não corresponder
+                        console.log("Escondendo item:", itemText); // Log de item sendo escondido
                     }
                 });
             }
         });
-
 
         window.onload = function() {
             document.getElementById('selectChatMessage').classList.add('active');
