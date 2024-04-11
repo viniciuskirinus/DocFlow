@@ -37,12 +37,6 @@
             height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
             overflow-y: auto;
         }
-        .input-group-prepend {
-            cursor: pointer;
-        }
-        .opcoes {
-            display: none;
-        }
     </style>
 </head>
 <div class="top"></div>
@@ -165,16 +159,15 @@
                                                     <input type="text" placeholder="Buscar" class="form-control" id="searchInput">
                                                     <div class="input-group-append">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"  style="border-radius: 0;">
-                                                                <i class="fa fa-filter">
-                                                                    
-                                                                </i>
-                                                            </span>
+                                                            <li class="input-group-text" style="border-radius: 0;"> <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span ><i class="fa fa-filter"></i> </span>          
+                                                            </a>
+                                                            <div class="dropdown-menu  dropdown-menu-right ">
+                                                                <label class="dropdown-item"><input type="radio" name="opcao" value="nome"> Nome</label>
+                                                                <label class="dropdown-item"><input type="radio" name="opcao" value="setor"> Setor</label>
+                                                            </div>
+                                                        </li>
                                                         </div>
-                                                    </div>
-                                                    <div class="opcoes" id="opcoes">
-                                                        <label><input type="radio" name="opcao" value="nome"> Nome</label>
-                                                        <label><input type="radio" name="opcao" value="setor"> Setor</label>
                                                     </div>
                                                     <div class="input-group-append" style="border-left: 1px solid rgb(231, 228, 228);">
                                                         <span class="input-group-text">
@@ -298,13 +291,26 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var searchInput = document.getElementById('searchInput');
+            var searchOption = "nome"; // Por padrão, a pesquisa é por nome
+
+            // Função para atualizar a opção de pesquisa
+            document.querySelectorAll('input[name="opcao"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    searchOption = this.value;
+                });
+            });
 
             searchInput.addEventListener('keyup', function() {
                 var searchValue = searchInput.value.toLowerCase();
                 var items = document.querySelectorAll('.card-body a'); // Seletor ajustado conforme sua estrutura
 
                 items.forEach(item => {
-                    const itemText = item.querySelector('h4').textContent.toLowerCase();
+                    var itemText = "";
+                    if (searchOption === "nome") {
+                        itemText = item.querySelector('h4').textContent.toLowerCase();
+                    } else if (searchOption === "setor") {
+                        itemText = item.querySelector('h6').textContent.toLowerCase();
+                    }
                     if (itemText.includes(searchValue)) {
                         item.classList.remove('hidden'); // Remove a classe para mostrar o item
                     } else {
@@ -312,19 +318,14 @@
                     }
                 });
             });
+
+            // Realiza a pesquisa inicial no campo H4
+            searchInput.dispatchEvent(new Event('keyup'));
         });
 
         window.onload = function() {
             document.getElementById('selectChatMessage').classList.add('active');
         };
-        function toggleOpcoes() {
-            var opcoes = document.getElementById('opcoes');
-            if (opcoes.style.display === 'none') {
-                opcoes.style.display = 'block';
-            } else {
-                opcoes.style.display = 'none';
-            }
-        }
 
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
