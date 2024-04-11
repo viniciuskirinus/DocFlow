@@ -301,7 +301,6 @@
             document.querySelectorAll('input[name="opcao"]').forEach(function(radio) {
                 radio.addEventListener('change', function() {
                     searchOption = this.value;
-                    console.log("Opção de pesquisa alterada para:", searchOption); // Log da opção selecionada
                     search(); // Chama a função de pesquisa cada vez que a opção de pesquisa muda
                 });
             });
@@ -311,7 +310,6 @@
 
             function search() {
                 var searchValue = searchInput.value.trim().toLowerCase();
-                console.log("Valor de busca:", searchValue); // Log do valor de busca
 
                 var items = document.querySelectorAll('.card-body.p-2 a');
 
@@ -323,11 +321,9 @@
 
                     if (itemText.includes(searchValue)) {
                         item.style.display = ''; // Mostra o item se corresponder
-                        console.log("Mostrando item:", itemText); // Log de item sendo mostrado
                     } else {
                         // Usa setProperty para adicionar !important ao estilo de display
                         item.style.setProperty('display', 'none', 'important'); // Esconde o item se não corresponder
-                        console.log("Escondendo item:", itemText); // Log de item sendo escondido
                     }
                 });
             }
