@@ -207,7 +207,7 @@ def send_files():
     if 'username' in session and 'role' in session and session['role'] == "admin":
         # Obter dados do formulário
         folder = request.form.get('folder')
-        file = request.files.get['file']  # Use request.files para obter o arquivo
+        file = request.files['file']  # Use request.files para obter o arquivo
 
         # Salvar o arquivo no S3 na pasta especificada
         send_s3(folder, file)
