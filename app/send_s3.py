@@ -3,10 +3,7 @@ import boto3
 
 def send_s3(folder, file):
     # Configuração do cliente S3
-    s3_client = boto3.client('s3',
-                             aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
-                             aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
-
+    
     # Nome do bucket
     bucket_name = os.getenv("BUCKET_NAME")
 
@@ -16,14 +13,19 @@ def send_s3(folder, file):
     # Definindo o Content-Type do arquivo
     content_type = 'application/pdf'
 
+    arquivo = file.read()
+
     # Upload do arquivo para o S3
     try:
+        s3_client = boto3.client('s3',
+                             aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
+                             aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
         key = f'{folder}/{file_name}'
         # Obtenha os dados do arquivo
         s3_client.put_object(
             Bucket=bucket_name,
             Key=key,
-            Body=file.stream,
+            Body=arquivo,
             ContentType=content_type
         )
         print(f'Arquivo {file_name} enviado para o bucket {bucket_name} na pasta {folder} com sucesso.')
