@@ -207,11 +207,17 @@ def send_files():
     if 'username' in session and 'role' in session and session['role'] == "admin":
         # Obter dados do formulário
         folder = request.form.get('folder')
-        file = request.files['file']  # Use request.files para obter o arquivo
 
-        # Salvar o arquivo no S3 na pasta especificada
-        send_s3(folder, file)
-        
+        # Verificar se há arquivos enviados
+        if 'files[]' not in request.files:
+            return jsonify({'error': 'Nenhum arquivo enviado'}), 400
+
+        files = request.files.getlist('files[]')  # Obter uma lista de arquivos enviados
+
+        # Iterar sobre os arquivos e salvá-los no S3 na pasta especificada
+        for file in files:
+            send_s3(folder, file)
+
         return jsonify({'redirect': url_for('old_files.old_files')})
     else:
         return redirect(url_for('login.login'))

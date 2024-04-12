@@ -272,3 +272,7 @@ footer.footer {
   background-color: rgba(0, 0, 0, 0.5); /* Fundo preto semi-transparente */
   z-index: -1; /* Coloca o fundo diretamente atrás do loader */
 }
+
+.hidden {
+  display: none !important;
+}

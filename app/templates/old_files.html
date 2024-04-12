@@ -150,7 +150,7 @@
                                                                 <tr class="folder-row" data-folder-name="{{ folder }}">
                                                                     <td style="display: flex; justify-content: space-between;"> <!-- Adicionando estilo flexbox -->
                                                                         <h3 class="text-center" style="margin: 0; cursor: pointer;">{{ folder.replace('Documents/', '').rstrip('/') }}</h3> 
-                                                                        <input type="file" id="arquivos{{ loop.index }}" style="display: none;" onchange="enviarArquivo(this.files[0], '{{ folder }}')">
+                                                                        <input type="file" id="arquivos{{ loop.index }}" style="display: none;" onchange="enviarArquivo(this.files, '{{ folder }}')">
                                                                         <button type="button" class="botao" onclick="document.getElementById('arquivos{{ loop.index }}').click();" data-folder="{{ folder }}">
                                                                             Adicionar Arquivos
                                                                         </button>
@@ -172,6 +172,9 @@
                 </div>
             </div>
         </div> 
+
+        <!-- Animaçao de carregamento -->
+        <div class="loader" style="display: none;"></div>
 
         
         <!-- Footer -->
@@ -262,10 +265,18 @@
             });
         });
 
-        function enviarArquivo(file, folderName) {
+        function enviarArquivos(arquivos, folderName) {
             var formData = new FormData();
             formData.append('folder', folderName);
-            formData.append('file', file);
+
+            // Mostrar o loader
+            document.querySelector('.loader').style.display = 'block';
+
+            // Iterar sobre todos os arquivos selecionados
+            for (var i = 0; i < arquivos.length; i++) {
+                var file = arquivos[i];
+                formData.append('files[]', file); // Adicionar cada arquivo ao FormData
+            }
 
             $.ajax({
                 url: '/send_files',
@@ -274,13 +285,19 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
+                    // Esconder o loader
+                    document.querySelector('.loader').style.display = 'none';
+
                     // Manipular a resposta do servidor, se necessário
-                    console.log('Arquivo enviado com sucesso!');
+                    console.log('Arquivos enviados com sucesso!');
                     window.location.href = response.redirect; // Redirecionar para a página desejada após o envio
                 },
                 error: function(xhr, status, error) {
+                    // Esconder o loader em caso de erro
+                    document.querySelector('.loader').style.display = 'none';
+
                     // Lidar com erros de envio de arquivos
-                    console.error('Erro ao enviar arquivo:', error);
+                    console.error('Erro ao enviar arquivos:', error);
                 }
             });
         }
