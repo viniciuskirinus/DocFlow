@@ -150,7 +150,7 @@
                                                                 <tr class="folder-row" data-folder-name="{{ folder }}">
                                                                     <td style="display: flex; justify-content: space-between;"> <!-- Adicionando estilo flexbox -->
                                                                         <h3 class="text-center" style="margin: 0; cursor: pointer;">{{ folder.replace('Documents/', '').rstrip('/') }}</h3> 
-                                                                        <input type="file" id="arquivos{{ loop.index }}" style="display: none;" onchange="enviarArquivo(this.files, '{{ folder }}')">
+                                                                        <input type="file" id="arquivos{{ loop.index }}" style="display: none;" multiple onchange="enviarArquivos(this.files, '{{ folder }}')">
                                                                         <button type="button" class="botao" onclick="document.getElementById('arquivos{{ loop.index }}').click();" data-folder="{{ folder }}">
                                                                             Adicionar Arquivos
                                                                         </button>
