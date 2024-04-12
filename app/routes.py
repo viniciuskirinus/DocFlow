@@ -213,10 +213,10 @@ def send_files():
             return jsonify({'error': 'Nenhum arquivo enviado'}), 400
 
         files = request.files.getlist('files[]')  # Obter uma lista de arquivos enviados
+        file_names = [file.filename for file in files]  # Obter uma lista de nomes de arquivos
 
-        # Iterar sobre os arquivos e salvá-los no S3 na pasta especificada
-        for file in files:
-            send_s3(folder, file)
+        # Chamar a função send_s3 com os argumentos corretos
+        send_s3(folder, files, file_names)
 
         return jsonify({'redirect': url_for('old_files.old_files')})
     else:
