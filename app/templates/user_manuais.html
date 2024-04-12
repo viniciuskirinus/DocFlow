@@ -35,6 +35,9 @@
             height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
             overflow-y: auto;
         }
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <div class="top"></div>
@@ -156,6 +159,18 @@
                                                 <div class="input-group mb-0">
                                                     <input type="text" placeholder="Buscar" class="form-control" id="searchInput">
                                                     <div class="input-group-append">
+                                                        <div class="input-group-prepend">
+                                                            <li class="input-group-text" style="border-radius: 0;"> <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span ><i class="fa fa-filter"></i> </span>          
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-right ">
+                                                                <label class="dropdown-item"><input type="radio" name="opcao" value="nome" checked> Nome</label>
+                                                                <label class="dropdown-item"><input type="radio" name="opcao" value="setor"> Setor</label>
+                                                            </div>
+                                                        </li>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group-append" style="border-left: 1px solid rgb(231, 228, 228);">
                                                         <span class="input-group-text">
                                                             <i class="fa fa-search"></i>
                                                         </span>
@@ -164,13 +179,13 @@
                                             </div>
                                             <div class="card-body p-2">
                                                 {% for dado in dados %}
-                                                    <a href="javascript:;" class="d-block p-2 rounded-lg" onclick="showChat('{{ loop.index }}', '{{ dado.id_pdf }}', '{{ dado.name }}', '{{ dado.categoria }}', '{{ dado.date }}')">
+                                                    <a href="javascript:;" class="d-block p-2 rounded-lg" onclick="showChat(this, '{{ dado.id_pdf }}', '{{ dado.name }}', '{{ dado.categoria }}', '{{ dado.sector }}')">
                                                         <div class="d-flex p-2">
                                                             <img alt="Image" src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="avatar shadow">
                                                             <div class="ml-2">
                                                                 <div class="justify-content-between align-items-center">
                                                                     <h4 class="mb-0 mt-1 selected">{{ dado.name }}<span class="badge badge-success"></span></h4>
-                                                                    <h6 class="mb-0 text-xs font-weight-normal text-muted selected">{{ dado.date }}</h6>
+                                                                    <h6 class="mb-0 text-xs font-weight-normal text-muted selected">{{ dado.sector }}</h6>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -180,7 +195,10 @@
                                         </div>
                                     </div>
 
-                                    <!-- PRECISAVA DE UMA DIV CENTRALZIADA NA TELA COM O TEXTO "SELECIONE O DOCUMENTO PARA ABRIR O CHAT" onde a mesma ira sumir assim que o usuário selecionar o chat-->
+                                    <!-- Animaçao de carregamento -->
+                                    <div class="loader" style="display: none;"></div>
+
+                                    <!-- CHAT ABERTO -->
                                     <div class="col-lg-9" id="chatContainer" style="display: none; height: 800px;">
                                         <div class="card" style="max-height: 70vh; height: 100%;">
                                             <div class="card-header shadow-xl" style="height: 17%;">
@@ -189,7 +207,7 @@
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div class="ms-4">
                                                                 <h2 class="mb-0 d-block" id="chatTitle">TITULO</h2>
-                                                                <span class="font-weight-bold" id="chatCategory"></span><span class="text-muted" id="chatDate">data</span></span>
+                                                                <span class="font-weight-bold"></span><span class="text-muted" id="chatSector">Setor</span></span>
                                                                 <span class="chat-id" style="display: none;">IDCHAT</span>
                                                             </div>
                                                             <div>
@@ -220,7 +238,6 @@
                                     <div class="overlay active col-lg-9 d-flex justify-content-center align-items-center" style="height: 600px;" id="selectChatMessage">
                                         <div class="popup">
                                             <h2>SELECIONE O DOCUMENTO PARA ABRIR O CHAT</h2>
-                                            <!-- Adicione aqui qualquer outro conteúdo ou estilo desejado para essa seção -->
                                         </div>
                                     </div>
                                 </div>
@@ -275,20 +292,38 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var searchInput = document.getElementById('searchInput');
+            var searchOption = "nome"; // Por padrão, a pesquisa é por nome
 
-            searchInput.addEventListener('keyup', function() {
-                var searchValue = searchInput.value.toLowerCase();
-                var items = document.querySelectorAll('.card-body a'); // Seletor ajustado conforme sua estrutura
-
-                items.forEach(item => {
-                    const itemText = item.querySelector('h4').textContent.toLowerCase();
-                    if (itemText.includes(searchValue)) {
-                        item.classList.remove('hidden'); // Remove a classe para mostrar o item
-                    } else {
-                        item.classList.add('hidden'); // Adiciona a classe para esconder o item
-                    }
+            // Adicionando evento de mudança aos botões de rádio para atualizar a opção de pesquisa
+            document.querySelectorAll('input[name="opcao"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    searchOption = this.value;
+                    search(); // Chama a função de pesquisa cada vez que a opção de pesquisa muda
                 });
             });
+
+            // Adicionando evento de digitação ao campo de busca para realizar a pesquisa em tempo real
+            searchInput.addEventListener('keyup', search);
+
+            function search() {
+                var searchValue = searchInput.value.trim().toLowerCase();
+
+                var items = document.querySelectorAll('.card-body.p-2 a');
+
+                items.forEach(item => {
+                    // Determina se está buscando por nome ou setor e obtém o texto relevante
+                    var itemText = searchOption === "nome" ?
+                        item.querySelector('h4').textContent.trim().toLowerCase() :
+                        item.querySelector('h6').textContent.trim().toLowerCase();
+
+                    if (itemText.includes(searchValue)) {
+                        item.style.display = ''; // Mostra o item se corresponder
+                    } else {
+                        // Usa setProperty para adicionar !important ao estilo de display
+                        item.style.setProperty('display', 'none', 'important'); // Esconde o item se não corresponder
+                    }
+                });
+            }
         });
 
         window.onload = function() {
