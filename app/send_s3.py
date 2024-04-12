@@ -20,7 +20,7 @@ def send_s3(folder, file):
         s3_client = boto3.client('s3',
                              aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
                              aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
-        key = f'Documents/{folder}/{file_name}'
+        key = f'{folder}{file_name}'
         # Obtenha os dados do arquivo
         s3_client.put_object(
             Bucket=bucket_name,
