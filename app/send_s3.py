@@ -1,7 +1,7 @@
 import os
 import boto3
 
-def send_s3(folder, files):
+def send_s3(folder, files, file_names):
     # Configuração do cliente S3
     
     # Nome do bucket
@@ -16,19 +16,14 @@ def send_s3(folder, files):
                              aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"))
 
     # Iterar sobre os arquivos e enviá-los para o S3
-    for file in files:
+    for file, file_name in zip(files, file_names):
         try:
-            # Nome do arquivo no S3 (pode ser o mesmo nome do arquivo enviado)
-            file_name = file.filename
-
-            arquivo = file.read()
-
             key = f'{folder}{file_name}'
             # Obtenha os dados do arquivo
             s3_client.put_object(
                 Bucket=bucket_name,
                 Key=key,
-                Body=arquivo,
+                Body=file,
                 ContentType=content_type
             )
             print(f'Arquivo {file_name} enviado para o bucket {bucket_name} na pasta {folder} com sucesso.')
