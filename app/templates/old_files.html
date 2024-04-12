@@ -276,7 +276,7 @@
             // Iterar sobre todos os arquivos selecionados
             for (var i = 0; i < arquivos.length; i++) {
                 var file = arquivos[i];
-                formData.append('files[]', file); // Adicionar cada arquivo ao FormData
+                formData.append('files[]', file, file.name); // Adicionar cada arquivo ao FormData com seu nome
             }
 
             $.ajax({
@@ -314,6 +314,10 @@
                     });
                 }
             });
+        }
+
+        function logout() {
+            window.location.href = "{{ url_for('logout.logout') }}";
         }
 
     </script>
