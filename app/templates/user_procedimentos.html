@@ -8,39 +8,6 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple.css') }}">
-
-
-    <style>
-        .card-body a .justify-content-between.align-items-center h4,
-        .card-body a .justify-content-between.align-items-center h6 {
-            margin: 0;
-            padding: 0;
-            color: black; /* Cor padrão do texto (escuro) */
-        }
-    
-        .card-body a.selected .justify-content-between.align-items-center h4,
-        .card-body a.selected .justify-content-between.align-items-center h6 {
-            color: white; /* Cor do texto quando selecionado */
-        }
-        .top{
-            position: fixed;
-            top: 0px;
-            right: 0px;
-            left: 0px;
-            height: 0.125rem;
-            background-image: linear-gradient(90deg, rgb(255, 75, 75), rgb(255, 253, 128));
-            z-index: 999990;
-        }
-        #pdfViewer img {
-            max-width: 100%; /* Limita a largura da imagem a 100% do seu contêiner */
-            height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
-            overflow-y: auto;
-        }
-        .hidden {
-            display: none !important;
-        }
-
-    </style>
 </head>
 <div class="top"></div>
 <body class="g-sidenav-show">
@@ -249,6 +216,8 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Conteúdo do PDF será carregado aqui -->
         <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
@@ -260,16 +229,16 @@
                     </div>
                     <div class="modal-body">
                         <div id="pdfViewer"></div>
-                        <!-- Conteúdo do PDF será carregado aqui -->
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- Footer -->
         <footer class="footer pt-0 px-4">
             <div class="row align-items-center justify-content-lg-between">
                 <div class="col-lg-6">
-                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="#" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="#" target="_blank">VK</a> </div>
+                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="javascript:;" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="javascript:;" target="_blank">VK</a> </div>
                 </div>
                 <div class="col-lg-6">
                     <ul class="nav nav-footer justify-content-center justify-content-lg-end">
@@ -280,6 +249,7 @@
                 </div>
             </div>
         </footer>
+
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -291,51 +261,14 @@
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+
     <script>
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var searchInput = document.getElementById('searchInput');
-            var searchOption = "nome"; // Por padrão, a pesquisa é por nome
-
-            // Adicionando evento de mudança aos botões de rádio para atualizar a opção de pesquisa
-            document.querySelectorAll('input[name="opcao"]').forEach(function(radio) {
-                radio.addEventListener('change', function() {
-                    searchOption = this.value;
-                    search(); // Chama a função de pesquisa cada vez que a opção de pesquisa muda
-                });
-            });
-
-            // Adicionando evento de digitação ao campo de busca para realizar a pesquisa em tempo real
-            searchInput.addEventListener('keyup', search);
-
-            function search() {
-                var searchValue = searchInput.value.trim().toLowerCase();
-
-                var items = document.querySelectorAll('.card-body.p-2 a');
-
-                items.forEach(item => {
-                    // Determina se está buscando por nome ou setor e obtém o texto relevante
-                    var itemText = searchOption === "nome" ?
-                        item.querySelector('h4').textContent.trim().toLowerCase() :
-                        item.querySelector('h6').textContent.trim().toLowerCase();
-
-                    if (itemText.includes(searchValue)) {
-                        item.style.display = ''; // Mostra o item se corresponder
-                    } else {
-                        // Usa setProperty para adicionar !important ao estilo de display
-                        item.style.setProperty('display', 'none', 'important'); // Esconde o item se não corresponder
-                    }
-                });
-            }
-        });
-
-        window.onload = function() {
-            document.getElementById('selectChatMessage').classList.add('active');
-        };
 
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
         }
+
     </script>
 
 </body>
