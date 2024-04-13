@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple_pdf.css') }}">
+    <link rel="stylesheet" href="../static/theme_home.css">
+    <link rel="stylesheet" href="../static/loopple.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
     
   </head>
@@ -149,11 +152,13 @@
                                                                 <th>Cargo</th>
                                                                 <th>Role</th>
                                                                 <th>Último acesso</th>
-                                                                <th>Ações</th>
-                                                                <th> 
-                                                                    <button type="button" class="botao-export" onclick="exportToExcel()">
+                                                                <th>Ações
+                                                                     <button type="button" class="botao-export" onclick="exportToExcel()">
                                                                         <i class="fa fa-table"></i>
                                                                     </button>
+                                                                </th>
+                                                                <th> 
+                                                                   
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -291,11 +296,11 @@
         <footer class="footer pt-0 px-4">
             <div class="row align-items-center justify-content-lg-between">
                 <div class="col-lg-6">
-                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="#" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="#" target="_blank">VK</a> </div>
+                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="javascript:" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="javascript:" target="_blank">VK</a> </div>
                 </div>
                 <div class="col-lg-6">
                     <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                        <li class="nav-item"> <a href="javascript:void(0);" class="nav-link">Sobre</a> </li>
+                        <li class="nav-item"> <a href="javascript:;" class="nav-link">Sobre</a> </li>
                         <li class="nav-item"> <a href="javascript:;" class="nav-link">Blog</a> </li>
                         <li class="nav-item"> <a href="javascript:;" class="nav-link">Contate</a> </li>
                     </ul>
