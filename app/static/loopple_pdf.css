@@ -236,6 +236,15 @@ footer.footer {
   border-radius: 6px;
 }
 
+#pdfViewer img {
+  max-width: 100%; /* Limita a largura da imagem a 100% do seu contêiner */
+  height: auto; /* Garante que a altura da imagem seja ajustada proporcionalmente */
+  overflow-y: auto;
+}
+.hidden {
+  display: none !important;
+}
+
 .loader {
   position: fixed; /* Faz o loader ficar fixo na tela, sobrepondo outros conteúdos */
   top: 50%; /* Centraliza verticalmente */
