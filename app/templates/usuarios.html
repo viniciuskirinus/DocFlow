@@ -182,8 +182,6 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div class="card-footer d-block">
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -192,21 +190,8 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- Footer -->
-        <footer class="footer pt-0 px-4">
-            <div class="row align-items-center justify-content-lg-between">
-                <div class="col-lg-6">
-                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="#" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="#" target="_blank">VK</a> </div>
-                </div>
-                <div class="col-lg-6">
-                    <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                        <li class="nav-item"> <a href="javascript:void(0);" class="nav-link">Sobre</a> </li>
-                        <li class="nav-item"> <a href="javascript:;" class="nav-link">Blog</a> </li>
-                        <li class="nav-item"> <a href="javascript:;" class="nav-link">Contate</a> </li>
-                    </ul>
-                </div>
-            </div>
-        </footer>
+        </div> 
+
         <!-- Modal para adicionar informações -->
         <div class="modal" id="insert" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -302,6 +287,21 @@
             </div>
         </div>
 
+        <!-- Footer -->
+        <footer class="footer pt-0 px-4">
+            <div class="row align-items-center justify-content-lg-between">
+                <div class="col-lg-6">
+                    <div class="copyright text-center  text-lg-left  text-muted"> © 2024 Made with <a class="font-weight-bold ml-1" href="#" target="_blank">Sirtec</a> &amp;<a class="font-weight-bold ml-1" href="#" target="_blank">VK</a> </div>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                        <li class="nav-item"> <a href="javascript:void(0);" class="nav-link">Sobre</a> </li>
+                        <li class="nav-item"> <a href="javascript:;" class="nav-link">Blog</a> </li>
+                        <li class="nav-item"> <a href="javascript:;" class="nav-link">Contate</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
     </div>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/jquery.min.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/bootstrap.bundle.min.js"></script>
@@ -309,65 +309,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/chart.extension.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
+    <script src="{{ url_for('static', filename='admin_users.js') }}"></script>
     
     <script>
-        
-        $(document).ready(function(){
-            // Ativar a função de pesquisa
-            $("#searchInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tbody tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-
-        $(document).on('click', '.botao-edit', function()  {
-            console.log("Botão clicado");
-            var id_user = $(this).data('id_user');
-            var name = $(this).data('name');
-            var office = $(this).data('office');
-            var role = $(this).data('role');
-            var password = $(this).data('password');
-
-            // Preencher os campos do modal de edição com os dados
-            $('#edit_nome').val(name);
-            $('#edit_cargo').val(office);
-            $('#edit_role').val(role);
-            $('#edit_senha').val(password);
-            $('#edit_id_user').val(id_user);
-
-            // Abrir o modal de edição
-            $('#editModal').modal('show');
-        });
-
-        function exportToExcel() {
-            const rows = document.querySelectorAll("#myTable tbody tr");
-            const data = [];
-            rows.forEach(row => {
-                const rowData = [];
-                row.querySelectorAll("td").forEach(cell => {
-                    rowData.push(cell.innerText);
-                });
-                data.push(rowData);
-            });
-
-            const wb = XLSX.utils.book_new();
-            wb.Props = {
-                Title: "Lista de Usuários",
-                Subject: "Dados",
-                Author: "Seu Nome",
-                CreatedDate: new Date()
-            };
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            XLSX.utils.book_append_sheet(wb, ws, "Usuários");
-            XLSX.writeFile(wb, "usuarios.xlsx");
-        }
-
 
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
         }
+
     </script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
   </body>
