@@ -285,3 +285,11 @@ footer.footer {
 .hidden {
   display: none !important;
 }
+
+.texto-hover {
+  display: none;
+}
+
+.botao-export:hover .texto-hover {
+  display: inline;
+}
