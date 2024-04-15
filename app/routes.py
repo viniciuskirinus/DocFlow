@@ -58,6 +58,8 @@ user_iso_routes = Blueprint('user_iso', __name__, template_folder='templates')
 user_documentos_gerais_routes = Blueprint('user_documentos_gerais', __name__, template_folder='templates')
 user_projetos_routes = Blueprint('user_projetos', __name__, template_folder='templates')
 user_documentos_clientes_routes = Blueprint('user_documentos_clientes', __name__, template_folder='templates')
+user_politicas_gerais_routes = Blueprint('user_politicas_gerais', __name__, template_folder='templates')
+
 
 
 #rota processa chat
@@ -166,7 +168,15 @@ def userdocumentos_clientes():
         return render_template('user_documentos_clientes.html', active_page='user_documentos_clientes.userdocumentos_clientes', dados=dados_do_banco) 
     else:
         return redirect(url_for('login.login'))
-
+    
+@user_politicas_gerais_routes.route('/user_politicas_gerais')
+def userpoliticas_gerais():
+    if 'username' in session and 'role' in session and session['role'] == "user":
+        categoria = 'Politicas Gerais'  # Defina a categoria desejada
+        dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
+        return render_template('user_politicas_gerais.html', active_page='user_politicas_gerais.userpoliticas_gerais', dados=dados_do_banco) 
+    else:
+        return redirect(url_for('login.login'))
     
 @user_show_pdf_routes.route('/showpdf', methods=['POST'])
 def showpdf_route():
