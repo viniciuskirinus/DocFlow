@@ -56,6 +56,8 @@ user_manuais_routes = Blueprint('user_manuais', __name__, template_folder='templ
 user_instrucoes_routes = Blueprint('user_instrucoes', __name__, template_folder='templates')
 user_iso_routes = Blueprint('user_iso', __name__, template_folder='templates')
 user_documentos_gerais_routes = Blueprint('user_documentos_gerais', __name__, template_folder='templates')
+user_projetos_routes = Blueprint('user_projetos', __name__, template_folder='templates')
+
 
 
 #rota processa chat
@@ -144,6 +146,15 @@ def userdocumentosgerais():
         categoria = 'Documentos Gerais'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
         return render_template('user_documentos_gerais.html', active_page='user_documentos_gerais.userdocumentosgerais', dados=dados_do_banco) 
+    else:
+        return redirect(url_for('login.login'))
+    
+@user_projetos_routes.route('/user_projetos')
+def userprojetos():
+    if 'username' in session and 'role' in session and session['role'] == "user":
+        categoria = 'Projetos'  # Defina a categoria desejada
+        dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
+        return render_template('user_projetos.html', active_page='user_projetos.userprojetos', dados=dados_do_banco) 
     else:
         return redirect(url_for('login.login'))
 
