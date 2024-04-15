@@ -414,4 +414,10 @@
     <script src="{{ url_for('static', filename='main.js') }}"></script>
     <script src="{{ url_for('static', filename='admin_pdf.js') }}"></script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
+
+    <script>
+          function logout() {
+              window.location.href = "{{ url_for('logout.logout') }}";
+          }
+    </script>
   </body>

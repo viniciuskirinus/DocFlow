@@ -30,7 +30,9 @@ def create_app():
                             admin_user_edit_routes, 
                             user_show_pdf_routes,
                             admin_old_files_routes,
-                            admin_old_files_send_routes, user_projetos_routes)
+                            admin_old_files_send_routes, 
+                            user_projetos_routes,
+                            user_documentos_clientes_routes)
     
     
     
@@ -46,6 +48,7 @@ def create_app():
     app.register_blueprint(user_iso_routes)
     app.register_blueprint(user_documentos_gerais_routes)
     app.register_blueprint(user_projetos_routes)
+    app.register_blueprint(user_documentos_clientes_routes)
     app.register_blueprint(admin_pdf_routes)
     app.register_blueprint(user_show_pdf_routes)
     app.register_blueprint(admin_user_routes)
