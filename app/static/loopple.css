@@ -241,3 +241,6 @@ footer.footer {
 .hidden {
     display: none !important;
 }
+.swal2-container {
+  z-index: 1050; /* ou qualquer valor maior que o z-index do modal */
+}
