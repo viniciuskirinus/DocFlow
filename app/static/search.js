@@ -39,8 +39,8 @@ window.onload = function() {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Captura o formulário
-    var form = document.getElementById("info");
+    // Captura o formulário dentro do modal
+    var form = document.getElementById("info-form");
 
     // Adiciona um event listener para o envio do formulário
     form.addEventListener("submit", function(event) {
@@ -53,18 +53,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Verifica se as senhas são iguais
         if (password !== confirm_password) {
-            alert("As senhas não são iguais");
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'As senhas não são iguais'
+            });
             return; // Interrompe o envio do formulário
         }
 
         // Verifica se a senha atende aos critérios de segurança
         if (!isStrongPassword(password)) {
-            alert("A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.'
+            });
             return; // Interrompe o envio do formulário
         }
 
         // Se todas as validações passaram, envia o formulário para a rota /edit_data
-        form.action = "/edit_data";
         form.submit();
     });
 

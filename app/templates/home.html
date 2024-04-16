@@ -111,7 +111,7 @@
                                 <div class="dropdown-header noti-title">
                                     <h6 class="text-overflow m-0">Bem vindo!</h6>
                                 </div> 
-                                <a href="#!" data-toggle="modal" data-target="#info" class="dropdown-item"> <i class="fa fa-user"></i> <span>Meu perfil</span> </a> 
+                                <a href="#!" data-toggle="modal" data-target="#modal-info" class="dropdown-item"> <i class="fa fa-user"></i> <span>Meu perfil</span> </a> 
                                 <a href="#!" class="dropdown-item" onclick="logout()"> <i class="fa fa-sign-out-alt"></i> <span>Sair</span> </a>
                             </div>
                         </li>
@@ -160,7 +160,7 @@
         </div> 
 
         <!-- Modal dados do usuário -->
-        <div class="modal" id="info" role="dialog">
+        <div class="modal" id="modal-info" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content modais">
         
@@ -173,7 +173,7 @@
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <!-- Formulário para adicionar informações -->
-                        <form id="info" method="post" action="/edit_data">
+                        <form id="info-form" method="post" action="/edit_data">
                             <div class="form-group">
                                 <label for="name" class="text">Nome:</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="{{session['username']}}" readonly>
