@@ -109,7 +109,7 @@
                                 <div class="dropdown-header noti-title">
                                     <h6 class="text-overflow m-0">Bem vindo!</h6>
                                 </div> 
-                                <a href="#!" class="dropdown-item"> <i class="fa fa-user"></i> <span>Meu perfil</span> </a> 
+                                <a href="#!" data-toggle="modal" data-target="#modal-info" class="dropdown-item"> <i class="fa fa-user"></i> <span>Meu perfil</span> </a> 
                                 <a href="#!" class="dropdown-item" onclick="logout()"> <i class="fa fa-sign-out-alt"></i> <span>Sair</span> </a>
                             </div>
                         </li>
@@ -235,6 +235,59 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal dados do usuário -->
+        <div class="modal" id="modal-info" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modais">
+        
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title text">Editar meus Dados Pessoais</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+        
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- Formulário para adicionar informações -->
+                        <form id="info-form" method="post" action="/edit_data">
+                            <div class="form-group">
+                                <label for="name" class="text">Nome:</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{session['username']}}" placeholder="{{session['username']}}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="office" class="text">Cargo:</label>
+                                <input type="text" class="form-control" id="office" name="office" value="{{session['office']}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text">Senha:</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm_password" class="text">Confirmar senha:</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                            </div>
+
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Enviar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </form>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+        
+        {% if alert_message %}
+            <script>
+                Swal.fire({
+                    icon: '{{ alert_message[1] }}',
+                    title: '{{ alert_message[0] }}'
+                });
+            </script>
+        {% endif %}
 
         <!-- Footer -->
         <footer class="footer pt-0 px-4">
