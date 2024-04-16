@@ -8,6 +8,7 @@ from .pdf_edit import pdf_edit
 from .pdf_delete import pdf_delete
 from .user_delete import user_delete
 from .user_edit import user_edit
+from .user_data_edit import user_data_edit
 from .load_docs import obter_dados_do_banco_por_categoria
 from .load_docs_admin import obter_dados_lista_pdf
 from .load_users_admin import obter_dados_lista_user
@@ -60,7 +61,8 @@ user_projetos_routes = Blueprint('user_projetos', __name__, template_folder='tem
 user_documentos_clientes_routes = Blueprint('user_documentos_clientes', __name__, template_folder='templates')
 user_politicas_gerais_routes = Blueprint('user_politicas_gerais', __name__, template_folder='templates')
 
-
+#edicao dados usuario
+user_edit_data_routes = Blueprint('edit_data', __name__, template_folder='templates')
 
 #rota processa chat
 process_chat_routes = Blueprint('process_chat', __name__, template_folder='templates')
@@ -340,6 +342,27 @@ def deleteuser():
         user_delete(id_user)
         
         return redirect(url_for('usuarios.usuarios'))
+    else:
+        return redirect(url_for('login.login'))
+    
+
+@user_edit_data_routes.route('/edit_data', methods=['POST'])
+def edit_data():
+    if 'username' in session and 'role' in session and session['role'] == "user":
+        # Obter dados do formulário
+        nome = request.form.get('name')
+        cargo = request.form.get('office')
+        senha = request.form.get('password')
+        confirma_senha = request.form.get('confirm_password')
+        
+        # Chamar a função user_data_edit e capturar o retorno
+        retorno = user_data_edit(nome, cargo, senha, confirma_senha)
+        
+        # Redirecionar para a página inicial e enviar a mensagem de retorno via JSON
+        if "Sucesso" in retorno:
+            return jsonify({'message': retorno, 'type': 'success'})
+        else:
+            return jsonify({'message': retorno, 'type': 'error'})
     else:
         return redirect(url_for('login.login'))
 

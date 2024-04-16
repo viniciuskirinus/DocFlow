@@ -33,7 +33,8 @@ def create_app():
                             admin_old_files_send_routes, 
                             user_projetos_routes,
                             user_documentos_clientes_routes,
-                            user_politicas_gerais_routes)
+                            user_politicas_gerais_routes,
+                            user_edit_data_routes)
     
     
     
@@ -61,6 +62,7 @@ def create_app():
     app.register_blueprint(admin_user_edit_routes)
     app.register_blueprint(admin_user_delete_routes)
     app.register_blueprint(process_chat_routes)
+    app.register_blueprint(user_edit_data_routes)
 
 
     app.register_blueprint(logout_routes)

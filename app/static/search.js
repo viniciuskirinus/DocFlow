@@ -37,3 +37,31 @@ document.addEventListener("DOMContentLoaded", function() {
 window.onload = function() {
     document.getElementById('selectChatMessage').classList.add('active');
 };
+
+document.getElementById("submitButton").addEventListener("click", function() {
+    var formData = new FormData(document.getElementById("info"));
+
+    fetch('/edit_data', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.type === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: data.message
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: data.message
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    });
+});
