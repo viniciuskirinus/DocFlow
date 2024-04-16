@@ -104,7 +104,11 @@ def admin():
 @home_routes.route('/home')
 def home():
     if 'username' in session and 'role' in session and session['role'] == "user":
-        return render_template('home.html', active_page='home.home') 
+        # Obtenha mensagens de alerta
+        success_message = flash('success')
+        error_message = flash('error')
+
+        return render_template('home.html', active_page='home.home', success_message=success_message, error_message=error_message) 
     else:
         return redirect(url_for('login.login'))
 
@@ -358,11 +362,14 @@ def edit_data():
         # Chamar a função user_data_edit e capturar o retorno
         retorno = user_data_edit(nome, cargo, senha, confirma_senha)
         
-        # Redirecionar para a página inicial e enviar a mensagem de retorno via JSON
+        # Defina uma mensagem de alerta com base no retorno
         if "Sucesso" in retorno:
-            return jsonify({'message': retorno, 'type': 'success'})
+            flash(retorno, 'success')
         else:
-            return jsonify({'message': retorno, 'type': 'error'})
+            flash(retorno, 'error')
+        
+        # Redirecionar para a página inicial
+        return redirect(url_for('home.home'))
     else:
         return redirect(url_for('login.login'))
 

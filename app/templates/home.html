@@ -238,4 +238,25 @@
             });
         });
     </script>
+
+    {% if success_message %}
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: '{{ success_message }}'
+        });
+    </script>
+    {% endif %}
+
+    <!-- Se houver uma mensagem de erro, exiba-a -->
+    {% if error_message %}
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: '{{ error_message }}'
+        });
+    </script>
+    {% endif %}
 </body>
