@@ -38,30 +38,42 @@ window.onload = function() {
     document.getElementById('selectChatMessage').classList.add('active');
 };
 
-document.getElementById("submitButton").addEventListener("click", function() {
-    var formData = new FormData(document.getElementById("info"));
+document.addEventListener("DOMContentLoaded", function() {
+    // Captura o formulário
+    var form = document.getElementById("info");
 
-    fetch('/edit_data', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.type === 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Sucesso!',
-                text: data.message
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro!',
-                text: data.message
-            });
+    // Adiciona um event listener para o envio do formulário
+    form.addEventListener("submit", function(event) {
+        // Previne o envio padrão do formulário
+        event.preventDefault();
+
+        // Captura os valores dos campos de senha
+        var password = document.getElementById("password").value;
+        var confirm_password = document.getElementById("confirm_password").value;
+
+        // Verifica se as senhas são iguais
+        if (password !== confirm_password) {
+            alert("As senhas não são iguais");
+            return; // Interrompe o envio do formulário
         }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
+
+        // Verifica se a senha atende aos critérios de segurança
+        if (!isStrongPassword(password)) {
+            alert("A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.");
+            return; // Interrompe o envio do formulário
+        }
+
+        // Se todas as validações passaram, envia o formulário para a rota /edit_data
+        form.action = "/edit_data";
+        form.submit();
     });
+
+    // Função para verificar se a senha é forte
+    function isStrongPassword(password) {
+        // Verifica se a senha tem pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais
+        if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[!@#$%^&*()-_=+{};:,<.>]/.test(password)) {
+            return false;
+        }
+        return true;
+    }
 });

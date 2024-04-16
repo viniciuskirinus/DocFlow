@@ -104,11 +104,10 @@ def admin():
 @home_routes.route('/home')
 def home():
     if 'username' in session and 'role' in session and session['role'] == "user":
-        # Obtenha mensagens de alerta
-        success_message = flash('success')
-        error_message = flash('error')
+        # Obtenha a mensagem de alerta da sessão
+        alert_message = session.pop('alert_message', None)
 
-        return render_template('home.html', active_page='home.home', success_message=success_message, error_message=error_message) 
+        return render_template('home.html', active_page='home.home', alert_message=alert_message) 
     else:
         return redirect(url_for('login.login'))
 
@@ -364,9 +363,9 @@ def edit_data():
         
         # Defina uma mensagem de alerta com base no retorno
         if "Sucesso" in retorno:
-            flash(retorno, 'success')
+            session['alert_message'] = (retorno, 'success')
         else:
-            flash(retorno, 'error')
+            session['alert_message'] = (retorno, 'error')
         
         # Redirecionar para a página inicial
         return redirect(url_for('home.home'))

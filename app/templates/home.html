@@ -201,6 +201,14 @@
             </div>
         </div>
         
+        {% if alert_message %}
+            <script>
+                Swal.fire({
+                    icon: '{{ alert_message[1] }}',
+                    title: '{{ alert_message[0] }}'
+                });
+            </script>
+        {% endif %}
         
         <!-- Footer -->
         <footer class="footer pt-0 px-4">
@@ -238,25 +246,5 @@
             });
         });
     </script>
-
-    {% if success_message %}
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Sucesso!',
-            text: '{{ success_message }}'
-        });
-    </script>
-    {% endif %}
-
-    <!-- Se houver uma mensagem de erro, exiba-a -->
-    {% if error_message %}
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Erro!',
-            text: '{{ error_message }}'
-        });
-    </script>
-    {% endif %}
+    
 </body>
