@@ -242,5 +242,5 @@ footer.footer {
     display: none !important;
 }
 .swal2-container {
-  z-index: 1050; /* ou qualquer valor maior que o z-index do modal */
+  z-index: 2000 !important; /* ou qualquer valor maior que o z-index do modal */
 }
