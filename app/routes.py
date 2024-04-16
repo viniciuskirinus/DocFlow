@@ -356,10 +356,9 @@ def edit_data():
         nome = request.form.get('name')
         cargo = request.form.get('office')
         senha = request.form.get('password')
-        confirma_senha = request.form.get('confirm_password')
         
         # Chamar a função user_data_edit e capturar o retorno
-        retorno = user_data_edit(nome, cargo, senha, confirma_senha)
+        retorno = user_data_edit(nome, cargo, senha)
         
         # Defina uma mensagem de alerta com base no retorno
         if "Sucesso" in retorno:

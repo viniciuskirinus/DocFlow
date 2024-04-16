@@ -4,10 +4,7 @@ from .models import conectar_db
 
 conexao = conectar_db()
 
-def user_data_edit(nome, cargo, senha, confirma_senha):
-    # Verifica se as senhas são iguais - removido
-    # Verifica se a senha é forte o suficiente - removido
-    
+def user_data_edit(nome, cargo, senha):
     try:
         with conexao.cursor() as cursor:
             senha_md5 = hashlib.md5(senha.encode()).hexdigest()
