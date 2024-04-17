@@ -404,10 +404,7 @@
 
                     <!-- Modal Footer -->
                     <div class="modal-footer">
-                        <form method="post" action="{{ url_for('delete.delete') }}">
-                            <input type="hidden" id="delete_id_pdf" name="id_pdf">
-                            <button type="submit" class="btn btn-danger">Excluir</button>
-                        </form>
+                        <button type="button" class="btn btn-danger" id="deleteButton">Excluir</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
