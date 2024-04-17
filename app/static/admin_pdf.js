@@ -144,17 +144,16 @@ $(document).on('click', '.botao-delete', function()  {
     var id_pdf = $(this).data('id_pdf');
     var name = $(this).data('name');
 
-
-    // Preencher os campos do modal de edição com os dados
-    $('#delete_document_name').val(name);
+    // Preencher o texto do span com o nome do documento
+    $('#delete_document_name').text(name);
     $('#delete_id_pdf').val(id_pdf);
 
-    // Abrir o modal de edição
+    // Abrir o modal de exclusão
     $('#deleteModal').modal('show');
 });
 
 // Evento de edição do pdf
-$('#deleteModal').submit(function(event) {
+$('#deleteForm').submit(function(event) {
     event.preventDefault(); // Impede o envio padrão do formulário
 
     var formData = new FormData($(this)[0]); // Obter dados do formulário
