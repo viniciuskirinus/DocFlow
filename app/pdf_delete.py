@@ -18,7 +18,6 @@ def pdf_delete(id_pdf):
         # Feche o cursor
         cursor.close()
 
-        print("Exclusão no banco de dados bem-sucedida!")
-
+        return True
     except Exception as e:
-        print(f"Erro ao excluir do banco de dados: {e}")
+        return False
