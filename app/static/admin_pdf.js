@@ -147,14 +147,14 @@ $(document).ready(function() {
         var idPdf = button.data('id_pdf');
         var modal = $(this);
         modal.find('.modal-body #delete_document_name').text(documentName); // Atualizar o texto no modal
-        modal.find('.modal-footer form').attr('action', "{{ url_for('delete.delete') }}"); // Atualizar a ação do formulário
+        modal.find('.modal-footer form').attr('action', "/delete"); // Atualizar a ação do formulário
         modal.find('.modal-footer form input[name="id_pdf"]').attr('value', idPdf); // Atualizar o valor do campo oculto
     });
 
     // Evento de clique no botão de exclusão dentro do modal
     $('#deleteButton').click(function(event) {
         var idPdf = $('#delete_id_pdf').val(); // Obter o valor do ID do PDF
-        var url = "{{ url_for('delete.delete') }}"; // Obter a URL para exclusão
+        var url = "/delete"; // Obter a URL para exclusão
 
         // Enviar solicitação AJAX
         $.ajax({
