@@ -377,9 +377,7 @@
                             <!-- Modal Footer -->
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Atualizar</button>
-                                <form method="post" action="{{ url_for('delete.delete') }}">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                <form>
                             </div>
                         </form>
                     </div>
@@ -399,13 +397,17 @@
 
                     <!-- Modal Body -->
                     <div class="modal-body">
-                        <p>Deseja excluir o documento <span id="delete_document_name"></span>?</p>
-                    </div>
+                        <form method="POST" action="{{ url_for('delete.delete') }}">
 
-                    <!-- Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" id="deleteButton">Excluir</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <p>Deseja excluir o documento <span id="delete_document_name"></span>?</p>
+                            <input id="delete_id_pdf" type="hidden" name="id_pdf" value="{{ dado.id_pdf }}">
+                    
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

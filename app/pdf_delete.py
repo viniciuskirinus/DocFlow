@@ -2,6 +2,7 @@ from .models import conectar_db
 
 conexao = conectar_db()
 
+
 def pdf_delete(id_pdf):
     try:
         # Crie um cursor para executar consultas SQL
@@ -17,7 +18,6 @@ def pdf_delete(id_pdf):
         # Feche o cursor
         cursor.close()
 
-        return True, None
+        return True
     except Exception as e:
-        # Se ocorrer um erro, retorne False e a mensagem de erro
-        return False, str(e)
+        return False
