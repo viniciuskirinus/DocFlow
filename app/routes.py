@@ -283,12 +283,12 @@ def delete():
             id_pdf = request.form.get('id_pdf')  
             pdf_delete(id_pdf)
             
-            return redirect(url_for('pdf.pdf'))
+            return "Documento excluído com sucesso"
         else:
-            return redirect(url_for('login.login'))
+            return "Usuário não autorizado", 403  # Retorna um código de status 403 para indicar acesso proibido
     except Exception as e:
         print(f"An error occurred: {e}")  # Registro de erro para depuração
-        return "An error occurred"
+        return "Ocorreu um erro ao apagar o documento", 500  # Retorna um código de status 500 para indicar um erro interno do servidor
 
 @admin_pdf_generate_routes.route('/generate', methods=['POST'])
 def generate():
