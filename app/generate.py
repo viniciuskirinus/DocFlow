@@ -26,7 +26,6 @@ def processar_formulario(nome, categoria, versao, data, setor, arquivo):
 
         # Faz o upload do arquivo para o S3
         fazer_upload_para_s3(nome, versao, conteudo_arquivo)
-
         return True
     except Exception as e:
         print(f"Erro ao processar o formulário: {e}")

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, get_flashed_messages
+from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify
 import os
 from flask import Flask
 import pickle
@@ -89,6 +89,8 @@ def login():
                     return redirect(url_for('home.home'))
 
     return render_template('login.html')
+
+
 
 @admin_routes.route('/admin')
 def admin():
@@ -216,9 +218,7 @@ def chat_endpoint():
 def pdf():
     if 'username' in session and 'role' in session and session['role'] == "admin":
         dados_do_banco = obter_dados_lista_pdf()
-        # Obtém as mensagens flash
-        messages = get_flashed_messages()
-        return render_template('pdf.html', active_page='pdf.pdf', dados=dados_do_banco, messages=messages) 
+        return render_template('pdf.html', active_page='pdf.pdf', dados=dados_do_banco) 
     else:
         return redirect(url_for('login.login'))
     
@@ -282,7 +282,6 @@ def delete():
     else:
         return redirect(url_for('login.login'))
 
-
 @admin_pdf_generate_routes.route('/generate', methods=['POST'])
 def generate():
     if 'username' in session and 'role' in session and session['role'] == "admin":
@@ -293,16 +292,13 @@ def generate():
         data = request.form.get('data')
         setor = request.form.get('setor')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
-        success = processar_formulario(nome, categoria, versao, data, setor, arquivo)
-        
-        if success:
-            flash('Formulário processado com sucesso!', 'success')
-        else:
-            flash('Erro ao processar o formulário. Por favor, tente novamente.', 'error')
-
-        return redirect(url_for('pdf.pdf'))
+        try:
+            processar_formulario(nome, categoria, versao, data, setor, arquivo)
+            return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+        except Exception as e:
+            return jsonify(success=False, error=str(e))  # Retorna uma resposta indicando erro
     else:
-        return redirect(url_for('login.login'))
+        return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
     
 
 @admin_user_routes.route('/users')

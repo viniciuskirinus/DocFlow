@@ -185,8 +185,6 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div class="card-footer d-block">
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +193,8 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
+
         <!-- Animaçao de carregamento -->
         <div class="loader" style="display: none;"></div>
         
@@ -390,17 +389,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Aletas-->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <script>
-                        swal('{{ category }}', '{{ message }}', '{{ category }}');
-                    </script>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
         
         <!-- Footer -->
         <footer class="footer pt-0 px-4">
