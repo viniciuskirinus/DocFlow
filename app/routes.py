@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, session, request, send_from_directory, jsonify, request
+from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, get_flashed_messages
 import os
 from flask import Flask
 import pickle
@@ -89,8 +89,6 @@ def login():
                     return redirect(url_for('home.home'))
 
     return render_template('login.html')
-
-
 
 @admin_routes.route('/admin')
 def admin():
@@ -214,12 +212,13 @@ def chat_endpoint():
     response = process_message(user_message, pdf_id)
     return jsonify({'response': response})
 
-
 @admin_pdf_routes.route('/pdf')
 def pdf():
     if 'username' in session and 'role' in session and session['role'] == "admin":
         dados_do_banco = obter_dados_lista_pdf()
-        return render_template('pdf.html', active_page='pdf.pdf', dados=dados_do_banco) 
+        # Obtém as mensagens flash
+        messages = get_flashed_messages()
+        return render_template('pdf.html', active_page='pdf.pdf', dados=dados_do_banco, messages=messages) 
     else:
         return redirect(url_for('login.login'))
     
@@ -294,8 +293,13 @@ def generate():
         data = request.form.get('data')
         setor = request.form.get('setor')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
-        processar_formulario(nome, categoria, versao, data, setor, arquivo)
+        success = processar_formulario(nome, categoria, versao, data, setor, arquivo)
         
+        if success:
+            flash('Formulário processado com sucesso!', 'success')
+        else:
+            flash('Erro ao processar o formulário. Por favor, tente novamente.', 'error')
+
         return redirect(url_for('pdf.pdf'))
     else:
         return redirect(url_for('login.login'))
