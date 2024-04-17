@@ -67,7 +67,19 @@ document.addEventListener("DOMContentLoaded", function() {
     ordenarTabela();
 });
 
-// Evento de envio do formulário
+$(document).ready(function() {
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botão que acionou o modal
+        var documentName = button.data('name'); // Extrair informações dos atributos de dados
+        var idPdf = button.data('id_pdf');
+        var modal = $(this);
+        modal.find('.modal-body #delete_document_name').text(documentName); // Atualizar o texto no modal
+        modal.find('.modal-footer form').attr('action', "{{ url_for('delete.delete') }}"); // Atualizar a ação do formulário
+        modal.find('.modal-footer form input[name="id_pdf"]').val(idPdf); // Atualizar o valor do campo oculto
+    });
+});
+
+// Evento de adição de pdf
 $('#addForm').submit(function(event) {
     event.preventDefault(); // Impede o envio padrão do formulário
 
@@ -103,7 +115,7 @@ $('#addForm').submit(function(event) {
     });
 });
 
-// Evento de envio do formulário
+// Evento de edição do pdf
 $('#editForm').submit(function(event) {
     event.preventDefault(); // Impede o envio padrão do formulário
 
@@ -122,7 +134,7 @@ $('#editForm').submit(function(event) {
             Swal.fire({
                 icon: 'success',
                 title: 'Sucesso!',
-                text: 'Os dados foram inseridos com sucesso.',
+                text: 'Os dados foram alterados com sucesso.',
             }).then((result) => {
                 // Redirecionar para a página de PDF após o alerta ser fechado
                 window.location.href = '/pdf';
@@ -133,7 +145,43 @@ $('#editForm').submit(function(event) {
             Swal.fire({
                 icon: 'error',
                 title: 'Erro!',
-                text: 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
+                text: 'Ocorreu um erro ao alterar o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
+            });
+        }
+    });
+});
+
+// Evento de apagar o pdf
+$('#deleteModal').submit(function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    var formData = new FormData($(this)[0]); // Obter dados do formulário
+
+    // Enviar solicitação AJAX
+    $.ajax({
+        url: '/delete',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            // Se a edição for bem-sucedida, exibir um alerta de sucesso
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'Documento excluído com sucesso!',
+            }).then((result) => {
+                // Redirecionar para a página de PDF após o alerta ser fechado
+                window.location.href = '/pdf';
+            });
+        },
+        error: function(xhr, status, error) {
+            // Se ocorrer um erro, exibir um alerta de erro
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'Ocorreu um erro ao apagar o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
             });
         }
     });

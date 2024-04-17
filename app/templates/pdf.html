@@ -172,12 +172,9 @@
                                                                         <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_pdf="{{ dado.id_pdf }}" data-name="{{ dado.name }}" data-category="{{ dado.category }}" data-sector="{{ dado.sector }}" data-version="{{ dado.version }}" data-date="{{ dado.date }}">
                                                                             Editar
                                                                         </button>
-                                                                        <form method="POST" action="{{ url_for('delete.delete') }}" style="display: inline;">
-                                                                            <input type="hidden" name="id_pdf" value="{{ dado.id_pdf }}">
-                                                                            <button type="submit" class="botao-delete" onclick="return confirm('Tem certeza que deseja excluir este item?');">
-                                                                                Excluir
-                                                                            </button>
-                                                                        </form>
+                                                                        <button type="button" class="botao-delete" data-toggle="modal" data-target="#deleteModal" data-id_pdf="{{ dado.id_pdf }}" data-name="{{ dado.name }}">
+                                                                            Excluir
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                             {% endfor %}
@@ -385,6 +382,33 @@
                                 <form>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para exclusão de informações -->
+        <div class="modal" id="deleteModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modais">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title text">Excluir Item</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <p>Deseja excluir o documento <span id="delete_document_name"></span>?</p>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <form method="post" action="{{ url_for('delete.delete') }}">
+                            <input type="hidden" id="delete_id_pdf" name="id_pdf">
+                            <button type="submit" class="btn btn-danger">Excluir</button>
+                        </form>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </div>
