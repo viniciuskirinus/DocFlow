@@ -75,7 +75,7 @@ $(document).ready(function() {
         var modal = $(this);
         modal.find('.modal-body #delete_document_name').text(documentName); // Atualizar o texto no modal
         modal.find('.modal-footer form').attr('action', "{{ url_for('delete.delete') }}"); // Atualizar a ação do formulário
-        modal.find('.modal-footer form input[name="id_pdf"]').val(idPdf); // Atualizar o valor do campo oculto
+        modal.find('.modal-footer form input[name="id_pdf"]').attr('value', idPdf); // Atualizar o valor do campo oculto
     });
 });
 
