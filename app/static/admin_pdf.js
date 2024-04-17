@@ -153,17 +153,14 @@ $(document).ready(function() {
 
     // Evento de clique no botão de exclusão dentro do modal
     $('#deleteButton').click(function(event) {
-        var form = $('#deleteForm')[0]; // Obter o formulário de exclusão
-        var formData = new FormData(form); // Obter dados do formulário
+        var idPdf = $('#delete_id_pdf').val(); // Obter o valor do ID do PDF
+        var url = "{{ url_for('delete.delete') }}"; // Obter a URL para exclusão
 
         // Enviar solicitação AJAX
         $.ajax({
-            url: form.action,
-            type: form.method,
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
+            url: url,
+            type: 'POST',
+            data: {id_pdf: idPdf}, // Dados a serem enviados
             success: function(response) {
                 // Se a exclusão for bem-sucedida, exibir um alerta de sucesso
                 Swal.fire({
@@ -184,8 +181,5 @@ $(document).ready(function() {
                 });
             }
         });
-
-        // Impede o envio padrão do formulário
-        event.preventDefault();
     });
 });
