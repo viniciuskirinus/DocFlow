@@ -279,7 +279,7 @@ def edit():
 @admin_pdf_delete_routes.route('/delete', methods=['POST'])
 def delete():
     if 'username' in session and 'role' in session and session['role'] == "admin":
-        id_pdf = request.form.get('id_pdf')  
+        id_pdf = request.form.get('delete_id_pdf')
 
         try:
             pdf_delete(id_pdf)
