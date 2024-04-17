@@ -57,8 +57,10 @@ def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arqu
 
         conexao.commit()
         print("Inserção no banco de dados bem-sucedida!")
+        return True
     except Exception as e:
         print(f"Erro ao inserir no banco de dados: {e}")
+        return False
 
 def criar_pasta_s3(nome):
     # Recuperar o nome do bucket das variáveis de ambiente
