@@ -96,8 +96,9 @@ def pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo):
         # Atualiza o registro no banco de dados
         salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data_formatada, conteudo_arquivo, imagens_agrupadas)
 
+        return True
     except Exception as e:
-        print(f"Erro ao processar o formulário: {e}")
+        return False
 
 def salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data, conteudo_arquivo, imagens_agrupadas):
     try:
@@ -106,6 +107,6 @@ def salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data, cont
             cursor.execute(sql, (nome, categoria, setor, version, conteudo_arquivo, data, imagens_agrupadas, id_pdf))
 
         conexao.commit()
-        print("Atualização no banco de dados bem-sucedida!")
+        return True
     except Exception as e:
-        print(f"Erro ao atualizar no banco de dados: {e}")
+        return False

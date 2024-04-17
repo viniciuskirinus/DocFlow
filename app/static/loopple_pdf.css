@@ -293,3 +293,7 @@ footer.footer {
 .botao-export:hover .texto-hover {
   display: inline;
 }
+
+.swal2-container {
+  z-index: 2000 !important; /* ou qualquer valor maior que o z-index do modal */
+}

@@ -266,11 +266,15 @@ def edit():
         version = request.form.get('edit_version') 
         data = request.form.get('edit_data')   
         arquivo = request.files['arquivo']
-        pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo)
-        
-        return redirect(url_for('pdf.pdf'))
+
+        try:
+            pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo)
+            return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+        except Exception as e:
+            return jsonify(success=False, error=str(e))  # Retorna uma resposta indicando erro
     else:
-        return redirect(url_for('login.login'))
+        return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
+
     
 @admin_pdf_delete_routes.route('/delete', methods=['POST'])
 def delete():
@@ -331,7 +335,6 @@ def edituser():
         cargo = request.form.get('edit_cargo')
         role = request.form.get('edit_role')
         senha = request.form.get('edit_senha')
-        print(id_user, nome, cargo, role, senha)
         user_edit(id_user, nome, cargo, role, senha)
         
         return redirect(url_for('usuarios.usuarios'))

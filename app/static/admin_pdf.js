@@ -97,7 +97,43 @@ $('#addForm').submit(function(event) {
             Swal.fire({
                 icon: 'error',
                 title: 'Erro!',
-                text: 'Ocorreu um erro ao processar o formulário. Por favor, tente novamente mais tarde.',
+                text: 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
+            });
+        }
+    });
+});
+
+// Evento de envio do formulário
+$('#editForm').submit(function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    var formData = new FormData($(this)[0]); // Obter dados do formulário
+
+    // Enviar solicitação AJAX
+    $.ajax({
+        url: '/edit',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            // Se a edição for bem-sucedida, exibir um alerta de sucesso
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'Os dados foram inseridos com sucesso.',
+            }).then((result) => {
+                // Redirecionar para a página de PDF após o alerta ser fechado
+                window.location.href = '/pdf';
+            });
+        },
+        error: function(xhr, status, error) {
+            // Se ocorrer um erro, exibir um alerta de erro
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
             });
         }
     });
