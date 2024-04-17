@@ -278,13 +278,17 @@ def edit():
     
 @admin_pdf_delete_routes.route('/delete', methods=['POST'])
 def delete():
-    if 'username' in session and 'role' in session and session['role'] == "admin":
-        id_pdf = request.form.get('id_pdf')  
-        pdf_delete(id_pdf)
-        
-        return redirect(url_for('pdf.pdf'))
-    else:
-        return redirect(url_for('login.login'))
+    try:
+        if 'username' in session and 'role' in session and session['role'] == "admin":
+            id_pdf = request.form.get('id_pdf')  
+            pdf_delete(id_pdf)
+            
+            return redirect(url_for('pdf.pdf'))
+        else:
+            return redirect(url_for('login.login'))
+    except Exception as e:
+        print(f"An error occurred: {e}")  # Registro de erro para depuração
+        return "An error occurred"
 
 @admin_pdf_generate_routes.route('/generate', methods=['POST'])
 def generate():
