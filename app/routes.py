@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify
+from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
 import os
 from flask import Flask
 import pickle
@@ -312,7 +312,9 @@ def generate():
         except Exception as e:
             return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
     else:
-        return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
+        unauthorized_response = make_response(jsonify(success=False, error="Unauthorized"), 401)
+        unauthorized_response.headers['Content-Type'] = 'application/json'
+        return unauthorized_response
     
 
 @admin_user_routes.route('/users')
