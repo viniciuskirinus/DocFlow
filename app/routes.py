@@ -334,9 +334,9 @@ def generateuser():
         role = request.form.get('role')
         senha = request.form.get('senha')
         try:
-            # Verificar se já existe um documento com o mesmo nome
+            # Verificar se já existe um usuário com o mesmo nome
             if verificar_usuario_existente(nome):
-                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
+                return jsonify(success=False, error="Já existe um usuário cadastrado com este nome."), 400
             
             sucesso = processar_formulario_user(nome, cargo, role, senha)
 
