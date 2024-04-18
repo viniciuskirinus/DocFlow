@@ -337,6 +337,7 @@ def generateuser():
             # Verificar se já existe um documento com o mesmo nome
             if verificar_usuario_existente(nome):
                 return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
+            
             sucesso = processar_formulario_user(nome, cargo, role, senha)
 
             if sucesso:
