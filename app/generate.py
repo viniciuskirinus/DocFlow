@@ -49,8 +49,18 @@ def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arqu
         data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
 
         with conexao.cursor() as cursor:
-            sql = "INSERT INTO pdf (name, category, sector, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (nome, categoria, setor, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
+            # Verifica se já existe uma linha com o mesmo nome na tabela
+            sql_verificar = "SELECT name FROM pdf WHERE name = %s"
+            cursor.execute(sql_verificar, (nome,))
+            resultado = cursor.fetchone()
+
+            if resultado:
+                # Se já existe uma linha com o mesmo nome, retorne False
+                return False
+
+            # Se não existe, insira os dados normalmente
+            sql_inserir = "INSERT INTO pdf (name, category, sector, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql_inserir, (nome, categoria, setor, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
 
         conexao.commit()
         return True
