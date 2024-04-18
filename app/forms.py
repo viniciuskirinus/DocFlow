@@ -5,13 +5,12 @@ import pymysql
 from datetime import datetime
 
 def processar_login(username, password):
-
     conexao = conectar_db()
 
     if conexao:
         try:
             with conexao.cursor() as cursor:
-                # Consulta parametrizada para obter o hash MD5 da senha associada ao username
+                # Consulta parametrizada para obter o hash SHA-256 da senha associada ao username
                 sql = "SELECT password, role, office FROM user WHERE account = %s;"
                 cursor.execute(sql, (username,))
                 result = cursor.fetchone()
@@ -19,7 +18,7 @@ def processar_login(username, password):
                 if result:
                     # Verifica se a senha fornecida corresponde ao hash armazenado no banco de dados
                     senha_hash_db, user_role, user_office = result
-                    senha_hash_fornecida = hashlib.md5(password.encode()).hexdigest()
+                    senha_hash_fornecida = hashlib.sha256(password.encode()).hexdigest()
 
                     if senha_hash_db == senha_hash_fornecida:
                         # Atualiza a coluna de acesso com a data e hora atuais
