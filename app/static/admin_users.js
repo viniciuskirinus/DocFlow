@@ -100,3 +100,51 @@ $('#usarSenha').click(function () {
     $('#senhaModal').modal('hide'); // Fecha o modal de edição
 });
 
+// Evento de apagar o usuario
+$(document).on('click', '.botao-delete', function()  {
+    var id_user = $(this).data('id_user');
+    var name = $(this).data('account');
+
+    // Preencher o texto do span com o nome do documento
+    $('#delete_user_name').text(name);
+    $('#delete_id_user').val(id_user);
+
+    // Abrir o modal de exclusão
+    $('#deleteModal').modal('show');
+});
+
+// Evento de delete do pdf
+$('#deleteForm').submit(function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    var formData = new FormData($(this)[0]); // Obter dados do formulário
+
+    // Enviar solicitação AJAX
+    $.ajax({
+        url: '/deleteuser',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            // Se a edição for bem-sucedida, exibir um alerta de sucesso
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'O usuário foi excluído com sucesso.',
+            }).then((result) => {
+                // Redirecionar para a página de PDF após o alerta ser fechado
+                window.location.href = '/users';
+            });
+        },
+        error: function(xhr, status, error) {
+            // Se ocorrer um erro, exibir um alerta de erro
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'Ocorreu um erro ao apagar o usuário. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
+            });
+        }
+    });
+});

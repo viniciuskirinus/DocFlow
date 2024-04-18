@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple_pdf.css') }}">
     <link rel="stylesheet" href="../static/loopple_pdf.css">
@@ -173,12 +175,9 @@
                                                                         <button type="button" class="botao-edit" data-toggle="modal" data-target="#editModal" data-id_user="{{ dado.id_user }}" data-name="{{ dado.account }}" data-office="{{ dado.office }}" data-role="{{ dado.role}}" data-password="{{ dado.password }}">
                                                                             Editar
                                                                         </button>
-                                                                        <form method="POST" action="{{ url_for('deleteuser.deleteuser') }}" style="display: inline;">
-                                                                            <input type="hidden" name="id_user" value="{{ dado.id_user }}">
-                                                                            <button type="submit" class="botao-delete" onclick="return confirm('Tem certeza que deseja excluir este item?');">
-                                                                                Excluir
-                                                                            </button>
-                                                                        </form>
+                                                                        <button type="button" class="botao-delete" data-toggle="modal" data-target="#deleteModal" data-id_user="{{ dado.id_user }}" data-name="{{ dado.account }}">
+                                                                            Excluir
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                             {% endfor %}
@@ -338,6 +337,34 @@
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Atualizar</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para exclusão de informações -->
+        <div class="modal" id="deleteModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modais">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title text">Excluir Item</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <form id="deleteForm" method="POST" action="{{ url_for('deleteuser.deleteuser') }}">
+
+                            <p>Deseja excluir o usuário <span id="delete_user_name"></span>?</p>
+                            <input id="delete_id_user" type="hidden" name="delete_id_user" value="delete_id_user">
+                    
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
                     </div>

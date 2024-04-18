@@ -356,12 +356,15 @@ def edituser():
 @admin_user_delete_routes.route('/deleteuser', methods=['POST'])
 def deleteuser():
     if 'username' in session and 'role' in session and session['role'] == "admin":
-        id_user = request.form.get('id_user')  
-        user_delete(id_user)
-        
-        return redirect(url_for('usuarios.usuarios'))
+        id_user = request.form.get('delete_id_user') 
+        try: 
+            user_delete(id_user)
+            
+            return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+        except Exception as e:
+            return jsonify(success=False, error=str(e))  # Retorna uma resposta indicando erro
     else:
-        return redirect(url_for('login.login'))
+        return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
     
 
 @user_edit_data_routes.route('/edit_data', methods=['POST'])
