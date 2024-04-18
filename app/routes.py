@@ -304,7 +304,7 @@ def generate():
             if sucesso:
                 return jsonify(success=True)  # Retorna uma resposta indicando sucesso
             else:
-                return jsonify(success=False, error="Já existe um documento com este nome."), 400  # Retorna uma resposta de erro com uma mensagem específica
+                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400  # Retorna uma resposta de erro com uma mensagem específica
         except Exception as e:
             return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
     else:
