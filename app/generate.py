@@ -8,6 +8,9 @@ import os
 
 conexao = conectar_db()
 
+class ProcessamentoErro(Exception):
+    pass
+
 def processar_formulario(nome, categoria, versao, data, setor, arquivo):
     try:
         # Gera um nome para o arquivo baseado na categoria e na data/hora atual
@@ -19,7 +22,8 @@ def processar_formulario(nome, categoria, versao, data, setor, arquivo):
         imagens_agrupadas = pickle.dumps(imagens_binarias)
 
         # Salva no banco de dados
-        salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arquivo, imagens_agrupadas)
+        if not salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arquivo, imagens_agrupadas):
+            raise ProcessamentoErro("Falha ao salvar no banco de dados")
 
         # Cria a pasta no S3
         criar_pasta_s3(nome)
@@ -27,8 +31,10 @@ def processar_formulario(nome, categoria, versao, data, setor, arquivo):
         # Faz o upload do arquivo para o S3
         fazer_upload_para_s3(nome, versao, conteudo_arquivo)
         return True
+    except ProcessamentoErro as e:
+        raise e  # Levanta a exceção para ser tratada no nível superior do código
     except Exception as e:
-        return False
+        raise ProcessamentoErro("Erro desconhecido ao processar o formulário")
 
 def converter_pdf_para_imagens(conteudo_arquivo):
     # Converte o conteúdo do PDF (em bytes) para uma lista de imagens
