@@ -82,7 +82,6 @@ $('#addForm').submit(function(event) {
         contentType: false,
         processData: false,
         success: function(response) {
-            console.log(response);
             if (response.success) { // Verifica se a resposta indica sucesso
                 // Se a inserção for bem-sucedida, exibir um alerta de sucesso
                 Swal.fire({
@@ -98,7 +97,7 @@ $('#addForm').submit(function(event) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro!',
-                    text: response.error || 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
+                    text:  response.error ? response.error : 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
                 });
             }
         },
