@@ -82,22 +82,31 @@ $('#addForm').submit(function(event) {
         contentType: false,
         processData: false,
         success: function(response) {
-            // Se a inserção for bem-sucedida, exibir um alerta de sucesso
-            Swal.fire({
-                icon: 'success',
-                title: 'Sucesso!',
-                text: 'Os dados foram inseridos com sucesso.',
-            }).then((result) => {
-                // Redirecionar para a página de PDF após o alerta ser fechado
-                window.location.href = '/pdf';
-            });
+            if (response.success) { // Verifica se a resposta indica sucesso
+                // Se a inserção for bem-sucedida, exibir um alerta de sucesso
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: 'Os dados foram inseridos com sucesso.',
+                }).then((result) => {
+                    // Redirecionar para a página de PDF após o alerta ser fechado
+                    window.location.href = '/pdf';
+                });
+            } else {
+                // Se o servidor retornar sucesso, mas indicar falha no conteúdo da resposta, exibir alerta de erro
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: response.message,
+                });
+            }
         },
         error: function(xhr, status, error) {
-            // Se ocorrer um erro, exibir um alerta de erro
+            // Se ocorrer um erro, exibir um alerta de erro padrão
             Swal.fire({
                 icon: 'error',
                 title: 'Erro!',
-                text: 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
+                text: 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
             });
         }
     });
@@ -152,7 +161,7 @@ $(document).on('click', '.botao-delete', function()  {
     $('#deleteModal').modal('show');
 });
 
-// Evento de edição do pdf
+// Evento de delete do pdf
 $('#deleteForm').submit(function(event) {
     event.preventDefault(); // Impede o envio padrão do formulário
 

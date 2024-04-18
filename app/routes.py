@@ -300,10 +300,13 @@ def generate():
         setor = request.form.get('setor')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
         try:
-            processar_formulario(nome, categoria, versao, data, setor, arquivo)
-            return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+            sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
+            if sucesso:
+                return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+            else:
+                return jsonify(success=False, error="Já existe um documento com este nome."), 400  # Retorna uma resposta de erro com uma mensagem específica
         except Exception as e:
-            return jsonify(success=False, error=str(e))  # Retorna uma resposta indicando erro
+            return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
     else:
         return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
     
