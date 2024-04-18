@@ -3,7 +3,7 @@ import os
 from flask import Flask
 import pickle
 from .forms import processar_login
-from .generate import processar_formulario, ProcessamentoErro
+from .generate import processar_formulario, ProcessamentoErro, verificar_documento_existente
 from .pdf_edit import pdf_edit
 from .pdf_delete import pdf_delete
 from .user_delete import user_delete
@@ -299,23 +299,22 @@ def generate():
         setor = request.form.get('setor')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
         try:
-            # Tente processar o formulário
+            # Verificar se já existe um documento com o mesmo nome
+            if verificar_documento_existente(nome):
+                raise ProcessamentoErro("Já existe um documento cadastrado com este nome.")
+            
+            # Processar o formulário
             sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
             if sucesso:
-                # Se for bem-sucedido, retorne uma resposta de sucesso
-                return jsonify(success=True)
+                return jsonify(success=True)  # Retorna uma resposta indicando sucesso
             else:
-                # Se não for bem-sucedido, retorne uma resposta indicando que o documento já existe
-                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
+                return jsonify(success=False, error="Erro ao processar o formulário."), 500  # Retorna uma resposta de erro genérica
         except ProcessamentoErro as e:
-            # Se ocorrer um erro específico de processamento, retorne uma resposta com a mensagem de erro específica
-            return jsonify(success=False, error=str(e)), 400
+            return jsonify(success=False, error=str(e)), 400  # Retorna uma resposta de erro com a mensagem específica do erro
         except Exception as e:
-            # Se ocorrer um erro geral, retorne uma resposta com a mensagem de erro genérica
-            return jsonify(success=False, error=str(e)), 500
+            return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
     else:
-        # Se o usuário não estiver autorizado, retorne uma resposta de não autorizado
-        return jsonify(success=False, error="Unauthorized"), 401
+        return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
     
 
 @admin_user_routes.route('/users')
