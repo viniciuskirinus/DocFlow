@@ -49,3 +49,29 @@ function exportToExcel() {
     XLSX.utils.book_append_sheet(wb, ws, "Usuários");
     XLSX.writeFile(wb, "usuarios.xlsx");
 }
+
+$('#usarSenha').click(function () {
+    var selectedPassword = $('#senhaAleatoria').val();
+    $('#senha').val(selectedPassword); // Preenche o campo de senha no primeiro modal com a senha selecionada
+    $('#senhaModal').modal('hide');
+});
+
+// Gerar nova senha aleatória ao carregar o modal e ao clicar no botão "Gerar Nova Senha"
+$('#senhaModal').on('show.bs.modal', function (e) {
+    generateAndSetRandomPassword();
+});
+$('#gerarNovaSenha').click(function () {
+    generateAndSetRandomPassword();
+});
+
+// Função para gerar e definir senha aleatória usando a biblioteca password-generator
+function generateAndSetRandomPassword() {
+    var password = passwordGenerator.generate({
+        length: 10, // Comprimento da senha
+        numbers: true, // Incluir números
+        symbols: true, // Incluir símbolos
+        uppercase: true, // Incluir letras maiúsculas
+        excludeSimilarCharacters: true // Excluir caracteres semelhantes (por exemplo, 'i' e 'l')
+    });
+    $('#senhaAleatoria').val(password);
+}

@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple_pdf.css') }}">
+    <link rel="stylesheet" href="../static/loopple_pdf.css">
+    <link rel="stylesheet" href="../static/theme_home.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/password-generator/2.3.1/password-generator.min.js"></script>
     
   </head>
   
@@ -196,13 +199,13 @@
         <div class="modal" id="insert" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content modais">
-        
+
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title text">Adicionar Item</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-        
+
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <!-- Formulário para adicionar informações -->
@@ -223,18 +226,53 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="nome" class="text">Senha:</label>
-                                <input type="password" class="form-control" id="senha" name="senha" required>
+                                <label for="senha" class="text">Senha:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="senha" name="senha" required>
+                                    <div class="input-group-append">
+                                        <!-- Botão para abrir modal de gerar senha -->
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#senhaModal">
+                                            <i class="fas fa-key"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-
-                        <!-- Modal Footer -->
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Enviar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        </div>
+                            
                         </form>
                     </div>
-        
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Enviar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para gerar senhas aleatórias -->
+        <div class="modal" id="senhaModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modais">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title text">Gerar Senha Aleatória</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="senhaAleatoria" class="text">Senha Aleatória:</label>
+                            <input type="text" class="form-control" id="senhaAleatoria" readonly>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="gerarNovaSenha">Gerar Nova Senha</button>
+                        <button type="button" class="btn btn-success" id="usarSenha">Usar Senha</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -310,13 +348,14 @@
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/chart.extension.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
     <script src="{{ url_for('static', filename='admin_users.js') }}"></script>
+    <script src="{{ url_for('static', filename='loopple.js') }}"></script>
     
     <script>
 
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
         }
-
+        
     </script>
-    <script src="{{ url_for('static', filename='loopple.js') }}"></script>
+    
   </body>
