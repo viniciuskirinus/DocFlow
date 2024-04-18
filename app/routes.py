@@ -12,7 +12,7 @@ from .user_data_edit import user_data_edit
 from .load_docs import obter_dados_do_banco_por_categoria
 from .load_docs_admin import obter_dados_lista_pdf
 from .load_users_admin import obter_dados_lista_user
-from .generateuser import processar_formulario_user
+from .generateuser import processar_formulario_user, verificar_usuario_existente
 from .process_chat import process_message
 from base64 import b64encode
 from .models import conectar_db
@@ -333,11 +333,22 @@ def generateuser():
         cargo = request.form.get('cargo')
         role = request.form.get('role')
         senha = request.form.get('senha')
-        processar_formulario_user(nome, cargo, role, senha)
-        
-        return redirect(url_for('usuarios.usuarios'))
+        try:
+            # Verificar se já existe um documento com o mesmo nome
+            if verificar_usuario_existente(nome):
+                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
+            sucesso = processar_formulario_user(nome, cargo, role, senha)
+
+            if sucesso:
+                    return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+            else:
+                return jsonify(success=False, error="Erro ao processar o formulário."), 500  # Retorna uma resposta de erro genérica
+        except Exception as e:
+            return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
     else:
-        return redirect(url_for('login.login'))
+        unauthorized_response = make_response(jsonify(success=False, error="Unauthorized"), 401)
+        unauthorized_response.headers['Content-Type'] = 'application/json'
+        return unauthorized_response
     
 @admin_user_edit_routes.route('/edituser', methods=['POST'])
 def edituser():

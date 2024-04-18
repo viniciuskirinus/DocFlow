@@ -184,3 +184,59 @@ $('#editForm').submit(function(event) {
         }
     });
 });
+
+
+// Evento de adição de pdf
+$('#addForm').submit(function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    var formData = new FormData($(this)[0]); // Obter dados do formulário
+
+    // Enviar solicitação AJAX
+    $.ajax({
+        url: '/generateuser',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            if (response.success) {
+                // Se a inserção for bem-sucedida, exibir um alerta de sucesso
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: 'Os dados foram inseridos com sucesso.',
+                }).then((result) => {
+                    // Redirecionar para a página de PDF após o alerta ser fechado
+                    window.location.href = '/users';
+                });
+            } else {
+                // Se o servidor retornar erro, exibir alerta de erro com a mensagem específica
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: response.error || 'Erro ao cadastrar o usuário.',
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            // Checa se o status é 400 para erro de negócio específico
+            if (xhr.status === 400) {
+                var response = JSON.parse(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: response.error || 'Erro desconhecido ao cadastrar o usuário.',
+                });
+            } else {
+                // Trata erros gerais de comunicação ou de servidor
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro de Comunicação!',
+                    text: 'Não foi possível completar a operação. Verifique sua conexão e tente novamente. Se o problema persistir, contate o suporte.',
+                });
+            }
+        }
+    });
+});
