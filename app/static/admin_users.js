@@ -148,3 +148,39 @@ $('#deleteForm').submit(function(event) {
         }
     });
 });
+
+// Evento de edição do pdf
+$('#editForm').submit(function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    var formData = new FormData($(this)[0]); // Obter dados do formulário
+
+    // Enviar solicitação AJAX
+    $.ajax({
+        url: '/edituser',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            // Se a edição for bem-sucedida, exibir um alerta de sucesso
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'Os dados foram alterados com sucesso.',
+            }).then((result) => {
+                // Redirecionar para a página de PDF após o alerta ser fechado
+                window.location.href = '/users';
+            });
+        },
+        error: function(xhr, status, error) {
+            // Se ocorrer um erro, exibir um alerta de erro
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: 'Ocorreu um erro ao alterar o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir contate um administrador',
+            });
+        }
+    });
+});

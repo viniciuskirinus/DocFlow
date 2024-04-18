@@ -19,9 +19,9 @@ def user_edit(id_user, nome, cargo, role, senha):
             cursor.execute(sql, (nome, cargo, role, senha_md5, id_user))
 
         conexao.commit()
-        print("Atualização no banco de dados bem-sucedida!")
+        return True
     except Exception as e:
-        print(f"Erro ao atualizar no banco de dados: {e}")
+        return False
 
 def is_md5(s):
     # Verifica se a string tem 32 caracteres e é hexadecimal
