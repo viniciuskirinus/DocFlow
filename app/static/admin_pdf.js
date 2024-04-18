@@ -82,7 +82,7 @@ $('#addForm').submit(function(event) {
         contentType: false,
         processData: false,
         success: function(response) {
-            if (response.success) { // Verifica se a resposta indica sucesso
+            if (response.success) {
                 // Se a inserção for bem-sucedida, exibir um alerta de sucesso
                 Swal.fire({
                     icon: 'success',
@@ -97,20 +97,31 @@ $('#addForm').submit(function(event) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro!',
-                    text:  response.error || error || 'Já existe um documento cadastrado com este nome.',
+                    text: response.error || 'Erro ao inserir o documento.',
                 });
             }
         },
         error: function(xhr, status, error) {
-            // Se ocorrer um erro na requisição AJAX, exibir um alerta de erro padrão
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro!',
-                text: 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
-            });
+            // Checa se o status é 400 para erro de negócio específico
+            if (xhr.status === 400) {
+                var response = JSON.parse(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: response.error || 'Erro desconhecido ao inserir documento.',
+                });
+            } else {
+                // Trata erros gerais de comunicação ou de servidor
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro de Comunicação!',
+                    text: 'Não foi possível completar a operação. Verifique sua conexão e tente novamente. Se o problema persistir, contate o suporte.',
+                });
+            }
         }
     });
 });
+
 
 
 // Evento de edição do pdf
