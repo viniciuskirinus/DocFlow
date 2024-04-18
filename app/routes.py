@@ -3,7 +3,7 @@ import os
 from flask import Flask
 import pickle
 from .forms import processar_login
-from .generate import processar_formulario
+from .generate import processar_formulario, ProcessamentoErro
 from .pdf_edit import pdf_edit
 from .pdf_delete import pdf_delete
 from .user_delete import user_delete
@@ -292,7 +292,6 @@ def delete():
 @admin_pdf_generate_routes.route('/generate', methods=['POST'])
 def generate():
     if 'username' in session and 'role' in session and session['role'] == "admin":
-        # Obter dados do formulário
         nome = request.form.get('nome')
         categoria = request.form.get('categoria')
         versao = request.form.get('versao')
@@ -304,7 +303,9 @@ def generate():
             if sucesso:
                 return jsonify(success=True)  # Retorna uma resposta indicando sucesso
             else:
-                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400  # Retorna uma resposta de erro com uma mensagem específica
+                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400  # Retorna a resposta de documento ja cadastrado
+        except ProcessamentoErro as e:
+            return jsonify(success=False, error=str(e)), 400  # Retorna uma resposta de erro com a mensagem específica do erro
         except Exception as e:
             return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
     else:
