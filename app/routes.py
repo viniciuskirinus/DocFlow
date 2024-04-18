@@ -299,17 +299,23 @@ def generate():
         setor = request.form.get('setor')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
         try:
+            # Tente processar o formulário
             sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
             if sucesso:
-                return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+                # Se for bem-sucedido, retorne uma resposta de sucesso
+                return jsonify(success=True)
             else:
-                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400  # Retorna a resposta de documento ja cadastrado
+                # Se não for bem-sucedido, retorne uma resposta indicando que o documento já existe
+                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
         except ProcessamentoErro as e:
-            return jsonify(success=False, error=str(e)), 400  # Retorna uma resposta de erro com a mensagem específica do erro
+            # Se ocorrer um erro específico de processamento, retorne uma resposta com a mensagem de erro específica
+            return jsonify(success=False, error=str(e)), 400
         except Exception as e:
-            return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
+            # Se ocorrer um erro geral, retorne uma resposta com a mensagem de erro genérica
+            return jsonify(success=False, error=str(e)), 500
     else:
-        return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
+        # Se o usuário não estiver autorizado, retorne uma resposta de não autorizado
+        return jsonify(success=False, error="Unauthorized"), 401
     
 
 @admin_user_routes.route('/users')

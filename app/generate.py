@@ -12,28 +12,39 @@ class ProcessamentoErro(Exception):
     def __init__(self, message):
         self.message = message
 
+def verificar_documento_existente(nome):
+    try:
+        with conexao.cursor() as cursor:
+            sql_verificar = "SELECT name FROM pdf WHERE name = %s"
+            cursor.execute(sql_verificar, (nome,))
+            resultado = cursor.fetchone()
+            if resultado:
+                return True  # Documento com o mesmo nome encontrado
+            else:
+                return False  # Documento não encontrado
+    except Exception as e:
+        raise ProcessamentoErro("Erro ao verificar a existência do documento")
+
 def processar_formulario(nome, categoria, versao, data, setor, arquivo):
     try:
-        # Gera um nome para o arquivo baseado na categoria e na data/hora atual
-        conteudo_arquivo = arquivo.read()  # Lê o conteúdo do arquivo como binário
+        if verificar_documento_existente(nome):
+            raise ProcessamentoErro("Já existe um documento cadastrado com este nome.")
+        
+        conteudo_arquivo = arquivo.read()
         imagens = converter_pdf_para_imagens(conteudo_arquivo)
-
-        # Converte todas as imagens para binário e as agrupa
         imagens_binarias = [converter_imagem_para_binario(imagem) for imagem in imagens]
         imagens_agrupadas = pickle.dumps(imagens_binarias)
 
         # Salva no banco de dados
         if not salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arquivo, imagens_agrupadas):
-           raise ProcessamentoErro("Já existe um documento cadastrado com este nome.")
+            raise ProcessamentoErro("Falha ao salvar no banco de dados")
 
-        # Cria a pasta no S3
         criar_pasta_s3(nome)
-
-        # Faz o upload do arquivo para o S3
         fazer_upload_para_s3(nome, versao, conteudo_arquivo)
+        
         return True
     except ProcessamentoErro as e:
-        raise e  # Levanta a exceção para ser tratada no nível superior do código
+        raise e
     except Exception as e:
         raise ProcessamentoErro("Erro desconhecido ao processar o formulário")
 
@@ -56,16 +67,7 @@ def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arqu
         data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
 
         with conexao.cursor() as cursor:
-            # Verifica se já existe uma linha com o mesmo nome na tabela
-            sql_verificar = "SELECT name FROM pdf WHERE name = %s"
-            cursor.execute(sql_verificar, (nome,))
-            resultado = cursor.fetchone()
-
-            if resultado:
-                # Se já existe uma linha com o mesmo nome, retorne False
-                return False
-
-            # Se não existe, insira os dados normalmente
+            # Insere os dados no banco de dados
             sql_inserir = "INSERT INTO pdf (name, category, sector, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(sql_inserir, (nome, categoria, setor, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
 
