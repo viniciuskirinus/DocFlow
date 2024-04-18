@@ -82,6 +82,7 @@ $('#addForm').submit(function(event) {
         contentType: false,
         processData: false,
         success: function(response) {
+            console.log(response);
             if (response.success) { // Verifica se a resposta indica sucesso
                 // Se a inserção for bem-sucedida, exibir um alerta de sucesso
                 Swal.fire({
@@ -93,20 +94,12 @@ $('#addForm').submit(function(event) {
                     window.location.href = '/pdf';
                 });
             } else {
-                // Se o servidor retornar sucesso, mas indicar falha no conteúdo da resposta, exibir alerta de erro
-                if (response.error === "Já existe um documento cadastrado com este nome.") {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro!',
-                        text: 'Já existe um documento cadastrado com este nome.',
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro!',
-                        text: response.error || 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
-                    });
-                }
+                // Se o servidor retornar erro, exibir alerta de erro com a mensagem específica
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: response.error || 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
+                });
             }
         },
         error: function(xhr, status, error) {
@@ -119,6 +112,7 @@ $('#addForm').submit(function(event) {
         }
     });
 });
+
 
 // Evento de edição do pdf
 $('#editForm').submit(function(event) {

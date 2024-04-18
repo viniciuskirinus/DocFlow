@@ -301,7 +301,7 @@ def generate():
         try:
             # Verificar se já existe um documento com o mesmo nome
             if verificar_documento_existente(nome):
-                raise ProcessamentoErro("Já existe um documento cadastrado com este nome.")
+                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
             
             # Processar o formulário
             sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
@@ -309,8 +309,6 @@ def generate():
                 return jsonify(success=True)  # Retorna uma resposta indicando sucesso
             else:
                 return jsonify(success=False, error="Erro ao processar o formulário."), 500  # Retorna uma resposta de erro genérica
-        except ProcessamentoErro as e:
-            return jsonify(success=False, error=str(e)), 400  # Retorna uma resposta de erro com a mensagem específica do erro
         except Exception as e:
             return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
     else:
