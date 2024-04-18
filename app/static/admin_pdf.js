@@ -97,7 +97,7 @@ $('#addForm').submit(function(event) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro!',
-                    text:  response.error ? response.error : 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
+                    text:  response.error || error || 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
                 });
             }
         },
