@@ -369,13 +369,37 @@
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
     <script src="{{ url_for('static', filename='admin_users.js') }}"></script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
-    <script src="../static/admin_users.js"
     
     <script>
 
         function logout() {
             window.location.href = "{{ url_for('logout.logout') }}";
         }
+
+        // Função para alternar entre a exibição e ocultação da senha ao clicar no botão
+        function togglePasswordVisibility(fieldId, buttonId) {
+            const campoSenha = document.getElementById(fieldId);
+            const tipoCampo = campoSenha.getAttribute("type");
+            const button = document.getElementById(buttonId);
+            
+            if (tipoCampo === "password") {
+                campoSenha.setAttribute("type", "text");
+                button.innerHTML = '<i class="fas fa-eye-slash"></i>'; // Altera o ícone do botão para um "olho riscado"
+            } else {
+                campoSenha.setAttribute("type", "password");
+                button.innerHTML = '<i class="fas fa-eye"></i>'; // Altera o ícone do botão para um "olho"
+            }
+        }
+
+        // Adicionar evento de clique para alternar a visibilidade da senha no modal de edição
+        document.getElementById("toggleEditSenha").addEventListener("click", function() {
+            togglePasswordVisibility("edit_senha", "toggleEditSenha");
+        });
+
+        // Adicionar evento de clique para alternar a visibilidade da senha no modal principal
+        document.getElementById("toggleSenha").addEventListener("click", function() {
+            togglePasswordVisibility("senha", "toggleSenha");
+        });
         
     </script>
     

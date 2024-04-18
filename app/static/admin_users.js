@@ -82,20 +82,6 @@ $('#usarSenha').click(function () {
     $('#senhaModal').modal('hide'); // Fecha o modal de geração de senha
 });
 
-// Função para alternar entre a exibição e ocultação da senha ao clicar no botão
-document.getElementById("toggleSenha").addEventListener("click", function() {
-    const campoSenha = document.getElementById("senha");
-    const tipoCampo = campoSenha.getAttribute("type");
-    
-    if (tipoCampo === "password") {
-        campoSenha.setAttribute("type", "text");
-        this.innerHTML = '<i class="fas fa-eye-slash"></i>'; // Altera o ícone do botão para um "olho riscado"
-    } else {
-        campoSenha.setAttribute("type", "password");
-        this.innerHTML = '<i class="fas fa-eye"></i>'; // Altera o ícone do botão para um "olho"
-    }
-});
-
 // Ao clicar no botão que abre o modal de geração de senha, gera uma nova senha aleatória e exibe no campo do modal
 $('#senhaModal').on('show.bs.modal', function (e) {
     const novaSenha = generateRandomPassword(10); // Gerar senha de comprimento 10
@@ -114,16 +100,3 @@ $('#usarSenha').click(function () {
     $('#senhaModal').modal('hide'); // Fecha o modal de edição
 });
 
-// Função para alternar entre a exibição e ocultação da senha ao clicar no botão no modal de edição
-document.getElementById("toggleEditSenha").addEventListener("click", function() {
-    const campoSenha = document.getElementById("edit_senha");
-    const tipoCampo = campoSenha.getAttribute("type");
-    
-    if (tipoCampo === "password") {
-        campoSenha.setAttribute("type", "text");
-        this.innerHTML = '<i class="fas fa-eye-slash"></i>'; // Alterar o ícone do botão para um "olho riscado"
-    } else {
-        campoSenha.setAttribute("type", "password");
-        this.innerHTML = '<i class="fas fa-eye"></i>'; // Alterar o ícone do botão para um "olho"
-    }
-});
