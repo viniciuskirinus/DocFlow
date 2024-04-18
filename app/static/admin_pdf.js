@@ -94,15 +94,23 @@ $('#addForm').submit(function(event) {
                 });
             } else {
                 // Se o servidor retornar sucesso, mas indicar falha no conteúdo da resposta, exibir alerta de erro
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erro!',
-                    text: response.message,
-                });
+                if (response.error === "Já existe um documento com este nome.") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: 'Já existe um documento cadastrado com este nome.',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: response.error || 'Ocorreu um erro ao inserir o documento. Por favor, atualize a página e tente novamente. Caso o problema persistir, contate um administrador.',
+                    });
+                }
             }
         },
         error: function(xhr, status, error) {
-            // Se ocorrer um erro, exibir um alerta de erro padrão
+            // Se ocorrer um erro na requisição AJAX, exibir um alerta de erro padrão
             Swal.fire({
                 icon: 'error',
                 title: 'Erro!',

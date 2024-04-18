@@ -9,7 +9,8 @@ import os
 conexao = conectar_db()
 
 class ProcessamentoErro(Exception):
-    pass
+    def __init__(self, message):
+        self.message = message
 
 def processar_formulario(nome, categoria, versao, data, setor, arquivo):
     try:
@@ -23,7 +24,7 @@ def processar_formulario(nome, categoria, versao, data, setor, arquivo):
 
         # Salva no banco de dados
         if not salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arquivo, imagens_agrupadas):
-            raise ProcessamentoErro("Falha ao salvar no banco de dados")
+           raise ProcessamentoErro("Já existe um documento cadastrado com este nome.")
 
         # Cria a pasta no S3
         criar_pasta_s3(nome)
