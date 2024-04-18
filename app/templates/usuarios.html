@@ -231,6 +231,11 @@
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="senha" name="senha" required>
                                     <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" id="toggleSenha">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="input-group-append">
                                         <!-- Botão para abrir modal de gerar senha -->
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#senhaModal">
                                             <i class="fas fa-key"></i>
@@ -253,7 +258,7 @@
         </div>
 
         <!-- Modal para gerar senhas aleatórias -->
-        <div class="modal" id="senhaModal" role="dialog">
+        <div class="modal" id="senhaModal" role="dialog" style="z-index: 2000!important;">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content modais">
                     <!-- Modal Header -->
@@ -301,15 +306,29 @@
                                 <input type="text" class="form-control" id="edit_cargo" name="edit_cargo" required>
                             </div>
                             <div class="form-group">
-                                <label for="categoria" class="text">Role:</label>
+                                <label for="edit_role" class="text">Role:</label>
                                 <select class="form-control" id="edit_role" name="edit_role" required>
                                     <option value="admin">Administrador</option>
                                     <option value="user">Usuário padrão</option>
                                 </select>
                             </div>
+                            
                             <div class="form-group">
-                                <label for="nome" class="text">Senha:</label>
-                                <input type="password" class="form-control" id="edit_senha" name="edit_senha" required>
+                                <label for="edit_senha" class="text">Senha:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="edit_senha" name="edit_senha" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" id="toggleEditSenha">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <!-- Botão para abrir modal de gerar senha -->
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#senhaModal">
+                                            <i class="fas fa-key"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Adicione um campo oculto para armazenar o id_pdf -->
@@ -348,9 +367,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/5cef8f62939eeb089fa26d4c53a49198de421e3d/argon-dashboard/js/vendor/chart.extension.js"></script>
     <script src="https://rawcdn.githack.com/Loopple/loopple-public-assets/7bb803d2af2ab6d71d429b0cb459c24a4cd0fbb4/argon-dashboard/js/argon.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/password-generator/2.3.1/password-generator.min.js"></script>
     <script src="{{ url_for('static', filename='admin_users.js') }}"></script>
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
+    <script src="../static/admin_users.js"
     
     <script>
 

@@ -9,18 +9,15 @@ $(document).ready(function(){
 });
 
 $(document).on('click', '.botao-edit', function()  {
-    console.log("Botão clicado");
     var id_user = $(this).data('id_user');
     var name = $(this).data('name');
     var office = $(this).data('office');
     var role = $(this).data('role');
-    var password = $(this).data('password');
 
     // Preencher os campos do modal de edição com os dados
     $('#edit_nome').val(name);
     $('#edit_cargo').val(office);
     $('#edit_role').val(role);
-    $('#edit_senha').val(password);
     $('#edit_id_user').val(id_user);
 
     // Abrir o modal de edição
@@ -50,28 +47,83 @@ function exportToExcel() {
     XLSX.writeFile(wb, "usuarios.xlsx");
 }
 
-$('#usarSenha').click(function () {
-    var selectedPassword = $('#senhaAleatoria').val();
-    $('#senha').val(selectedPassword); // Preenche o campo de senha no primeiro modal com a senha selecionada
-    $('#senhaModal').modal('hide');
-});
-
-// Gerar nova senha aleatória ao carregar o modal e ao clicar no botão "Gerar Nova Senha"
-$('#senhaModal').on('show.bs.modal', function (e) {
-    generateAndSetRandomPassword();
-});
-$('#gerarNovaSenha').click(function () {
-    generateAndSetRandomPassword();
-});
-
-// Função para gerar e definir senha aleatória usando a biblioteca password-generator
-function generateAndSetRandomPassword() {
-    var password = passwordGenerator.generate({
-        length: 10, // Comprimento da senha
-        numbers: true, // Incluir números
-        symbols: true, // Incluir símbolos
-        uppercase: true, // Incluir letras maiúsculas
-        excludeSimilarCharacters: true // Excluir caracteres semelhantes (por exemplo, 'i' e 'l')
-    });
-    $('#senhaAleatoria').val(password);
+// Função para gerar uma senha aleatória
+function generateRandomPassword(length) {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+    return password;
 }
+
+// Limpa o campo de senha ao abrir o modal de edição
+$('#insert').on('show.bs.modal', function (e) {
+    $('#senha').val(''); // Limpa o valor do campo de senha no modal de edição
+});
+
+// Ao clicar no botão que abre o modal de geração de senha, gera uma nova senha aleatória e exibe no campo do modal
+$('#senhaModal').on('show.bs.modal', function (e) {
+    const novaSenha = generateRandomPassword(10); // Gerar senha de comprimento 10
+    document.getElementById("senhaAleatoria").value = novaSenha; // Exibe a senha aleatória no campo do modal
+});
+
+// Ao clicar no botão "Gerar Nova Senha" dentro do modal, gera uma nova senha aleatória e exibe no campo do modal
+$('#gerarNovaSenha').click(function () {
+    const novaSenha = generateRandomPassword(10); // Gerar senha de comprimento 10
+    document.getElementById("senhaAleatoria").value = novaSenha; // Exibe a senha aleatória no campo do modal
+});
+
+// Ao clicar no botão "Usar Senha" dentro do modal, preenche o campo de senha principal com a senha exibida no modal e fecha o modal
+$('#usarSenha').click(function () {
+    const selectedPassword = document.getElementById("senhaAleatoria").value; // Obtém a senha exibida no modal
+    $('#senha').val(selectedPassword); // Preenche o campo de senha no primeiro modal com a senha selecionada
+    $('#senhaModal').modal('hide'); // Fecha o modal de geração de senha
+});
+
+// Função para alternar entre a exibição e ocultação da senha ao clicar no botão
+document.getElementById("toggleSenha").addEventListener("click", function() {
+    const campoSenha = document.getElementById("senha");
+    const tipoCampo = campoSenha.getAttribute("type");
+    
+    if (tipoCampo === "password") {
+        campoSenha.setAttribute("type", "text");
+        this.innerHTML = '<i class="fas fa-eye-slash"></i>'; // Altera o ícone do botão para um "olho riscado"
+    } else {
+        campoSenha.setAttribute("type", "password");
+        this.innerHTML = '<i class="fas fa-eye"></i>'; // Altera o ícone do botão para um "olho"
+    }
+});
+
+// Ao clicar no botão que abre o modal de geração de senha, gera uma nova senha aleatória e exibe no campo do modal
+$('#senhaModal').on('show.bs.modal', function (e) {
+    const novaSenha = generateRandomPassword(10); // Gerar senha de comprimento 10
+    document.getElementById("senhaAleatoria").value = novaSenha; // Exibe a senha aleatória no campo do modal
+});
+
+// Limpa o campo de senha ao abrir o modal de edição
+$('#editModal').on('show.bs.modal', function (e) {
+    $('#edit_senha').val(''); // Limpa o valor do campo de senha no modal de edição
+});
+
+// Ao clicar no botão "Usar Senha" dentro do modal de edição, preenche o campo de senha no formulário de edição com a senha exibida no modal de geração de senha e fecha o modal
+$('#usarSenha').click(function () {
+    const selectedPassword = document.getElementById("senhaAleatoria").value;  // Obtém a senha exibida no modal de geração de senha
+    $('#edit_senha').val(selectedPassword); // Preenche o campo de senha no modal de edição com a senha selecionada
+    $('#senhaModal').modal('hide'); // Fecha o modal de edição
+});
+
+// Função para alternar entre a exibição e ocultação da senha ao clicar no botão no modal de edição
+document.getElementById("toggleEditSenha").addEventListener("click", function() {
+    const campoSenha = document.getElementById("edit_senha");
+    const tipoCampo = campoSenha.getAttribute("type");
+    
+    if (tipoCampo === "password") {
+        campoSenha.setAttribute("type", "text");
+        this.innerHTML = '<i class="fas fa-eye-slash"></i>'; // Alterar o ícone do botão para um "olho riscado"
+    } else {
+        campoSenha.setAttribute("type", "password");
+        this.innerHTML = '<i class="fas fa-eye"></i>'; // Alterar o ícone do botão para um "olho"
+    }
+});
