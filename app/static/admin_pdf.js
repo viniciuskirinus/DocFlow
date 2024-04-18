@@ -94,7 +94,7 @@ $('#addForm').submit(function(event) {
                 });
             } else {
                 // Se o servidor retornar sucesso, mas indicar falha no conteúdo da resposta, exibir alerta de erro
-                if (response.error === "Já existe um documento com este nome.") {
+                if (response.error === "Já existe um documento cadastrado com este nome.") {
                     Swal.fire({
                         icon: 'error',
                         title: 'Erro!',
