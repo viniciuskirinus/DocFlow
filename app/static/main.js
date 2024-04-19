@@ -34,14 +34,14 @@ function showChat(clickedElement, pdfId, pdfName, pdfCategory, pdfSector) {
 
 function updateTextStyle() {
     // Remove a classe 'selected' do texto de todos os links
-    document.querySelectorAll('.card-body a .justify-content-between.align-items-center h4, .card-body a .justify-content-between.align-items-center h6').forEach(text => {
+    document.querySelectorAll('.card-body a .justify-content-between.align-items-center h5, .card-body a .justify-content-between.align-items-center h6').forEach(text => {
         text.style.color = 'black'; // Define a cor padrão para preto
     });
 
     // Adiciona a classe 'selected' ao texto do link selecionado e muda a cor para branco
     var selectedLink = document.querySelector('.card-body a.selected');
     if (selectedLink) {
-        selectedLink.querySelector('.justify-content-between.align-items-center h4').style.color = 'white';
+        selectedLink.querySelector('.justify-content-between.align-items-center h5').style.color = 'white';
         selectedLink.querySelector('.justify-content-between.align-items-center h6').style.color = 'white';
     }
 }
@@ -49,7 +49,7 @@ function updateTextStyle() {
 function updateChatInfo(pdfId, pdfName, pdfCategory, pdfSector) {
     // Obtém os elementos com os IDs correspondentes
     var chatTitle = document.querySelector('#chatContainer .card-header h2');
-    var chatSector = document.querySelector('#chatContainer .card-header span.text-muted');
+    var chatSector = document.querySelector('#chatContainer .card-header span.text-footer');
     var chatId = document.querySelector('#chatContainer .card-header span.chat-id');
 
     // Verifica se os elementos foram encontrados
@@ -269,8 +269,8 @@ function ordenarElementosPorNome() {
 
     var elementos = Array.from(container.querySelectorAll('a'));
     elementos.sort(function(a, b) {
-        var nomeA = extrairNumero(a.querySelector('h4').textContent.trim());
-        var nomeB = extrairNumero(b.querySelector('h4').textContent.trim());
+        var nomeA = extrairNumero(a.querySelector('h5').textContent.trim());
+        var nomeB = extrairNumero(b.querySelector('h5').textContent.trim());
         return nomeA - nomeB;
     });
 

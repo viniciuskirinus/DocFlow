@@ -177,9 +177,9 @@
                                     <div class="loader" style="display: none;"></div>
 
                                     <!-- CHAT ABERTO -->
-                                    <div class="col-lg-9" id="chatContainer" style="display: none; height: 800px;">
+                                    <div class="col-lg-9" id="chatContainer" style="display: none; height: 600px;">
                                         <div class="card max-height-vh-70 h-100">
-                                            <div class="card-header shadow-xl" style="height: 17%;">
+                                            <div class="card-header shadow-xl">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="d-flex align-items-center justify-content-between">
@@ -197,8 +197,8 @@
                                                     </div>    
                                                 </div>
                                             </div>
-                                            <div class="card-body overflow-auto overflow-x-hidden" id="bodychat" style="height: 68%;"></div>
-                                            <div class="card-footer d-block" style="height: 15%;">
+                                            <div class="card-body overflow-auto overflow-x-hidden" id="bodychat"></div>
+                                            <div class="card-footer d-block">
                                                 <form class="align-items-center" id="chatForm" onsubmit="return handleSubmit()">
                                                     <div class="input-group mb-3">
                                                         <input type="text" placeholder="Message DocFlow" class="form-control" id="chatInput">
@@ -320,6 +320,7 @@
     <script src="{{ url_for('static', filename='loopple.js') }}"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
     <script src="{{ url_for('static', filename='search.js') }}"></script>
+    <script src="../static/main.js"></script>
 
     <script>
 
