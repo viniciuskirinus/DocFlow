@@ -50,7 +50,7 @@
         </nav>
     </nav>
     <div class="main-content" id="panel">
-        <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom" id="navbarTop">
+        <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom" id="navbarTop" style="background-color: orange !important;">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav align-items-center  ml-md-auto ">
@@ -110,7 +110,7 @@
                     </ul>
                     <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                         <li class="nav-item dropdown"> <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="media align-items-center"> <span class="avatar avatar-sm"> <img alt="Image placeholder" src="https://static.vecteezy.com/ti/vetor-gratis/p1/7407996-user-icon-person-icon-client-symbol-login-head-sign-icon-design-vetor.jpg"> </span> </div>
+                                <div class="media align-items-center"> <span class="avatar avatar-sm"> <img alt="Image placeholder" src="../static/icone_user.png"> </span> </div>
                             </a>
                             <div class="dropdown-menu  dropdown-menu-right ">
                                 <div class="dropdown-header noti-title">
@@ -160,7 +160,6 @@
                                                 {% for dado in dados %}
                                                     <a href="javascript:;" class="d-block p-2 rounded-lg" onclick="showChat(this, '{{ dado.id_pdf }}', '{{ dado.name }}', '{{ dado.categoria }}', '{{ dado.sector }}')">
                                                         <div class="d-flex p-2">
-                                                            <img alt="Image" src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="avatar shadow">
                                                             <div class="ml-2">
                                                                 <div class="justify-content-between align-items-center">
                                                                     <h4 class="mb-0 mt-1 selected">{{ dado.name }}<span class="badge badge-success"></span></h4>
@@ -296,6 +295,8 @@
                 });
             </script>
         {% endif %}
+
+        <br>
 
         <!-- Footer -->
         <footer class="footer align-items-center text-center" style="position: absolute; bottom: 0; width: 100%; display: flex; justify-content: center;">
