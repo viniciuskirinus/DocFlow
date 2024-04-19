@@ -10,7 +10,20 @@ body {
 @media (min-width: 768px) {
     /* Para telas maiores que 768px */
     .centered {
-        max-width: 50%;
+        max-width: 50% !important;
+    }
+    .h1 {
+        font-size: 24px !important; /* Ajuste o tamanho do título */
+    }
+    .h3 {
+        font-size: 18px !important; /* Ajuste o tamanho do subtítulo */
+    }
+    .form {
+        width: 70% !important; /* Ajuste a largura dos campos de entrada */
+    }
+    .botao {
+        padding: 10px 20px !important; /* Ajuste o padding dos botões */
+        font-size: 14px !important; /* Ajuste o tamanho da fonte dos botões */
     }
 }
 
