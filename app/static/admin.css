@@ -10,6 +10,12 @@ body {
   margin: 0;
   padding-top: 63px;
   padding-bottom: 100px;
+  zoom: 80%;
+  -moz-transform: scale(0.8); /* Firefox */
+  -webkit-transform: scale(0.8); /* Safari e Chrome */
+  -o-transform: scale(0.8); /* Opera */
+  transform: scale(0.8);
+  transform-origin: 0 0;
 }
 .h1{
   font-family: "Source Sans Pro", sans-serif;
