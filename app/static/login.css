@@ -44,9 +44,7 @@ body {
 }
 
 .centered {
-    height: 80%;
     text-align: center;
-    width: 90%; /* Definindo largura máxima em porcentagem */
     max-width: 549px; /* Limitando largura máxima */
     margin: auto; /* Centralizando horizontalmente */
 }
