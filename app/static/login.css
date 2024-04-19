@@ -1,17 +1,53 @@
 body {
+    margin: 0;
     justify-content: center;
     text-align: center;
-    position: absolute;
     background: rgb(14, 17, 23);
     color: rgb(250, 250, 250);
-    inset: 0px;
     color-scheme: dark;
 }
+
 @media (min-width: 768px) {
     /* Para telas maiores que 768px */
     .centered {
         max-width: 50%;
     }
+}
+
+@media (max-width: 576px) {
+    /* Para telas menores que 576px, como smartphones */
+    .centered {
+        max-width: 90%;
+    }
+    .h1 {
+        font-size: 20px; /* Ajuste o tamanho do título */
+    }
+    .h3 {
+        font-size: 16px; /* Ajuste o tamanho do subtítulo */
+    }
+    .form {
+        width: 90%; /* Reduza a largura dos campos de entrada */
+        max-width: 100%; /* Permita que o campo de entrada tenha largura variável */
+    }
+    .botao {
+        padding: 12px 24px; /* Aumente o padding dos botões */
+        font-size: 16px; /* Ajuste o tamanho da fonte dos botões */
+    }
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* Para ocupar toda a altura da tela */
+}
+
+.centered {
+    text-align: center;
+    width: 90%; /* Definindo largura máxima em porcentagem */
+    max-width: 600px; /* Limitando largura máxima */
+    margin: auto; /* Centralizando horizontalmente */
 }
 .h1{
     font-family: "Source Sans Pro", sans-serif;
@@ -83,12 +119,7 @@ body {
     letter-spacing: normal;
     outline-color: rgb(250, 250, 250);
 }
-.centered {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
+
 .centered-image {
     display: block;
     margin: 0 auto;
