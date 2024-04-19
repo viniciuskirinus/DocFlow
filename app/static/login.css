@@ -10,7 +10,7 @@ body {
 @media (min-width: 768px) {
     /* Para telas maiores que 768px */
     .centered {
-        max-width: 50% !important;
+        max-width: 50%;
     }
 }
 
