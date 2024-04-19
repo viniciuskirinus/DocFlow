@@ -7,6 +7,12 @@ body {
     inset: 0px;
     color-scheme: dark;
 }
+@media (min-width: 768px) {
+    /* Para telas maiores que 768px */
+    .centered {
+        max-width: 50%;
+    }
+}
 .h1{
     font-family: "Source Sans Pro", sans-serif;
     font-weight: 700;
