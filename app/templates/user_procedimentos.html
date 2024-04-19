@@ -13,12 +13,16 @@
     <link rel="stylesheet" href="../static/theme.css">
     <link rel="stylesheet" href="../static/loople.css">
 
-
+    <style>
+        .main-content {
+    overflow: hidden !important;
+}
+    </style>
     
 </head>
 <div class="top"></div>
 <body class="g-sidenav-show">
-    <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white loopple-fixed-start" id="sidenav-main">
+    <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white loopple-fixed-start" id="sidenav-main" style="position: absolute;">
         <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white" id="sidenav-main">
             <div class="sidenav-header  align-items-center"> <a class="navbar-brand"> <img src="https://sirtec.com.br/restrito/logo.png" class="navbar-brand-img" > Sirtec Doc Flow</a> </div>
             <div class="d-flex align-items-center border-top-bottom">
@@ -128,7 +132,7 @@
                             <div class="px-0 pb-4">
                                 <div class="row flex-row">
                                     <div class="col-lg-3 mb-4">
-                                        <div class="card max-height-vh-70 h-100 overflow-auto overflow-x-hidden mb-5 mb-lg-0" style="max-height: 70vh;">
+                                        <div class="card max-height-vh-70 h-100 overflow-auto overflow-x-hidden mb-5 mb-lg-0" >
                                             <div class="card-header">
                                                 <!-- Input de pesquisa -->
                                                 <div class="input-group mb-0">
@@ -175,7 +179,7 @@
 
                                     <!-- CHAT ABERTO -->
                                     <div class="col-lg-9" id="chatContainer" style="display: none; height: 800px;">
-                                        <div class="card" style="max-height: 70vh; height: 100%;">
+                                        <div class="card max-height-vh-70 h-100">
                                             <div class="card-header shadow-xl" style="height: 17%;">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -194,8 +198,8 @@
                                                     </div>    
                                                 </div>
                                             </div>
-                                            <div class="card-body overflow-auto overflow-x-hidden" id="bodychat" style="height: 67%;"></div>
-                                            <div class="card-footer d-block" style="height: 16%;">
+                                            <div class="card-body overflow-auto overflow-x-hidden" id="bodychat" style="height: 68%;"></div>
+                                            <div class="card-footer d-block" style="height: 15%;">
                                                 <form class="align-items-center" id="chatForm" onsubmit="return handleSubmit()">
                                                     <div class="input-group mb-3">
                                                         <input type="text" placeholder="Message DocFlow" class="form-control" id="chatInput">
@@ -294,7 +298,7 @@
         {% endif %}
 
         <!-- Footer -->
-        <footer class="footer align-items-center text-center" style="display: flex; justify-content: center;">
+        <footer class="footer align-items-center text-center" style="position: absolute; bottom: 0; width: 100%; display: flex; justify-content: center;">
             <div class="row align-items-center justify-content-center justify-content-lg-between">
                 <div class="col-lg-12">
                     <div class="copyright text-center text-lg-left text-muted">© 2024 Made with <a class="font-weight-bold ml-1" href="#" target="_blank">Sirtec</a> &amp; <a class="font-weight-bold ml-1" href="#" target="_blank">VK</a></div>
