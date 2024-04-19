@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
         items.forEach(item => {
             // Determina se está buscando por nome ou setor e obtém o texto relevante
             var itemText = searchOption === "nome" ?
-                item.querySelector('h4').textContent.trim().toLowerCase() :
+                item.querySelector('h5').textContent.trim().toLowerCase() :
                 item.querySelector('h6').textContent.trim().toLowerCase();
 
             if (itemText.includes(searchValue)) {
