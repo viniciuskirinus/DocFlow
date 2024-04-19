@@ -4623,7 +4623,6 @@ input[type="submit"].btn-block {
 .card-header {
     margin-bottom: 0;
     padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     background-color: #fff;
 }
 .card-header:first-child {
@@ -12244,6 +12243,9 @@ a.text-darker:hover {
 }
 .text-muted {
     color: white !important;
+}
+.text-footer {
+    color: #8898aa !important;
 }
 .text-black-50 {
     color: rgba(0, 0, 0, 0.5) !important;
