@@ -44,9 +44,12 @@ body {
 }
 
 .centered {
+    width: 90vmin; /* Adaptação baseada no menor valor entre largura e altura */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
     text-align: center;
     max-width: 549px; /* Limitando largura máxima */
-    margin: auto; /* Centralizando horizontalmente */
 }
 .h1{
     font-family: "Source Sans Pro", sans-serif;
