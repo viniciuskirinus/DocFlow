@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='theme_home.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='loopple_home.css') }}">
+  <link rel="stylesheet" href="../static/theme_home.css">
+  <link rel="stylesheet" href="../static/loopple_home.css">
 
 </head>
 
@@ -17,7 +19,7 @@
       <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white" id="sidenav-main">
           <div class="sidenav-header  align-items-center"> <a class="navbar-brand"> <img src="https://sirtec.com.br/restrito/logo.png" class="navbar-brand-img"> Sirtec Doc Flow</a> </div>
           <hr class="mt-0 mb-3">
-          <div class="d-flex align-items-center"> <img src="https://static.vecteezy.com/ti/vetor-gratis/p1/7407996-user-icon-person-icon-client-symbol-login-head-sign-icon-design-vetor.jpg" class="avatar ml-3">
+          <div class="d-flex align-items-center"> <img src="../static/icone_user.png" class="avatar ml-3">
               <div class="ml-3">
                   <h4 class="mb-0">{{session['username']}}</h4>
                   <p class="text-xs mb-0">{{session['office']}}</p>
@@ -84,19 +86,19 @@
                           </div>
                       </li>
                   </ul>
-                  <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
-                      <li class="nav-item dropdown"> <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <div class="media align-items-center"> <span class="avatar avatar-sm"> <img alt="Image placeholder" src="https://static.vecteezy.com/ti/vetor-gratis/p1/7407996-user-icon-person-icon-client-symbol-login-head-sign-icon-design-vetor.jpg"> </span> </div>
-                          </a>
-                          <div class="dropdown-menu  dropdown-menu-right ">
-                              <div class="dropdown-header noti-title">
-                                  <h6 class="text-overflow m-0">Bem vindo!</h6>
-                              </div> 
-                              <a href="#!" class="dropdown-item"> <i class="fa fa-user"></i> <span>Meu perfil</span> </a> 
-                              <a href="#!" class="dropdown-item" onclick="logout()"> <i class="fa fa-sign-out-alt"></i> <span>Sair</span> </a>
-                          </div>
-                      </li>
-                  </ul>
+                    <div>
+                        <div class="list-group list-group-flush"> 
+                            <a href="#" >
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <!-- Removido o avatar e adicionado o ícone de saída -->
+                                        <i class="fa fa-sign-out-alt avatar rounded-circle" onclick="logout()"></i>
+                                    </div>
+                                </div>
+                            </a> 
+                        </div>
+                    </div>
+                </div>
               </div>
           </div>
       </nav>

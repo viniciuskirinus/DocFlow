@@ -179,7 +179,7 @@ sup {
 }
 a {
     text-decoration: none;
-    color: var(--bs-primary);
+    color: orange;
     background-color: transparent;
 }
 a:hover {
@@ -16622,7 +16622,7 @@ button.bg-lighter:hover {
     background-color: #cbd3da !important;
 }
 .bg-gradient-primary {
-    background:  orange !important;
+    background:  red !important;
 }
 .bg-gradient-secondary {
     background: linear-gradient(87deg, var(--bs-gradient-secondary-right) 0, var(--bs-gradient-secondary-left) 100%) !important;
