@@ -40,13 +40,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh; /* Para ocupar toda a altura da tela */
+    height: 100vh; /* Para ocupar toda a altura da tela */
 }
 
 .centered {
+    height: 80%;
     text-align: center;
     width: 90%; /* Definindo largura máxima em porcentagem */
-    max-width: 600px; /* Limitando largura máxima */
+    max-width: 549px; /* Limitando largura máxima */
     margin: auto; /* Centralizando horizontalmente */
 }
 .h1{
