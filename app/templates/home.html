@@ -87,27 +87,17 @@
                                   </a> 
                             </div>
                         </li>
-                        <li class="nav-item dropdown"> <a class="nav-link position-relative" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-bell"></i> <span class="badge badge-danger badge-sm position-absolute top-0 mt-n2 right-1 px-2 py-1">1</span> </a>
+                        <li class="nav-item dropdown"> 
+                            <a class="nav-link position-relative" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                                <i class="fa fa-bell"></i> 
+                                <span class="badge badge-danger badge-sm position-absolute top-0 mt-n2 right-1 px-2 py-1" id="notification-count"></span> <!-- Contagem de notificações dinâmica -->
+                            </a> 
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-xl py-0 overflow-hidden">
                                 <div class="px-3 pt-3">
-                                    <h6 class="text-sm text-muted m-0">Você possuí <span class="text-primary">1</span> nova notificação!</h6>
+                                    <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary" id="notification-total">0</span> nova(s) notificação(ões)!</h6> <!-- Total de notificações -->
                                 </div>
-                                <div class="list-group list-group-flush"> 
-                                    <a href="#!" class="list-group-item list-group-item-action">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <!-- Avatar --> <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle"> </div>
-                                            <div class="col ml--2">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <h4 class="mb-0 text-sm">Administrador</h4>
-                                                    </div>
-                                                    <div class="text-right text-muted"> <small>2 hrs atrás</small> </div>
-                                                </div>
-                                                <p class="text-sm mb-0">Novo documento lançado no portal</p>
-                                            </div>
-                                        </div>
-                                    </a> 
+                                <div class="list-group list-group-flush">
+                                    <!-- Notificações serão adicionadas dinamicamente aqui -->
                                 </div>
                             </div>
                         </li>
@@ -260,6 +250,23 @@
             $('#carouselExampleControls').carousel({
             interval: 4000 // Intervalo em milissegundos (3 segundos)
             });
+        });
+
+        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com');
+
+        socket.on('notification', function(data) {
+            var notificationHtml = data.html;
+            $('.list-group').append(notificationHtml); // Adiciona a notificação à lista de notificações
+            
+            // Atualiza a contagem de notificações não lidas
+            var notificationCount = $('.badge-danger');
+            var currentCount = parseInt(notificationCount.text() || 0); // Obtém o valor atual da contagem de notificações ou assume 0 se for nulo
+            notificationCount.text(currentCount + 1); // Incrementa a contagem de notificações não lidas
+            
+            // Atualiza o total de notificações
+            var totalNotifications = $('.text-primary');
+            var currentTotal = parseInt(totalNotifications.text() || 0); // Obtém o valor atual do total de notificações ou assume 0 se for nulo
+            totalNotifications.text(currentTotal + 1); // Incrementa o total de notificações
         });
     </script>
     

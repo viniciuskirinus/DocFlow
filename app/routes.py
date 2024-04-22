@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, session,
 import os
 from flask import Flask
 import pickle
+from flask_socketio import emit
 from .forms import processar_login
 from .generate import processar_formulario, verificar_documento_existente
 from .pdf_edit import pdf_edit
@@ -305,7 +306,30 @@ def generate():
             
             # Processar o formulário
             sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
+            
+            # Se o formulário foi processado com sucesso, envie a notificação
             if sucesso:
+                notification_html = """
+                <a href="#!" class="list-group-item list-group-item-action">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <!-- Avatar --> <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle"> 
+                        </div>
+                        <div class="col ml--2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mb-0 text-sm">Administrador</h4>
+                                </div>
+                                <div class="text-right text-footer"> <small>Now</small> </div>
+                            </div>
+                            <p class="text-sm mb-0">Novo documento lançado no portal: {nome}</p>
+                        </div>
+                    </div>
+                </a>
+                """.format(nome=nome)
+                
+                emit('notification', {'html': notification_html}, broadcast=True)
+                
                 return jsonify(success=True)  # Retorna uma resposta indicando sucesso
             else:
                 return jsonify(success=False, error="Erro ao processar o formulário."), 500  # Retorna uma resposta de erro genérica
