@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
 import os
-import socketio
-from flask_socketio import SocketIO
+from __init__ import socketio
+from flask_socketio import SocketIO, emit
 from flask import Flask
 import pickle
 from flask_socketio import emit
@@ -75,7 +75,6 @@ logout_routes = Blueprint('logout', __name__, template_folder='templates')
 
 #rota de notificações
 notification_routes = Blueprint('notification', __name__)
-socketio = SocketIO()
 
 
 @login_routes.route('/', methods=['GET', 'POST'])
@@ -435,7 +434,7 @@ def logout():
     session.clear()
     return redirect(url_for('login.login'))
 
-@notification_routes.route('/notification')
+@socketio.on('notification')
 def handle_notification(data):
     # Transmita a notificação recebida para o cliente
     emit('notification', data, broadcast=True)
