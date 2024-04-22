@@ -257,14 +257,14 @@
         socket.on('notification', function(data) {
             var notificationHtml = data.html;
             $('.list-group').append(notificationHtml); // Adiciona a notificação à lista de notificações
-            
+
             // Atualiza a contagem de notificações não lidas
-            var notificationCount = $('.badge-danger');
+            var notificationCount = $('#notification-count');
             var currentCount = parseInt(notificationCount.text() || 0); // Obtém o valor atual da contagem de notificações ou assume 0 se for nulo
             notificationCount.text(currentCount + 1); // Incrementa a contagem de notificações não lidas
-            
+
             // Atualiza o total de notificações
-            var totalNotifications = $('.text-primary');
+            var totalNotifications = $('#notification-total');
             var currentTotal = parseInt(totalNotifications.text() || 0); // Obtém o valor atual do total de notificações ou assume 0 se for nulo
             totalNotifications.text(currentTotal + 1); // Incrementa o total de notificações
         });

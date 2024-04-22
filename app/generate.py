@@ -21,7 +21,7 @@ def verificar_documento_existente(nome):
 def processar_formulario(nome, categoria, versao, data, setor, arquivo):
     try:
         if verificar_documento_existente(nome):
-            raise ValueError("Já existe um documento cadastrado com este nome.")
+            return False  # Documento já existe, portanto, retorno False
         
         conteudo_arquivo = arquivo.read()
         imagens = convert_from_bytes(conteudo_arquivo)

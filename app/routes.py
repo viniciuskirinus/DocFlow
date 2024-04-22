@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
 import os
+import socketio
 from flask import Flask
 import pickle
 from flask_socketio import emit
@@ -333,7 +334,7 @@ def generate():
 
             return jsonify(success=True)  # Retorna uma resposta indicando sucesso
         else:
-            return jsonify(success=False, error="Erro ao processar o formulário."), 500  # Retorna uma resposta de erro genérica
+            return jsonify(success=False, error="Erro ao processar o formulário: Documento já existe."), 400  # Retorna uma resposta de erro indicando que o documento já existe
     except Exception as e:
         return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
 
@@ -428,3 +429,9 @@ def edit_data():
 def logout():
     session.clear()
     return redirect(url_for('login.login'))
+
+# Endpoint para receber notificações do backend
+@socketio.on('notification')
+def handle_notification(data):
+    # Transmita a notificação recebida para o cliente
+    emit('notification', data, broadcast=True)
