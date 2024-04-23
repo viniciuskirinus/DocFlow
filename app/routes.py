@@ -6,7 +6,7 @@ from flask import Flask
 import pickle
 from flask_socketio import emit
 from .forms import processar_login
-from .generate import processar_formulario
+from .generate import processar_formulario, verificar_documento_existente
 from .pdf_edit import pdf_edit
 from .pdf_delete import pdf_delete
 from .user_delete import user_delete
@@ -302,6 +302,10 @@ def generate():
             return jsonify(success=False, error="Unauthorized"), 401
 
         nome = request.form.get('nome')
+
+        if verificar_documento_existente(nome):
+            return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
+
         categoria = request.form.get('categoria')
         versao = request.form.get('versao')
         data = request.form.get('data')

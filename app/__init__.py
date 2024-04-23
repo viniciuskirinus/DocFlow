@@ -1,14 +1,13 @@
 from flask import Flask
 from flask_socketio import SocketIO
 
-# Define socketio fora da função create_app()
+# Define a instância do SocketIO fora da função create_app()
 socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
 
-    # Inicializa o SocketIO usando a variável global
-    global socketio
+    # Inicializa o SocketIO usando a instância definida fora da função create_app()
     socketio.init_app(app)
 
     # Configurações do aplicativo podem ser carregadas de config.py
