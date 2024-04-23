@@ -1,14 +1,7 @@
 from flask import Flask
-from flask_socketio import SocketIO
-
-# Define a instância do SocketIO fora da função create_app()
-socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
-
-    # Inicializa o SocketIO usando a instância definida fora da função create_app()
-    socketio.init_app(app)
 
     # Configurações do aplicativo podem ser carregadas de config.py
     app.config.from_pyfile('config.py')
@@ -38,8 +31,7 @@ def create_app():
                             user_projetos_routes,
                             user_documentos_clientes_routes,
                             user_politicas_gerais_routes,
-                            user_edit_data_routes,
-                            notification_routes)
+                            user_edit_data_routes)
     
     # Registrando as blueprints
     app.register_blueprint(login_routes)
@@ -67,6 +59,5 @@ def create_app():
     app.register_blueprint(process_chat_routes)
     app.register_blueprint(user_edit_data_routes)
     app.register_blueprint(logout_routes)
-    app.register_blueprint(notification_routes)
 
     return app

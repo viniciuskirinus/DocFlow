@@ -1,10 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
 import os
-from .__init__ import socketio
-from flask_socketio import SocketIO, emit
-from flask import Flask
 import pickle
-from flask_socketio import emit
 from .forms import processar_login
 from .generate import processar_formulario, verificar_documento_existente
 from .pdf_edit import pdf_edit
@@ -297,50 +293,31 @@ def delete():
 
 @admin_pdf_generate_routes.route('/generate', methods=['POST'])
 def generate():
-    try:
-        if 'username' not in session or 'role' not in session or session['role'] != "admin":
-            return jsonify(success=False, error="Unauthorized"), 401
-
+    if 'username' in session and 'role' in session and session['role'] == "admin":
         nome = request.form.get('nome')
-
-        if verificar_documento_existente(nome):
-            return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
-
         categoria = request.form.get('categoria')
         versao = request.form.get('versao')
         data = request.form.get('data')
         setor = request.form.get('setor')
         arquivo = request.files['arquivo'] if 'arquivo' in request.files else None
-
-        sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
-        
-        if sucesso:
-            notification_html = """
-            <a href="#!" class="list-group-item list-group-item-action">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <!-- Avatar --> <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle"> 
-                    </div>
-                    <div class="col ml--2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h4 class="mb-0 text-sm">Administrador</h4>
-                            </div>
-                            <div class="text-right text-footer"> <small>Now</small> </div>
-                        </div>
-                        <p class="text-sm mb-0">Novo documento lançado no portal: {nome}</p>
-                    </div>
-                </div>
-            </a>
-            """.format(nome=nome)
+        try:
+            # Verificar se já existe um documento com o mesmo nome
+            if verificar_documento_existente(nome):
+                return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
             
-            emit('notification', {'html': notification_html}, broadcast=True)
+            # Processar o formulário
+            sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
+            if sucesso:
+                return jsonify(success=True)  # Retorna uma resposta indicando sucesso
+            else:
+                return jsonify(success=False, error="Erro ao processar o formulário."), 500  # Retorna uma resposta de erro genérica
+        except Exception as e:
+            return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
+    else:
+        unauthorized_response = make_response(jsonify(success=False, error="Unauthorized"), 401)
+        unauthorized_response.headers['Content-Type'] = 'application/json'
+        return unauthorized_response
 
-            return jsonify(success=True)  # Retorna uma resposta indicando sucesso
-        else:
-            return jsonify(success=False, error="Erro ao processar o formulário: Documento já existe."), 400  # Retorna uma resposta de erro indicando que o documento já existe
-    except Exception as e:
-        return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
 
 @admin_user_routes.route('/users')
 def usuarios():
@@ -433,8 +410,3 @@ def edit_data():
 def logout():
     session.clear()
     return redirect(url_for('login.login'))
-
-@socketio.on('notification')
-def handle_notification(data):
-    # Transmita a notificação recebida para o cliente
-    emit('notification', data, broadcast=True)
