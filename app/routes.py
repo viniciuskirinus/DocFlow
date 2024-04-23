@@ -438,6 +438,3 @@ def logout():
 def handle_notification(data):
     # Transmita a notificação recebida para o cliente
     emit('notification', data, broadcast=True)
-
-# Registrar a função de tratamento de notificação com o SocketIO
-socketio.on('notification', handle_notification)
