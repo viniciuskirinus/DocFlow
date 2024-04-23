@@ -8,32 +8,20 @@ import os
 
 conexao = conectar_db()
 
-def verificar_documento_existente(nome):
-    try:
-        with conexao.cursor() as cursor:
-            sql_verificar = "SELECT name FROM pdf WHERE name = %s"
-            cursor.execute(sql_verificar, (nome,))
-            resultado = cursor.fetchone()
-            return bool(resultado)  # Retorna True se documento existir, False caso contrário
-    except Exception as e:
-        raise RuntimeError("Erro ao verificar a existência do documento")
-
 def processar_formulario(nome, categoria, versao, data, setor, arquivo):
     try:
-        if verificar_documento_existente(nome):
-            return False  # Documento já existe, portanto, retorno False
         
         conteudo_arquivo = arquivo.read()
         imagens = convert_from_bytes(conteudo_arquivo)
         imagens_binarias = [converter_imagem_para_binario(imagem) for imagem in imagens]
         imagens_agrupadas = pickle.dumps(imagens_binarias)
+        
+        criar_pasta_s3(nome)
+        fazer_upload_para_s3(nome, versao, conteudo_arquivo)
 
         # Salva no banco de dados
         if not salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arquivo, imagens_agrupadas):
             raise RuntimeError("Falha ao salvar no banco de dados")
-
-        criar_pasta_s3(nome)
-        fazer_upload_para_s3(nome, versao, conteudo_arquivo)
         
         return True
     except Exception as e:
