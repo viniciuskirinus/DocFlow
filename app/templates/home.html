@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple.css') }}">
@@ -252,7 +253,7 @@
             });
         });
 
-        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com/notifications');
+        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com/');
 
         socket.on('notification', function(data) {
             console.log('Received notification:', data);
