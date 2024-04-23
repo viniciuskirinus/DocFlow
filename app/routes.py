@@ -70,9 +70,6 @@ process_chat_routes = Blueprint('process_chat', __name__, template_folder='templ
 #rota de logout
 logout_routes = Blueprint('logout', __name__, template_folder='templates')
 
-#rota de notificações
-notification_routes = Blueprint('notification', __name__)
-
 
 @login_routes.route('/', methods=['GET', 'POST'])
 def login():
@@ -92,8 +89,6 @@ def login():
                     return redirect(url_for('home.home'))
 
     return render_template('login.html')
-
-
 
 @admin_routes.route('/admin')
 def admin():
