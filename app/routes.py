@@ -6,7 +6,7 @@ from flask import Flask
 import pickle
 from flask_socketio import emit
 from .forms import processar_login
-from .generate import processar_formulario, verificar_documento_existente
+from .generate import processar_formulario
 from .pdf_edit import pdf_edit
 from .pdf_delete import pdf_delete
 from .user_delete import user_delete
