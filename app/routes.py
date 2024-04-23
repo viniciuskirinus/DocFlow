@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
 import os
-from __init__ import socketio
+from .__init__ import socketio
 from flask_socketio import SocketIO, emit
 from flask import Flask
 import pickle
