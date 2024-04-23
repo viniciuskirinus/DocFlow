@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple.css') }}">
@@ -251,24 +250,6 @@
             $('#carouselExampleControls').carousel({
             interval: 4000 // Intervalo em milissegundos (3 segundos)
             });
-        });
-
-        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com/');
-
-        socket.on('notification', function(data) {
-            console.log('Received notification:', data);
-            var notificationHtml = data.html;
-            $('.list-group').append(notificationHtml); // Adiciona a notificação à lista de notificações
-
-            // Atualiza a contagem de notificações não lidas
-            var notificationCount = $('#notification-count');
-            var currentCount = parseInt(notificationCount.text() || 0); // Obtém o valor atual da contagem de notificações ou assume 0 se for nulo
-            notificationCount.text(currentCount + 1); // Incrementa a contagem de notificações não lidas
-
-            // Atualiza o total de notificações
-            var totalNotifications = $('#notification-total');
-            var currentTotal = parseInt(totalNotifications.text() || 0); // Obtém o valor atual do total de notificações ou assume 0 se for nulo
-            totalNotifications.text(currentTotal + 1); // Incrementa o total de notificações
         });
     </script>
     

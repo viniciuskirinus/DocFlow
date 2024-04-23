@@ -37,7 +37,6 @@ def processar_formulario(nome, categoria, versao, data, setor, arquivo):
         
         return True
     except Exception as e:
-        print(f"Erro: {str(e)}")
         raise RuntimeError("Erro ao processar o formulário: " + str(e))
     
 

@@ -1,8 +1,5 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
+from flask import Flask, Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
 import os
-from .__init__ import socketio
-from flask_socketio import SocketIO, emit
-from flask import Flask
 import pickle
 from .forms import processar_login
 from .generate import processar_formulario, verificar_documento_existente
@@ -91,8 +88,6 @@ def login():
                     return redirect(url_for('home.home'))
 
     return render_template('login.html')
-
-
 
 @admin_routes.route('/admin')
 def admin():
@@ -207,7 +202,6 @@ def showpdf_route():
     else:
         return jsonify({'error': 'ID do PDF não fornecido.'}), 400
 
-
 @process_chat_routes.route('/process_chat', methods=['POST'])
 def chat_endpoint():
     data = request.json
@@ -276,8 +270,7 @@ def edit():
             return jsonify(success=False, error=str(e))  # Retorna uma resposta indicando erro
     else:
         return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado
-
-    
+ 
 @admin_pdf_delete_routes.route('/delete', methods=['POST'])
 def delete():
     if 'username' in session and 'role' in session and session['role'] == "admin":
@@ -311,27 +304,6 @@ def generate():
         sucesso = processar_formulario(nome, categoria, versao, data, setor, arquivo)
         
         if sucesso:
-            notification_html = """
-            <a href="#!" class="list-group-item list-group-item-action">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <!-- Avatar --> <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle"> 
-                    </div>
-                    <div class="col ml--2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h4 class="mb-0 text-sm">Administrador</h4>
-                            </div>
-                            <div class="text-right text-footer"> <small>Now</small> </div>
-                        </div>
-                        <p class="text-sm mb-0">Novo documento lançado no portal: {nome}</p>
-                    </div>
-                </div>
-            </a>
-            """.format(nome=nome)
-            
-            emit('notification', {'html': notification_html}, namespace='/notifications', broadcast=True)
-
             return jsonify(success=True)  # Retorna uma resposta indicando sucesso
         else:
             return jsonify(success=False, error="Erro ao processar o formulário: Documento já existe."), 400  # Retorna uma resposta de erro indicando que o documento já existe
@@ -430,12 +402,3 @@ def edit_data():
 def logout():
     session.clear()
     return redirect(url_for('login.login'))
-
-@socketio.on('connect', namespace='/notifications')
-def handle_connect():
-    print('Client connected to notifications namespace')
-
-@socketio.on('notification', namespace='/notifications')
-def handle_notification(data):
-    print('Notification received:', data)
-    emit('notification', data, namespace='/notifications', broadcast=True)
