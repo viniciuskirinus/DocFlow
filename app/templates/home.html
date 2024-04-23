@@ -252,7 +252,7 @@
             });
         });
 
-        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com');
+        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com/');
 
         socket.on('notification', function(data) {
             var notificationHtml = data.html;
