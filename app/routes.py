@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session, request, jsonify, make_response
 import os
+from flask import Flask
 import pickle
 from .forms import processar_login
 from .generate import processar_formulario, verificar_documento_existente
