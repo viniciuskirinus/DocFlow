@@ -39,8 +39,7 @@ def create_app():
                             user_projetos_routes,
                             user_documentos_clientes_routes,
                             user_politicas_gerais_routes,
-                            user_edit_data_routes,
-                            notification_routes)
+                            user_edit_data_routes)
     
     # Registrando as blueprints
     app.register_blueprint(login_routes)
@@ -68,6 +67,5 @@ def create_app():
     app.register_blueprint(process_chat_routes)
     app.register_blueprint(user_edit_data_routes)
     app.register_blueprint(logout_routes)
-    app.register_blueprint(notification_routes)
 
     return app

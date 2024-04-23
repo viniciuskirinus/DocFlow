@@ -72,9 +72,6 @@ process_chat_routes = Blueprint('process_chat', __name__, template_folder='templ
 #rota de logout
 logout_routes = Blueprint('logout', __name__, template_folder='templates')
 
-#rota de notificações
-notification_routes = Blueprint('notification', __name__)
-
 
 @login_routes.route('/', methods=['GET', 'POST'])
 def login():
@@ -333,12 +330,13 @@ def generate():
             </a>
             """.format(nome=nome)
             
-            emit('notification', {'html': notification_html}, broadcast=True)
+            emit('notification', {'html': notification_html}, namespace='/notifications', broadcast=True)
 
             return jsonify(success=True)  # Retorna uma resposta indicando sucesso
         else:
             return jsonify(success=False, error="Erro ao processar o formulário: Documento já existe."), 400  # Retorna uma resposta de erro indicando que o documento já existe
     except Exception as e:
+        print(f"Erro ao processar o pedido: {str(e)}")
         return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
 
 @admin_user_routes.route('/users')
@@ -433,7 +431,11 @@ def logout():
     session.clear()
     return redirect(url_for('login.login'))
 
-@socketio.on('notification')
+@socketio.on('connect', namespace='/notifications')
+def handle_connect():
+    print('Client connected to notifications namespace')
+
+@socketio.on('notification', namespace='/notifications')
 def handle_notification(data):
-    # Transmita a notificação recebida para o cliente
-    emit('notification', data, broadcast=True)
+    print('Notification received:', data)
+    emit('notification', data, namespace='/notifications', broadcast=True)

@@ -252,9 +252,10 @@
             });
         });
 
-        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com/');
+        var socket = io.connect('https://docflow-896e510ca84b.herokuapp.com/notifications');
 
         socket.on('notification', function(data) {
+            console.log('Received notification:', data);
             var notificationHtml = data.html;
             $('.list-group').append(notificationHtml); // Adiciona a notificação à lista de notificações
 
