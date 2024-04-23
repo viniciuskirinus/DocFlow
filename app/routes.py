@@ -302,10 +302,6 @@ def generate():
             return jsonify(success=False, error="Unauthorized"), 401
 
         nome = request.form.get('nome')
-
-        if verificar_documento_existente(nome):
-            return jsonify(success=False, error="Já existe um documento cadastrado com este nome."), 400
-
         categoria = request.form.get('categoria')
         versao = request.form.get('versao')
         data = request.form.get('data')
