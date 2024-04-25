@@ -70,6 +70,7 @@
         const count = notificationsDropdown.children.length;
         if (count > 0) {
             document.getElementById('notification-count-text').textContent = count;
+            badge.textContent = count; // Atualiza o conteúdo do span 'notification-count' com o número de notificações
             badge.style.display = 'block';
         }
     });
