@@ -30,13 +30,48 @@
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
-    var pusher = new Pusher('f92025bb780d9ff681ff', {
-      cluster: 'sa1'
+    const pusher = new Pusher('f92025bb780d9ff681ff', {
+      cluster: 'sa1',
+      encrypted: true
     });
 
-    var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
-      alert(JSON.stringify(data));
+    const channel = pusher.subscribe('my-channel');
+
+    channel.bind('new-document', function(data) {
+        const now = new Date();
+        const launchTime = new Date(data.timestamp);
+        const timeDifference = Math.floor((now - launchTime) / (1000 * 60 * 60)) + ' horas';
+
+        const notificationsDropdown = document.querySelector('.dropdown-menu .list-group');
+        notificationsDropdown.innerHTML += `
+            <a href="#!" class="list-group-item list-group-item-action">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle">
+                    </div>
+                    <div class="col ml--2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0 text-sm">${data.nome}</h4>
+                            </div>
+                            <div class="text-right text-footer">
+                                <small>${timeDifference} atrás</small>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-0">${data.anotacoes}</p>
+                        <p class="text-sm mb-0">Versão: ${data.versao}</p>
+                    </div>
+                </div>
+            </a>
+        `;
+
+        // Atualiza o contador de notificações e exibe o badge se houver notificações
+        const badge = document.getElementById('notification-count');
+        const count = notificationsDropdown.children.length;
+        if (count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'block';
+        }
     });
     
     </script>
@@ -107,14 +142,14 @@
                         <li class="nav-item dropdown"> 
                             <a class="nav-link position-relative" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
                                 <i class="fa fa-bell"></i> 
-                                <span class="badge badge-danger badge-sm position-absolute top-0 mt-n2 right-1 px-2 py-1" id="notification-count"></span> <!-- Contagem de notificações dinâmica -->
-                            </a> 
+                                <span class="badge badge-danger badge-sm position-absolute top-0 mt-n2 right-1 px-2 py-1" id="notification-count" style="display: none;"></span> 
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-xl py-0 overflow-hidden">
                                 <div class="px-3 pt-3">
-                                    <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary" id="notification-total">0</span> nova(s) notificação(ões)!</h6> <!-- Total de notificações -->
+                                    <h6 class="text-sm text-footer m-0">Você possuí <span class="text-primary" id="notification-count-text">0</span> novas notificações!</h6>
                                 </div>
                                 <div class="list-group list-group-flush">
-                                    <!-- Notificações serão adicionadas dinamicamente aqui -->
+                                    <!-- Aqui as notificações serão adicionadas dinamicamente -->
                                 </div>
                             </div>
                         </li>

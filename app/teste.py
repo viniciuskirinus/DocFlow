@@ -1,4 +1,5 @@
 import pusher
+import datetime
 
 pusher_client = pusher.Pusher(
   app_id='1793305',
@@ -8,4 +9,11 @@ pusher_client = pusher.Pusher(
   ssl=True
 )
 
-pusher_client.trigger('my-channel', 'my-event', {'message': 'hello world'})
+data = {
+        'nome': 'Documento de Teste',
+        'versao': '1.0',
+        'timestamp': datetime.now().isoformat(),
+        'anotacoes': 'Este é um documento de teste'
+    }
+
+pusher_client.trigger('my-channel', 'new-document', data)
