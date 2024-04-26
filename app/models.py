@@ -24,7 +24,6 @@ def conectar_db():
             connect_timeout=5,
             read_timeout=30,
             write_timeout=30,
-            charset='utf8mb4',
             use_unicode=True
         )
         connection.ping(reconnect=True)  # Checa a conexão e tenta reconectar se necessário
