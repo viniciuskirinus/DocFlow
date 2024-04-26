@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://rawcdn.githack.com/Loopple/loopple-public-assets/ad60f16c8a16d1dcad75e176c00d7f9e69320cd4/argon-dashboard/css/nucleo/css/nucleo.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loopple.css') }}">
     <link rel="stylesheet" href="../static/theme.css">
@@ -24,58 +23,6 @@
         }
 
     </style>
-
-    <script>
-
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    const pusher = new Pusher('f92025bb780d9ff681ff', {
-      cluster: 'sa1',
-      encrypted: true
-    });
-
-    const channel = pusher.subscribe('my-channel');
-
-    channel.bind('new-document', function(data) {
-        const now = new Date();
-        const launchTime = new Date(data.timestamp);
-        const timeDifference = Math.floor((now - launchTime) / (1000 * 60 * 60)) + ' horas';
-
-        const notificationsDropdown = document.querySelector('.dropdown-menu .list-group');
-        notificationsDropdown.innerHTML += `
-            <a href="#!" class="list-group-item list-group-item-action">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle">
-                    </div>
-                    <div class="col ml--2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h4 class="mb-0 text-sm">${data.nome}</h4>
-                            </div>
-                            <div class="text-right text-footer">
-                                <small>${timeDifference} atrás</small>
-                            </div>
-                        </div>
-                        <p class="text-sm mb-0">${data.anotacoes}</p>
-                        <p class="text-sm mb-0">Versão: ${data.versao}</p>
-                    </div>
-                </div>
-            </a>
-        `;
-
-        // Atualiza o contador de notificações e exibe o badge se houver notificações
-        const badge = document.getElementById('notification-count');
-        const count = notificationsDropdown.children.length;
-        if (count > 0) {
-            document.getElementById('notification-count-text').textContent = count;
-            badge.textContent = count; // Atualiza o conteúdo do span 'notification-count' com o número de notificações
-            badge.style.display = 'block';
-        }
-    });
-    
-    </script>
 
 </head>
 
@@ -140,20 +87,40 @@
                                   </a> 
                             </div>
                         </li>
-                        <li class="nav-item dropdown"> 
-                            <a class="nav-link position-relative" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-                                <i class="fa fa-bell"></i> 
-                                <span class="badge badge-danger badge-sm position-absolute top-0 mt-n2 right-1 px-2 py-1" id="notification-count" style="display: none;"></span> 
+                        <li class="nav-item dropdown">
+                            <a class="nav-link position-relative" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-bell"></i>
+                                <span class="badge badge-danger badge-sm position-absolute top-0 mt-n2 right-1 px-2 py-1">{{ notifications|length }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-xl py-0 overflow-hidden">
                                 <div class="px-3 pt-3">
-                                    <h6 class="text-sm text-footer m-0">Você possuí <span class="text-primary" id="notification-count-text">0</span> novas notificações!</h6>
+                                    <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary">{{ notifications|length }}</span> nova(s) notificação(ões)!</h6>
                                 </div>
                                 <div class="list-group list-group-flush">
-                                    <!-- Aqui as notificações serão adicionadas dinamicamente -->
+                                    {% for notification in notifications %}
+                                    <a href="#!" class="list-group-item list-group-item-action">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <img alt="Image placeholder" src="https://cdn-icons-png.flaticon.com/256/5146/5146077.png" class="avatar rounded-circle">
+                                            </div>
+                                            <div class="col ml--2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h4 class="mb-0 text-sm">{{ notification.pdf_name }}</h4>
+                                                    </div>
+                                                    <div class="text-right text-footer">
+                                                        <small>{{ notification.time }}</small>
+                                                    </div>
+                                                </div>
+                                                <p class="text-sm mb-0">{{ notification.description }}</p>
+                                                <p class="text-sm mb-0">Versão: {{ notification.pdf_version }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    {% endfor %}
                                 </div>
                             </div>
-                        </li>
+                        </li>                        
                     </ul>
                     <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                         <li class="nav-item dropdown"> <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

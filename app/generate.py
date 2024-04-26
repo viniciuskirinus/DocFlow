@@ -53,6 +53,14 @@ def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arqu
         with conexao.cursor() as cursor:
             sql_inserir = "INSERT INTO pdf (name, category, sector, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(sql_inserir, (nome, categoria, setor, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
+            
+            # Recuperando o ID do PDF recém-inserido
+            ultimo_id_inserido = cursor.lastrowid
+            
+            # Inserindo dados na tabela de notificações
+            sql_inserir_notificacao = "INSERT INTO notifications (description, time, read, id_pdf) VALUES (%s, %s, %s, %s)"
+            descricao = "Novo documento lançado no portal"
+            cursor.execute(sql_inserir_notificacao, (descricao, data_formatada, False, ultimo_id_inserido))
 
         conexao.commit()
         return True

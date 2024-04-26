@@ -17,6 +17,8 @@ from base64 import b64encode
 from .models import conectar_db
 from .s3_database import list_folders_and_files
 from .send_s3 import send_s3
+from .notifications import get_notifications
+
 
 #carrega as chaves da api do gpt e huggingface para processar o chat
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -103,8 +105,9 @@ def home():
     if 'username' in session and 'role' in session and session['role'] == "user":
         # Obtenha a mensagem de alerta da sessão
         alert_message = session.pop('alert_message', None)
+        notifications = get_notifications()
 
-        return render_template('home.html', active_page='home.home', alert_message=alert_message) 
+        return render_template('home.html', active_page='home.home', alert_message=alert_message, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
 
