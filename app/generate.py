@@ -58,7 +58,7 @@ def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arqu
             ultimo_id_inserido = cursor.lastrowid
 
             #obtem a hora 
-            hora = datetime.datetime.now()
+            hora = datetime.now()
             
             # Inserindo dados na tabela de notificações
             sql_inserir_notificacao = "INSERT INTO notifications (description, time, read, id_pdf) VALUES (%s, %s, %s, %s)"
