@@ -326,10 +326,10 @@
             var notificationTimes = document.querySelectorAll('.notification-time');
             notificationTimes.forEach(function(notificationTime) {
                 var timeString = notificationTime.getAttribute('data-time');
-                var notificationTime = new Date(timeString);
+                var notificationTimeValue = new Date(timeString.replace('T', ' ')); // Remova o 'T' para garantir compatibilidade com navegadores mais antigos
                 var currentTime = new Date();
 
-                var timeDifference = currentTime.getTime() - notificationTime.getTime();
+                var timeDifference = currentTime.getTime() - notificationTimeValue.getTime();
                 var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
 
                 if (hoursDifference === 0) {
