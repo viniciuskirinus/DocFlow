@@ -34,11 +34,41 @@ def processar_formulario(nome, categoria, versao, data, setor, arquivo):
 
         criar_pasta_s3(nome)
         fazer_upload_para_s3(nome, versao, conteudo_arquivo)
+
+        criar_e_enviar_notificacao()
         
         return True
     except Exception as e:
         raise RuntimeError("Erro ao processar o formulário: " + str(e))
-    
+
+def criar_e_enviar_notificacao():
+    try:
+        ultimo_id_inserido = obter_ultimo_id_inserido()
+        descricao = "Novo documento lançado no portal"
+        hora_atual = datetime.now()
+        if not enviar_notificacao(descricao, hora_atual, ultimo_id_inserido):
+            raise RuntimeError("Falha ao enviar a notificação")
+    except Exception as e:
+        raise RuntimeError("Erro ao criar e enviar notificação: " + str(e))
+
+def obter_ultimo_id_inserido():
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            ultimo_id_inserido = cursor.fetchone()[0]
+            return ultimo_id_inserido
+    except Exception as e:
+        raise RuntimeError("Erro ao obter o último ID inserido: " + str(e))
+
+def enviar_notificacao(descricao, hora, id_pdf):
+    try:
+        with conexao.cursor() as cursor:
+            sql_inserir_notificacao = "INSERT INTO notifications (description, time, read, id_pdf) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql_inserir_notificacao, (descricao, hora, False, id_pdf))
+        conexao.commit()
+        return True
+    except Exception as e:
+        return False
 
 def converter_imagem_para_binario(imagem):
     buf = io.BytesIO()
@@ -53,18 +83,6 @@ def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arqu
         with conexao.cursor() as cursor:
             sql_inserir = "INSERT INTO pdf (name, category, sector, version, location, date, page_images) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(sql_inserir, (nome, categoria, setor, versao, conteudo_arquivo, data_formatada, imagens_agrupadas))
-            
-            # Recuperando o ID do PDF recém-inserido
-            ultimo_id_inserido = cursor.lastrowid
-
-            #obtem a hora 
-            hora = datetime.now()
-            
-            # Inserindo dados na tabela de notificações
-            sql_inserir_notificacao = "INSERT INTO notifications (description, time, read, id_pdf) VALUES (%s, %s, %s, %s)"
-            descricao = "Novo documento lançado no portal"
-            cursor.execute(sql_inserir_notificacao, (descricao, hora, False, ultimo_id_inserido))
-
         conexao.commit()
         return True
     except Exception as e:
