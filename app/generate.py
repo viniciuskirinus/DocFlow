@@ -56,11 +56,14 @@ def salvar_no_banco_de_dados(nome, categoria, setor, data, versao, conteudo_arqu
             
             # Recuperando o ID do PDF recém-inserido
             ultimo_id_inserido = cursor.lastrowid
+
+            #obtem a hora 
+            hora = datetime.datetime.now()
             
             # Inserindo dados na tabela de notificações
             sql_inserir_notificacao = "INSERT INTO notifications (description, time, read, id_pdf) VALUES (%s, %s, %s, %s)"
             descricao = "Novo documento lançado no portal"
-            cursor.execute(sql_inserir_notificacao, (descricao, data_formatada, False, ultimo_id_inserido))
+            cursor.execute(sql_inserir_notificacao, (descricao, hora, False, ultimo_id_inserido))
 
         conexao.commit()
         return True
