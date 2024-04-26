@@ -106,6 +106,7 @@ def home():
         # Obtenha a mensagem de alerta da sessão
         alert_message = session.pop('alert_message', None)
         notifications = get_notifications()
+        print(notifications)
 
         return render_template('home.html', active_page='home.home', alert_message=alert_message, notifications=notifications) 
     else:

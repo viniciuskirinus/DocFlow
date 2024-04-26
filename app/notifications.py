@@ -7,7 +7,6 @@ def get_notifications():
 
     # Obtém a conexão com o banco de dados
     conexao = conectar_db()
-    cursor = conexao.cursor()
 
     with conexao.cursor() as cursor:
         sql = """
