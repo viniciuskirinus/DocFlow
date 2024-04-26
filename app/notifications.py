@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from .models import conectar_db
 import pymysql.cursors  # define o retorno como uma lista
 
@@ -13,8 +13,11 @@ def get_notifications():
                 SELECT n.*, p.name AS pdf_name, p.version AS pdf_version
                 FROM notifications n
                 INNER JOIN pdf p ON n.id_pdf = p.id_pdf
-                ORDER BY n.time DESC
+                INNER JOIN user_notifications un ON n.id_notifications = un.id_notifications
+                WHERE un.id_user = %s
+                AND un.read = FALSE
+                ORDER BY n.time DESC;
             """
-        cursor.execute(sql)
+        cursor.execute(sql, (session['id_user'],))
         notifications = cursor.fetchall()
     return notifications
