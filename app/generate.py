@@ -5,6 +5,8 @@ from datetime import datetime
 from pdf2image import convert_from_bytes
 from .models import conectar_db
 import os
+import pymysql.cursors
+
 
 conexao = conectar_db()
 
@@ -62,7 +64,7 @@ def obter_ultimo_id_inserido():
 
 def enviar_notificacao(descricao, hora, ultimo_id_inserido):
     try:
-       with conexao.cursor() as cursor:
+        with conexao.cursor(pymysql.cursors.DictCursor) as cursor:  # Usando DictCursor
             # Inicia uma transação
             conexao.begin()
 
@@ -76,7 +78,7 @@ def enviar_notificacao(descricao, hora, ultimo_id_inserido):
             # Busca todos os usuários com a role 'user'
             sql_buscar_usuarios = "SELECT id_user FROM user WHERE role = 'user'"
             cursor.execute(sql_buscar_usuarios)
-            usuarios = cursor.fetchall()
+            usuarios = cursor.fetchall()  # Agora retorna uma lista de dicionários
 
             # Para cada usuário, insere uma entrada na tabela user_notifications
             sql_inserir_user_notification = "INSERT INTO user_notifications (id_user, id_notifications, `read`) VALUES (%s, %s, %s)"
