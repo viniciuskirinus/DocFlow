@@ -114,7 +114,7 @@
                                                             <h4 class="mb-0 text-sm">{{ notification['pdf_name'] }}</h4>
                                                         </div>
                                                         <div class="text-right text-footer">
-                                                            <small>{{ notification['time'] }}</small>
+                                                            <small class="notification-time">{{ notification['time'] }}</small>
                                                         </div>
                                                     </div>
                                                     <p class="text-sm mb-0">{{ notification['description'] }}</p>
@@ -321,6 +321,28 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+            // Loop through each notification time
+            $('.notification-time').each(function() {
+                var notificationTime = new Date($(this).text());
+                var currentTime = new Date();
+
+                // Calcular a diferença em milissegundos
+                var timeDifference = currentTime.getTime() - notificationTime.getTime();
+
+                // Calcular a diferença em horas
+                var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+
+                // Atualizar o texto com base na diferença de horas
+                if (hoursDifference === 0) {
+                    $(this).text('Agora mesmo');
+                } else {
+                    $(this).text(hoursDifference + ' hora(s) atrás');
+                }
+            });
+        });
+
     </script>
     
 </body>
