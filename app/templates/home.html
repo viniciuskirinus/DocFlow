@@ -114,7 +114,7 @@
                                                             <h4 class="mb-0 text-sm">{{ notification['pdf_name'] }}</h4>
                                                         </div>
                                                         <div class="text-right text-footer">
-                                                            <small class="notification-time">{{ notification['time'].toLocaleString() }}</small>
+                                                            <small class="notification-time">{{ notification['time']|timesince }}</small>
                                                         </div>
                                                     </div>
                                                     <p class="text-sm mb-0">{{ notification['description'] }}</p>
@@ -135,7 +135,7 @@
                                                             <h4 class="mb-0 text-sm">{{ notification['pdf_name'] }}</h4>
                                                         </div>
                                                         <div class="text-right text-footer">
-                                                            <small class="notification-time">{{ notification['time'].toLocaleString() }}</small>
+                                                            <small class="notification-time">{{ notification['time']|timesince }}</small>
                                                         </div>
                                                     </div>
                                                     <p class="text-sm mb-0">{{ notification['description'] }}</p>
