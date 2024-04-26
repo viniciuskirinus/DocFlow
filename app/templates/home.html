@@ -310,6 +310,7 @@
             // Quando o link "Ver mais" for clicado
             $('#ver-mais').click(function(e) {
                 e.preventDefault(); // Impedir o comportamento padrão do link
+                e.stopPropagation(); // Impedir a propagação do evento para outros elementos
 
                 // Mostrar as próximas notificações ocultas
                 $('.list-group-item.extra:hidden').slice(0, 5).show();
