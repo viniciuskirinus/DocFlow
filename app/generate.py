@@ -64,10 +64,12 @@ def enviar_notificacao(descricao, hora, ultimo_id_inserido):
     try:
         with conexao.cursor() as cursor:
             sql_inserir_notificacao = "INSERT INTO notifications (description, time, read, id_pdf) VALUES (%s, %s, %s, %s)"
+            print("Query SQL:", sql_inserir_notificacao)  # Adiciona esta linha para imprimir a consulta SQL
             cursor.execute(sql_inserir_notificacao, (descricao, hora, False, ultimo_id_inserido))
         conexao.commit()
         return True
     except Exception as e:
+        print("Erro ao enviar notificação:", str(e))
         return False
 
 def converter_imagem_para_binario(imagem):
