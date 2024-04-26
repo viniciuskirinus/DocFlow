@@ -97,7 +97,7 @@
                                     <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary">{{ notifications|length }}</span> nova(s) notificação(ões)!</h6>
                                 </div>
                                 <div class="list-group list-group-flush">
-                                    {% for notification in notifications %}
+                                    {% for notifications in notifications %}
                                         <a href="#!" class="list-group-item list-group-item-action">
                                             <div class="row align-items-center">
                                                 <div class="col-auto">
@@ -106,14 +106,14 @@
                                                 <div class="col ml--2">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <div>
-                                                            <h4 class="mb-0 text-sm">{{ notification['pdf_name'] }}</h4>
+                                                            <h4 class="mb-0 text-sm">{{ notifications['pdf_name'] }}</h4>
                                                         </div>
                                                         <div class="text-right text-footer">
-                                                            <small>{{ notification['time'] }}</small>
+                                                            <small>{{ notifications['time'] }}</small>
                                                         </div>
                                                     </div>
-                                                    <p class="text-sm mb-0">{{ notification['description'] }}</p>
-                                                    <p class="text-sm mb-0">Versão: {{ notification['pdf_version'] }}</p>
+                                                    <p class="text-sm mb-0">{{ notifications['description'] }}</p>
+                                                    <p class="text-sm mb-0">Versão: {{ notifications['pdf_version'] }}</p>
                                                 </div>
                                             </div>
                                         </a>
