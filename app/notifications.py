@@ -1,14 +1,14 @@
 from flask import Flask
 from .models import conectar_db
+import pymysql.cursors  # define o retorno como uma lista
 
 app = Flask(__name__)
 
 def get_notifications():
-
     # Obtém a conexão com o banco de dados
     conexao = conectar_db()
 
-    with conexao.cursor() as cursor:
+    with conexao.cursor(pymysql.cursors.DictCursor) as cursor:  # Usa DictCursor
         sql = """
                 SELECT n.*, p.name AS pdf_name, p.version AS pdf_version
                 FROM notifications n
