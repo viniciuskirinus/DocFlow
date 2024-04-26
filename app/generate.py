@@ -60,11 +60,11 @@ def obter_ultimo_id_inserido():
     except Exception as e:
         raise RuntimeError("Erro ao obter o último ID inserido: " + str(e))
 
-def enviar_notificacao(descricao, hora, id_pdf):
+def enviar_notificacao(descricao, hora, ultimo_id_inserido):
     try:
         with conexao.cursor() as cursor:
             sql_inserir_notificacao = "INSERT INTO notifications (description, time, read, id_pdf) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql_inserir_notificacao, (descricao, hora, False, id_pdf))
+            cursor.execute(sql_inserir_notificacao, (descricao, hora, False, ultimo_id_inserido))
         conexao.commit()
         return True
     except Exception as e:
