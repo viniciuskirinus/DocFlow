@@ -11,13 +11,13 @@ def processar_login(username, password):
         try:
             with conexao.cursor() as cursor:
                 # Consulta parametrizada para obter o hash SHA-256 da senha associada ao username
-                sql = "SELECT password, role, office FROM user WHERE account = %s;"
+                sql = "SELECT id_user, password, role, office FROM user WHERE account = %s;"
                 cursor.execute(sql, (username,))
                 result = cursor.fetchone()
 
                 if result:
                     # Verifica se a senha fornecida corresponde ao hash armazenado no banco de dados
-                    senha_hash_db, user_role, user_office = result
+                    id_user, senha_hash_db, user_role, user_office = result
                     senha_hash_fornecida = hashlib.sha256(password.encode()).hexdigest()
 
                     if senha_hash_db == senha_hash_fornecida:
@@ -26,7 +26,8 @@ def processar_login(username, password):
                         current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                         cursor.execute(sql_update_access, (current_datetime, username))
 
-                        # Adicione o username, a função e o office à sessão para serem acessíveis nas rotas
+                        # Adicione o id_user, username, a função e o office à sessão para serem acessíveis nas rotas
+                        session['id_user'] = id_user
                         session['role'] = user_role
                         session['username'] = username
                         session['office'] = user_office
