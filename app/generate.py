@@ -10,15 +10,7 @@ import pymysql.cursors
 
 conexao = conectar_db()
 
-def verificar_documento_existente(nome):
-    try:
-        with conexao.cursor() as cursor:
-            sql_verificar = "SELECT name FROM pdf WHERE name = %s"
-            cursor.execute(sql_verificar, (nome,))
-            resultado = cursor.fetchone()
-            return bool(resultado)  # Retorna True se documento existir, False caso contrário
-    except Exception as e:
-        raise RuntimeError("Erro ao verificar a existência do documento")
+
 
 def processar_formulario(nome, categoria, versao, data, setor, arquivo):
     try:
@@ -42,6 +34,16 @@ def processar_formulario(nome, categoria, versao, data, setor, arquivo):
         return True
     except Exception as e:
         raise RuntimeError("Erro ao processar o formulário: " + str(e))
+
+def verificar_documento_existente(nome):
+    try:
+        with conexao.cursor() as cursor:
+            sql_verificar = "SELECT name FROM pdf WHERE name = %s"
+            cursor.execute(sql_verificar, (nome,))
+            resultado = cursor.fetchone()
+            return bool(resultado)  # Retorna True se documento existir, False caso contrário
+    except Exception as e:
+        raise RuntimeError("Erro ao verificar a existência do documento")
 
 def criar_e_enviar_notificacao():
     try:
