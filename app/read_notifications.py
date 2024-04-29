@@ -9,7 +9,7 @@ def marcar_todas_como_lidas():
     with conexao.cursor() as cursor:
         sql = """
                 UPDATE user_notifications
-                SET read = TRUE
+                SET `read` = TRUE
                 WHERE id_user = %s
             """
         cursor.execute(sql, (session['id_user'],))
