@@ -15,7 +15,7 @@ def conectar_db():
             user=user,
             password=password,
             database=database,
-            autocommit=True
+            autocommit=False
         )
         return connection
 

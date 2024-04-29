@@ -409,5 +409,21 @@ def marcar_todas_como_lidas_route():
 
 @logout_routes.route('/logout')
 def logout():
-    session.clear()
-    return redirect(url_for('login.login'))
+    try:
+        conexao = conectar_db()
+        # Limpar todas as transações pendentes
+        conexao.rollback()
+
+        # Fechar a conexão com o banco de dados
+        conexao.close()
+
+        # Limpar a sessão
+        session.clear()
+
+        # Redirecionar para a página de login
+        return redirect(url_for('login.login'))
+    except Exception as e:
+        # Log de qualquer exceção que ocorra durante o logout
+        print("Erro durante o logout:", e)
+        # Se ocorrer um erro, você pode querer redirecionar para uma página de erro
+        return redirect(url_for('login.login'))
