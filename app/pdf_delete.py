@@ -20,4 +20,6 @@ def pdf_delete(id_pdf):
 
         return True
     except Exception as e:
+        # Em caso de erro, faça o rollback da transação
+        conexao.rollback()
         return False
