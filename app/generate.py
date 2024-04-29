@@ -41,9 +41,13 @@ def verificar_documento_existente(nome):
             sql_verificar = "SELECT name FROM pdf WHERE name = %s"
             cursor.execute(sql_verificar, (nome,))
             resultado = cursor.fetchone()
-            return bool(resultado)  # Retorna True se documento existir, False caso contrário
+            if resultado is not None:  # Se a consulta retornar algum resultado
+                return True  # Documento existe
+            else:
+                return False  # Documento não existe
     except Exception as e:
-        raise RuntimeError("Erro ao verificar a existência do documento")
+        # Se ocorrer um erro durante a execução da consulta, relança a exceção
+        raise RuntimeError("Erro ao verificar a existência do documento: " + str(e))
 
 def criar_e_enviar_notificacao():
     try:

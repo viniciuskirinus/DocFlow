@@ -314,7 +314,6 @@ def generate():
         else:
             return jsonify(success=False, error="Erro ao processar o formulário: Documento já existe."), 400  # Retorna uma resposta de erro indicando que o documento já existe
     except Exception as e:
-        print(f"Erro ao processar o pedido: {str(e)}")
         return jsonify(success=False, error=str(e)), 500  # Retorna uma resposta de erro com a mensagem de exceção
 
 @admin_user_routes.route('/users')
