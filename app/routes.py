@@ -3,7 +3,7 @@ import os
 import pickle
 from .forms import processar_login
 from .generate import processar_formulario, verificar_documento_existente
-from .pdf_edit import pdf_edit
+from .pdf_edit import pdf_edit, criar_e_enviar_notificacao
 from .pdf_delete import pdf_delete
 from .user_delete import user_delete
 from .user_edit import user_edit
@@ -271,6 +271,7 @@ def edit():
 
         try:
             pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo)
+            criar_e_enviar_notificacao(id_pdf)
             return jsonify(success=True)  # Retorna uma resposta indicando sucesso
         except Exception as e:
             return jsonify(success=False, error=str(e))  # Retorna uma resposta indicando erro

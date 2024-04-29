@@ -98,8 +98,6 @@ def pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo):
         # Atualiza o registro no banco de dados
         salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data_formatada, conteudo_arquivo, imagens_agrupadas)
 
-        criar_e_enviar_notificacao(id_pdf)
-
         return True
     except Exception as e:
         return False
