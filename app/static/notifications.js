@@ -28,6 +28,9 @@ $(document).ready(function() {
 
             // Atualizar o número de notificações exibido no ícone do sino para 0
             $('#num-notificacoes').text('0');
+
+            // Atualizar o número de notificações exibido no dropdown para 0
+            $('#num-notificacoes-spam').text('0');
             
             // Tornar o botão "Marcar todas como lidas" invisível
             $('#marcar-todas-como-lidas').hide();

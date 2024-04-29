@@ -94,7 +94,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-xl py-0 overflow-hidden">
                                 <div class="px-3 pt-3">
-                                    <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary">{{ notifications|length }}</span> novas notificações!</h6>
+                                    <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary" id="num-notificacoes-spam">{{ notifications|length }}</span> novas notificações!</h6>
                                 </div>
                                 <div style="text-align: right;">
                                     {% if notifications|length > 0 %}
