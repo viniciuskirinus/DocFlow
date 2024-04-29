@@ -98,7 +98,7 @@ def pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo):
         # Atualiza o registro no banco de dados
         salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data_formatada, conteudo_arquivo, imagens_agrupadas)
 
-        criar_e_enviar_notificacao()
+        criar_e_enviar_notificacao(id_pdf)
 
         return True
     except Exception as e:
@@ -115,24 +115,15 @@ def salvar_no_banco_de_dados(id_pdf, nome, categoria, setor, version, data, cont
     except Exception as e:
         return False
 
-def criar_e_enviar_notificacao():
+def criar_e_enviar_notificacao(id_pdf):
     try:
-        ultimo_id_inserido = obter_ultimo_id_inserido()
+        ultimo_id_inserido = id_pdf
         descricao = "Nova versão lançada no portal"
         hora_atual = datetime.now()
         if not enviar_notificacao(descricao, hora_atual, ultimo_id_inserido):
             raise RuntimeError("Falha ao enviar a notificação")
     except Exception as e:
         raise RuntimeError("Erro ao criar e enviar notificação: " + str(e))
-
-def obter_ultimo_id_inserido():
-    try:
-        with conexao.cursor() as cursor:
-            cursor.execute("SELECT LAST_INSERT_ID()")
-            ultimo_id_inserido = cursor.fetchone()[0]
-            return ultimo_id_inserido
-    except Exception as e:
-        raise RuntimeError("Erro ao obter o último ID inserido: " + str(e))
 
 def enviar_notificacao(descricao, hora, ultimo_id_inserido):
     try:
@@ -144,9 +135,6 @@ def enviar_notificacao(descricao, hora, ultimo_id_inserido):
             sql_inserir_notificacao = "INSERT INTO notifications (description, time, id_pdf) VALUES (%s, %s, %s)"
             cursor.execute(sql_inserir_notificacao, (descricao, hora, ultimo_id_inserido))
 
-            # Obtém o ID da notificação que acabou de ser inserida
-            id_notificacao = cursor.lastrowid
-
             # Busca todos os usuários com a role 'user'
             sql_buscar_usuarios = "SELECT id_user FROM user WHERE role = 'user'"
             cursor.execute(sql_buscar_usuarios)
@@ -155,7 +143,7 @@ def enviar_notificacao(descricao, hora, ultimo_id_inserido):
             # Para cada usuário, insere uma entrada na tabela user_notifications
             sql_inserir_user_notification = "INSERT INTO user_notifications (id_user, id_notifications, `read`) VALUES (%s, %s, %s)"
             for usuario in usuarios:
-                cursor.execute(sql_inserir_user_notification, (usuario['id_user'], id_notificacao, False))
+                cursor.execute(sql_inserir_user_notification, (usuario['id_user'], ultimo_id_inserido, False))
 
             # Se todas as operações foram bem sucedidas, commit a transação
             conexao.commit()
