@@ -15,7 +15,10 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $('#marcar-todas-como-lidas').on('click', function() {
+    $('#marcar-todas-como-lidas').on('click', function(event) {
+        // Impedir a propagação do evento de clique
+        event.stopPropagation();
+        
         // Requisição AJAX para marcar todas as notificações como lidas
         $.get('/marcar_todas_como_lidas', function() {
             // Remover as notificações marcadas como lidas da página

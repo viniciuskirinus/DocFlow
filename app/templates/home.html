@@ -94,10 +94,12 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-xl py-0 overflow-hidden">
                                 <div class="px-3 pt-3">
-                                    <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary">{{ notifications|length }}</span> nova(s) notificação(ões)!</h6>
+                                    <h6 class="text-sm text-footer m-0">Você possui <span class="text-primary">{{ notifications|length }}</span> novas notificações!</h6>
                                 </div>
                                 <div style="text-align: right;">
-                                    <button id="marcar-todas-como-lidas" class="btn font-weight-bold ml-1">Marcar todas como lidas</button>
+                                    {% if notifications|length > 0 %}
+                                        <button id="marcar-todas-como-lidas" class="btn font-weight-bold ml-1">Marcar todas como lidas</button>
+                                    {% endif %}
                                 </div>
                                 
                                 <div class="list-group list-group-flush">
