@@ -125,7 +125,7 @@ def criar_e_enviar_notificacao(id_pdf):
     except Exception as e:
         raise RuntimeError("Erro ao criar e enviar notificação: " + str(e))
 
-def enviar_notificacao(descricao, hora, ultimo_id_inserido):
+def enviar_notificacao(descricao, hora_atual, ultimo_id_inserido):
     try:
         with conexao.cursor(pymysql.cursors.DictCursor) as cursor:  # Usando DictCursor
             # Inicia uma transação
@@ -133,7 +133,7 @@ def enviar_notificacao(descricao, hora, ultimo_id_inserido):
 
             # Insere a nova notificação
             sql_inserir_notificacao = "INSERT INTO notifications (description, time, id_pdf) VALUES (%s, %s, %s)"
-            cursor.execute(sql_inserir_notificacao, (descricao, hora, ultimo_id_inserido))
+            cursor.execute(sql_inserir_notificacao, (descricao, hora_atual, ultimo_id_inserido))
 
             # Busca todos os usuários com a role 'user'
             sql_buscar_usuarios = "SELECT id_user FROM user WHERE role = 'user'"
