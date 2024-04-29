@@ -270,10 +270,16 @@ def edit():
         arquivo = request.files['arquivo']
 
         try:
+            print("Editando PDF...")
             pdf_edit(id_pdf, nome, categoria, setor, version, data, arquivo)
+            
+            print("Enviando notificação...")
             criar_e_enviar_notificacao(id_pdf)
+            
+            print("Notificação enviada com sucesso!")
             return jsonify(success=True)  # Retorna uma resposta indicando sucesso
         except Exception as e:
+            print("Erro ao editar ou enviar notificação:", str(e))
             return jsonify(success=False, error=str(e))  # Retorna uma resposta indicando erro
     else:
         return jsonify(success=False, error="Unauthorized"), 401  # Retorna uma resposta de não autorizado

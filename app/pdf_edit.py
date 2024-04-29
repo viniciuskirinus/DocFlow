@@ -6,7 +6,11 @@ import boto3
 import os
 from .models import conectar_db
 import pymysql.cursors
+import sys
+import logging
 
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 conexao = conectar_db()
 
@@ -121,6 +125,7 @@ def criar_e_enviar_notificacao(id_pdf):
         if not enviar_notificacao(descricao, hora_atual, ultimo_id_inserido):
             raise RuntimeError("Falha ao enviar a notificação")
     except Exception as e:
+        logging.error("Erro ao criar e enviar notificação: %s", e)
         raise RuntimeError("Erro ao criar e enviar notificação: " + str(e))
 
 def enviar_notificacao(descricao, hora_atual, ultimo_id_inserido):
@@ -150,5 +155,5 @@ def enviar_notificacao(descricao, hora_atual, ultimo_id_inserido):
     except Exception as e:
         # Se houver erro, reverte todas as operações feitas durante a transação
         conexao.rollback()
-        # Levanta uma exceção com mensagem de erro
+        logging.error("Erro ao enviar notificação: %s", e)
         raise RuntimeError("Erro ao enviar notificação: " + str(e))
