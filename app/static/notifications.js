@@ -19,7 +19,9 @@ $(document).ready(function() {
         // Requisição AJAX para marcar todas as notificações como lidas
         $.get('/marcar_todas_como_lidas', function() {
             // Remover as notificações marcadas como lidas da página
-            $('.list-group').empty(); // Limpa todo o conteúdo dentro da div com a classe 'list-group'
+            $('.list-group .list-group-item').each(function() {
+                $(this).remove();
+            });
         });
     });
 });
