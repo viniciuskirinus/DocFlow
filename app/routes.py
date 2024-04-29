@@ -18,6 +18,7 @@ from .models import conectar_db
 from .s3_database import list_folders_and_files
 from .send_s3 import send_s3
 from .notifications import get_notifications
+from .read_notifications import marcar_todas_como_lidas
 
 
 #carrega as chaves da api do gpt e huggingface para processar o chat
@@ -71,6 +72,8 @@ process_chat_routes = Blueprint('process_chat', __name__, template_folder='templ
 #rota de logout
 logout_routes = Blueprint('logout', __name__, template_folder='templates')
 
+#marcando notificações como lidas
+marcar_todas_como_lidas_routes = Blueprint('marcar_todas_como_lidas', __name__, template_folder='templates')
 
 @login_routes.route('/', methods=['GET', 'POST'])
 def login():
@@ -400,6 +403,10 @@ def edit_data():
         return redirect(url_for('home.home'))
     else:
         return redirect(url_for('login.login'))
+    
+@marcar_todas_como_lidas_routes.route('/marcar_todas_como_lidas')
+def marcar_todas_como_lidas_route():
+    return marcar_todas_como_lidas()
 
 @logout_routes.route('/logout')
 def logout():
