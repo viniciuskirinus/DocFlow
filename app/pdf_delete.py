@@ -9,7 +9,7 @@ def pdf_delete(id_pdf):
         cursor = conexao.cursor()
 
         # Crie a consulta SQL para excluir o registro com base no id_pdf
-        sql = "DELETE FROM pdf WHERE id_pdf = %s"
+        sql = "DELETE FROM `pdf` WHERE `pdf`.`id_pdf` = %s"
         cursor.execute(sql, (id_pdf,))
 
         # Faça o commit para efetivar a exclusão
