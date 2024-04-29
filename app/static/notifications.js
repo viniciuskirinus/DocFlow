@@ -25,6 +25,12 @@ $(document).ready(function() {
             $('.list-group .list-group-item').each(function() {
                 $(this).remove();
             });
+
+            // Atualizar o número de notificações exibido no ícone do sino para 0
+            $('#num-notificacoes').text('0');
+            
+            // Tornar o botão "Marcar todas como lidas" invisível
+            $('#marcar-todas-como-lidas').hide();
         });
     });
 });
