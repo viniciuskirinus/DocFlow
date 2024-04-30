@@ -119,7 +119,8 @@ def userprocedimentos():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'Procedimentos'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_procedimentos.html', active_page='user_procedimentos.userprocedimentos', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_procedimentos.html', active_page='user_procedimentos.userprocedimentos', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
     
@@ -128,7 +129,8 @@ def usermanuais():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'Manuais'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_manuais.html', active_page='user_manuais.usermanuais', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_manuais.html', active_page='user_manuais.usermanuais', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
 
@@ -137,7 +139,8 @@ def userinstrucoes():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'Instrucoes'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_instrucoes.html', active_page='user_instrucoes.userinstrucoes', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_instrucoes.html', active_page='user_instrucoes.userinstrucoes', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
 
@@ -146,7 +149,8 @@ def useriso():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'ISO'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_iso.html', active_page='user_iso.useriso', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_iso.html', active_page='user_iso.useriso', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
 
@@ -155,7 +159,8 @@ def userdocumentosgerais():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'Documentos Gerais'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_documentos_gerais.html', active_page='user_documentos_gerais.userdocumentosgerais', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_documentos_gerais.html', active_page='user_documentos_gerais.userdocumentosgerais', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
     
@@ -164,7 +169,8 @@ def userprojetos():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'Projetos'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_projetos.html', active_page='user_projetos.userprojetos', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_projetos.html', active_page='user_projetos.userprojetos', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
     
@@ -173,7 +179,8 @@ def userdocumentos_clientes():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'Documentos de Clientes'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_documentos_clientes.html', active_page='user_documentos_clientes.userdocumentos_clientes', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_documentos_clientes.html', active_page='user_documentos_clientes.userdocumentos_clientes', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
     
@@ -182,7 +189,8 @@ def userpoliticas_gerais():
     if 'username' in session and 'role' in session and session['role'] == "user":
         categoria = 'Politicas Gerais'  # Defina a categoria desejada
         dados_do_banco = obter_dados_do_banco_por_categoria(categoria)
-        return render_template('user_politicas_gerais.html', active_page='user_politicas_gerais.userpoliticas_gerais', dados=dados_do_banco) 
+        notifications = get_notifications()
+        return render_template('user_politicas_gerais.html', active_page='user_politicas_gerais.userpoliticas_gerais', dados=dados_do_banco, notifications=notifications) 
     else:
         return redirect(url_for('login.login'))
     
