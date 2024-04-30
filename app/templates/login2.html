@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sirtec DocFlow</title>
+    <link rel="icon" href="../static/logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+        }
+
+        .row {
+            display: flex;
+            flex: 1;  /* Faz com que a row ocupe todo o espaço horizontal do container */
+            flex-wrap: wrap;
+        }
+
+        .col-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            display: flex;
+            align-items: center;  /* Centraliza verticalmente o conteúdo dentro da coluna */
+            justify-content: center;  /* Centraliza horizontalmente o conteúdo dentro da coluna */
+        }
+
+        .centered {
+            text-align: center;
+        }
+
+        .background-image {
+            background-image: url('../static/fundo_login.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100vh;  /* Assegura que a coluna ocupe toda a altura da viewport */
+        }
+        .background-image-2 {
+            background-image: url('../static/fundo_login2.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100vh;  /* Assegura que a coluna ocupe toda a altura da viewport */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="background-color: WHITE;">
+            <div class="col-6 background-image-2">
+                <div class="centered">
+                    <img src="https://sirtec.com.br/restrito/logo.png" width="150" class="centered-image">
+                    <h1>Sirtec DocFlow</h1>
+                    <h2>Acesse a plataforma</h2>
+                    <br>
+
+                    <form method="post" action="/">
+                        <label class="label_form">Nome de Usuário</label>
+                        <input class="form" type="text" name="username" value="{{ request.form['username'] if request.method == 'POST' else '' }}">
+                        <br><br>
+                        <label class="label_form">Senha</label>
+                        <div class="password-container">
+                            <input class="form" type="password" name="password" id="passwordInput">
+                            <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                        </div>
+                        <br>
+
+                        {% for message in get_flashed_messages(category_filter=["error", "info"]) %}
+                        <div class="flash">{{ message }}</div>
+                        {% endfor %}
+
+                        <br>
+                        <a href="https://sirtec.desk.ms/?LoginPortal">Solicitar nova senha; Abra um chamado</a>
+                        <br><br>
+                        <button class="botao" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6 background-image">
+                <!-- Outro conteúdo ou elementos aqui, com a imagem de fundo -->
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.onload = function() {
+            var messages = document.querySelectorAll('.flash');
+            messages.forEach(function(message) {
+                var text = message.textContent;
+                if (text.toLowerCase().includes("falha")) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: text,
+                    });
+                }
+            });
+        }
+
+        const passwordInput = document.getElementById("passwordInput");
+        const togglePasswordButton = document.getElementById("togglePassword");
+
+        togglePasswordButton.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePasswordButton.classList.remove("fa-eye");
+                togglePasswordButton.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                togglePasswordButton.classList.remove("fa-eye-slash");
+                togglePasswordButton.classList.add("fa-eye");
+            }
+        });
+    </script>
+</body>
+</html>
